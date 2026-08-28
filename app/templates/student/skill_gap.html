@@ -2,73 +2,49 @@
 {% block title %}Skill Gap Analysis — CareerPath AI{% endblock %}
 
 {% block body %}
-<div class="flex h-screen overflow-hidden bg-surface">
-  {% set profile = current_user.profile %}
-  <!-- Sidebar -->
-  <aside class="w-60 bg-card-bg border-r border-border flex flex-col h-full flex-shrink-0">
-    <div class="h-16 px-5 flex items-center border-b border-border">
-      <span class="material-symbols-outlined text-primary fill-icon mr-2">trending_up</span>
-      <span class="font-headline font-bold text-lg text-primary">CareerPath AI</span>
-    </div>
-    <div class="px-5 py-4 border-b border-border">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm flex-shrink-0">{{ current_user.name[:2].upper() }}</div>
-        <div class="min-w-0"><p class="font-medium text-sm text-text-primary truncate">{{ current_user.name }}</p><p class="text-xs text-text-muted truncate">{{ profile.degree if profile else 'Student' }}</p></div>
-      </div>
-    </div>
-    <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-      {% set nav_items = [('student.dashboard','space_dashboard','Dashboard'),('student.profile','person','Profile'),('resume.upload','upload_file','Resume Upload'),('student.career_matches','work','Career Matches'),('student.skill_gap','analytics','Skill Gap Analysis'),('student.learning','school','Learning Path')] %}
-      {% for endpoint, icon, label in nav_items %}
-      {% set active = request.endpoint == endpoint %}
-      <a href="{{ url_for(endpoint) }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors {% if active %}bg-indigo-50 text-primary font-medium{% else %}text-text-secondary hover:bg-surface hover:text-text-primary{% endif %}">
-        <span class="material-symbols-outlined text-[20px] {% if active %}fill-icon{% endif %}">{{ icon }}</span>{{ label }}
-      </a>
-      {% endfor %}
-    </nav>
-    <div class="px-3 py-3 border-t border-border">
-      <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:bg-red-50 hover:text-red-600 transition-colors">
-        <span class="material-symbols-outlined text-[20px]">logout</span>Logout
-      </a>
-    </div>
-  </aside>
+<div class="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-surface">
+  <!-- Sidebar Partial -->
+  {% include 'partials/student_sidebar.html' %}
 
   <!-- Main -->
-  <main class="flex-1 overflow-y-auto">
-    <div class="bg-card-bg border-b border-border px-6 py-4">
+  <main class="flex-1 overflow-y-auto w-full">
+    <div class="bg-card-bg border-b border-border px-4 sm:px-6 py-4">
       <p class="text-xs text-text-muted mb-0.5"><a href="{{ url_for('student.dashboard') }}" class="hover:text-primary">Dashboard</a> &rsaquo; Skill Gap Analysis</p>
-      <h1 class="font-headline font-bold text-xl text-text-primary">Skill Gap Analysis</h1>
+      <h1 class="font-headline font-bold text-lg sm:text-xl text-text-primary">Skill Gap Analysis</h1>
     </div>
 
-    <div class="p-6 space-y-5">
+    <div class="p-4 sm:p-6 space-y-5">
 
       <!-- Career Selector -->
-      <div class="flex items-center gap-3 flex-wrap">
-        <span class="text-sm text-text-secondary">Analyzing for:</span>
-        {% for match in all_matches %}
-        <a href="{{ url_for('student.skill_gap', career_id=match.career_id) }}"
-           class="px-4 py-1.5 rounded-full text-xs font-medium transition-colors border
-                  {% if match.career_id == selected_career_id %}bg-primary text-white border-primary{% else %}bg-card-bg border-border text-text-secondary hover:border-primary hover:text-primary{% endif %}">
-          {{ match.career.title }} — {{ match.match_pct }}%
-        </a>
-        {% endfor %}
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap bg-card-bg p-3.5 sm:p-4 rounded-xl border border-border">
+        <span class="text-xs sm:text-sm text-text-secondary font-medium w-full sm:w-auto">Analyzing for:</span>
+        <div class="flex gap-2 flex-wrap flex-1">
+          {% for match in all_matches %}
+          <a href="{{ url_for('student.skill_gap', career_id=match.career_id) }}"
+             class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors border
+                    {% if match.career_id == selected_career_id %}bg-primary text-white border-primary{% else %}bg-surface border-border text-text-secondary hover:border-primary hover:text-primary{% endif %}">
+            {{ match.career.title }} — {{ match.match_pct }}%
+          </a>
+          {% endfor %}
+        </div>
       </div>
 
       <!-- Overview Cards -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-card-bg rounded-xl border border-border p-4 shadow-sm text-center">
-          <p class="font-headline font-bold text-2xl text-success">{{ gap.matched_count }}</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-card-bg rounded-xl border border-border p-3.5 sm:p-4 shadow-sm text-center">
+          <p class="font-headline font-bold text-xl sm:text-2xl text-success">{{ gap.matched_count }}</p>
           <p class="text-xs text-text-muted mt-1">Skills Matched</p>
         </div>
-        <div class="bg-card-bg rounded-xl border border-border p-4 shadow-sm text-center">
-          <p class="font-headline font-bold text-2xl text-warning">{{ gap.missing_count }}</p>
+        <div class="bg-card-bg rounded-xl border border-border p-3.5 sm:p-4 shadow-sm text-center">
+          <p class="font-headline font-bold text-xl sm:text-2xl text-warning">{{ gap.missing_count }}</p>
           <p class="text-xs text-text-muted mt-1">Skills Missing</p>
         </div>
-        <div class="bg-card-bg rounded-xl border border-border p-4 shadow-sm text-center">
-          <p class="font-headline font-bold text-2xl text-text-primary">{{ gap.total_required }}</p>
+        <div class="bg-card-bg rounded-xl border border-border p-3.5 sm:p-4 shadow-sm text-center">
+          <p class="font-headline font-bold text-xl sm:text-2xl text-text-primary">{{ gap.total_required }}</p>
           <p class="text-xs text-text-muted mt-1">Total Required</p>
         </div>
-        <div class="bg-card-bg rounded-xl border border-border p-4 shadow-sm text-center">
-          <p class="font-headline font-bold text-2xl
+        <div class="bg-card-bg rounded-xl border border-border p-3.5 sm:p-4 shadow-sm text-center">
+          <p class="font-headline font-bold text-xl sm:text-2xl
             {% if gap.match_pct >= 75 %}text-success{% elif gap.match_pct >= 50 %}text-warning{% else %}text-error{% endif %}">
             {{ gap.match_pct }}%
           </p>
@@ -80,7 +56,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
         <!-- Skills You Have -->
-        <div class="bg-card-bg rounded-xl border-l-4 border-success border border-border shadow-sm p-5">
+        <div class="bg-card-bg rounded-xl border-l-4 border-success border border-border shadow-sm p-4 sm:p-5">
           <h2 class="font-headline font-semibold text-base text-text-primary mb-1 flex items-center gap-2">
             <span class="material-symbols-outlined text-success text-[20px] fill-icon">check_circle</span>
             Skills You Have
@@ -93,11 +69,11 @@
             <div class="flex items-center justify-between gap-3">
               <div class="flex items-center gap-2 min-w-0">
                 <span class="material-symbols-outlined text-success fill-icon text-[16px] flex-shrink-0">check</span>
-                <span class="text-sm font-medium text-text-primary truncate">{{ skill.name }}</span>
-                {% if skill.required %}<span class="text-xs text-text-muted flex-shrink-0">core</span>{% endif %}
+                <span class="text-xs sm:text-sm font-medium text-text-primary truncate">{{ skill.name }}</span>
+                {% if skill.required %}<span class="text-[10px] sm:text-xs text-text-muted flex-shrink-0 px-1.5 py-0.5 bg-surface rounded">core</span>{% endif %}
               </div>
               <div class="flex items-center gap-2 flex-shrink-0">
-                <div class="w-20 bg-gray-100 rounded-full h-1.5">
+                <div class="w-16 sm:w-20 bg-gray-100 rounded-full h-1.5">
                   <div class="progress-bar-high h-1.5 rounded-full" style="width: {{ (skill.weight * 100)|int }}%"></div>
                 </div>
                 <span class="text-xs text-text-muted w-8 text-right">{{ (skill.weight * 100)|int }}%</span>
@@ -111,7 +87,7 @@
         </div>
 
         <!-- Skills to Develop -->
-        <div class="bg-card-bg rounded-xl border-l-4 border-warning border border-border shadow-sm p-5">
+        <div class="bg-card-bg rounded-xl border-l-4 border-warning border border-border shadow-sm p-4 sm:p-5">
           <h2 class="font-headline font-semibold text-base text-text-primary mb-1 flex items-center gap-2">
             <span class="material-symbols-outlined text-warning text-[20px] fill-icon">warning</span>
             Skills to Develop
@@ -125,12 +101,12 @@
               <div class="flex items-start gap-2 min-w-0">
                 <span class="material-symbols-outlined text-warning fill-icon text-[16px] flex-shrink-0 mt-0.5">priority_high</span>
                 <div class="min-w-0">
-                  <span class="text-sm font-medium text-text-primary block truncate">{{ skill.name }}</span>
+                  <span class="text-xs sm:text-sm font-medium text-text-primary block truncate">{{ skill.name }}</span>
                   <a href="{{ url_for('student.learning', career_id=selected_career_id) }}"
-                     class="text-xs text-primary hover:underline">Find courses →</a>
+                     class="text-xs text-primary hover:underline font-medium">Find courses →</a>
                 </div>
               </div>
-              <span class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0
+              <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0
                 {% if skill.priority == 'high' %}bg-red-50 text-red-600{% else %}bg-amber-50 text-amber-600{% endif %}">
                 {{ skill.priority.upper() }}
               </span>
@@ -148,15 +124,15 @@
 
       <!-- Improvement CTA -->
       {% if gap.missing_skills %}
-      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5 flex items-center justify-between gap-4">
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <p class="font-headline font-semibold text-text-primary">Improve your match from {{ gap.match_pct }}% to 95%+</p>
-          <p class="text-sm text-text-secondary mt-1">
+          <p class="font-headline font-semibold text-sm sm:text-base text-text-primary">Improve your match from {{ gap.match_pct }}% to 95%+</p>
+          <p class="text-xs sm:text-sm text-text-secondary mt-1">
             Learn {{ gap.missing_skills[:2]|map(attribute='name')|join(', ') }}{% if gap.missing_skills|length > 2 %} and {{ gap.missing_skills|length - 2 }} more skill(s){% endif %}
           </p>
         </div>
         <a href="{{ url_for('student.learning', career_id=selected_career_id) }}"
-           class="flex-shrink-0 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-hover transition-colors">
+           class="w-full sm:w-auto text-center px-5 py-2.5 bg-primary text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-hover transition-colors shadow-sm">
           View Learning Path →
         </a>
       </div>

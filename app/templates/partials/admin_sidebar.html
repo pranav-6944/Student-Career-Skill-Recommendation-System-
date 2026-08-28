@@ -1,0 +1,131 @@
+<!-- ====== MOBILE TOP NAV HEADER (ADMIN) ====== -->
+<div class="lg:hidden bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between text-white sticky top-0 z-30">
+  <div class="flex items-center gap-3">
+    <button onclick="toggleMobileMenu()" type="button" class="p-2 rounded-lg text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <span class="material-symbols-outlined text-2xl">menu</span>
+    </button>
+    <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-indigo-400 fill-icon text-xl">trending_up</span>
+      <div>
+        <span class="font-headline font-bold text-sm text-white">CareerPath AI</span>
+        <span class="block text-[10px] text-slate-400 uppercase tracking-wider">Admin</span>
+      </div>
+    </a>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">
+      {{ current_user.name[:2].upper() }}
+    </div>
+  </div>
+</div>
+
+<!-- ====== MOBILE DRAWER OVERLAY (ADMIN) ====== -->
+<div id="mobile-drawer" class="hidden fixed inset-0 z-50 lg:hidden">
+  <!-- Backdrop -->
+  <div onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+  
+  <!-- Content Drawer -->
+  <aside class="fixed inset-y-0 left-0 w-72 bg-slate-900 shadow-2xl flex flex-col h-full z-10 text-white">
+    <!-- Header -->
+    <div class="h-16 px-5 flex items-center justify-between border-b border-slate-800">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400 fill-icon text-xl">trending_up</span>
+        <div>
+          <span class="font-headline font-bold text-base text-white">CareerPath AI</span>
+          <span class="block text-xs text-slate-400">Admin Panel</span>
+        </div>
+      </div>
+      <button onclick="toggleMobileMenu()" type="button" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+    </div>
+
+    <!-- Admin Info -->
+    <div class="px-5 py-4 border-b border-slate-800 bg-slate-800/50">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+          {{ current_user.name[:2].upper() }}
+        </div>
+        <div class="min-w-0">
+          <p class="font-medium text-sm text-white truncate">{{ current_user.name }}</p>
+          <p class="text-xs text-slate-400">Administrator</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Nav -->
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      {% set admin_nav = [
+        ('admin.dashboard', 'space_dashboard', 'Overview'),
+        ('admin.students', 'group', 'Manage Students'),
+        ('admin.careers', 'work', 'Career Roles'),
+      ] %}
+      {% for endpoint, icon, label in admin_nav %}
+      {% set active = request.endpoint == endpoint %}
+      <a href="{{ url_for(endpoint) }}" onclick="toggleMobileMenu()"
+         class="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-colors
+                {% if active %}bg-indigo-700 text-white{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+        <span class="material-symbols-outlined text-xl {% if active %}fill-icon{% endif %}">{{ icon }}</span>
+        {{ label }}
+      </a>
+      {% endfor %}
+    </nav>
+
+    <!-- Logout -->
+    <div class="p-3 border-t border-slate-800">
+      <a href="{{ url_for('auth.logout') }}"
+         class="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-red-900 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-xl">logout</span>
+        Logout
+      </a>
+    </div>
+  </aside>
+</div>
+
+<!-- ====== DESKTOP SIDEBAR (ADMIN) ====== -->
+<aside class="hidden lg:flex w-60 bg-slate-900 flex-col h-full flex-shrink-0">
+  <!-- Brand -->
+  <div class="h-16 px-5 flex items-center border-b border-slate-700">
+    <span class="material-symbols-outlined text-indigo-400 fill-icon mr-2 text-2xl">trending_up</span>
+    <div>
+      <span class="font-headline font-bold text-base text-white">CareerPath AI</span>
+      <span class="block text-xs text-slate-400">Admin Panel</span>
+    </div>
+  </div>
+
+  <!-- Admin Info -->
+  <div class="px-5 py-4 border-b border-slate-700">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+        {{ current_user.name[:2].upper() }}
+      </div>
+      <div class="min-w-0">
+        <p class="font-medium text-sm text-white truncate">{{ current_user.name }}</p>
+        <p class="text-xs text-slate-400">Administrator</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Nav -->
+  <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+    {% set admin_nav = [
+      ('admin.dashboard', 'space_dashboard', 'Overview'),
+      ('admin.students', 'group', 'Manage Students'),
+      ('admin.careers', 'work', 'Career Roles'),
+    ] %}
+    {% for endpoint, icon, label in admin_nav %}
+    {% set active = request.endpoint == endpoint %}
+    <a href="{{ url_for(endpoint) }}"
+       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors
+              {% if active %}bg-indigo-700 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+      <span class="material-symbols-outlined text-[20px] {% if active %}fill-icon{% endif %}">{{ icon }}</span>
+      {{ label }}
+    </a>
+    {% endfor %}
+  </nav>
+  <div class="px-3 py-3 border-t border-slate-700">
+    <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-red-900 hover:text-red-200 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">logout</span>Logout
+    </a>
+  </div>
+</aside>

@@ -2,7 +2,7 @@
 {% block title %}Login — CareerPath AI{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-surface flex">
+<div class="min-h-screen bg-surface flex flex-col lg:flex-row">
   <!-- Left Panel -->
   <div class="hidden lg:flex lg:w-1/2 bg-primary flex-col justify-between p-12">
     <div>
@@ -32,16 +32,16 @@
   </div>
 
   <!-- Right Panel — Login Form -->
-  <div class="flex-1 flex items-center justify-center p-8">
+  <div class="flex-1 flex items-center justify-center p-4 sm:p-8">
     <div class="w-full max-w-md">
       <!-- Mobile logo -->
-      <div class="flex items-center gap-2 mb-8 lg:hidden">
+      <div class="flex items-center gap-2 mb-6 sm:mb-8 lg:hidden">
         <span class="material-symbols-outlined text-primary text-2xl fill-icon">trending_up</span>
         <span class="font-headline font-bold text-xl text-primary">CareerPath AI</span>
       </div>
 
-      <h1 class="font-headline font-bold text-3xl text-text-primary mb-2">Welcome back</h1>
-      <p class="text-text-secondary mb-8">Sign in to your account to continue</p>
+      <h1 class="font-headline font-bold text-2xl sm:text-3xl text-text-primary mb-2">Welcome back</h1>
+      <p class="text-xs sm:text-sm text-text-secondary mb-6 sm:mb-8">Sign in to your account to continue</p>
 
       <!-- Flash messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -55,39 +55,39 @@
         {% endfor %}
       {% endwith %}
 
-      <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-5">
+      <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-4 sm:space-y-5">
         <div>
-          <label class="block text-sm font-medium text-text-primary mb-1.5" for="email">Email address</label>
+          <label class="block text-xs sm:text-sm font-medium text-text-primary mb-1.5" for="email">Email address</label>
           <input class="w-full px-4 py-3 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
                  id="email" name="email" placeholder="you@university.edu" required type="email"/>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-text-primary mb-1.5" for="password">Password</label>
+          <label class="block text-xs sm:text-sm font-medium text-text-primary mb-1.5" for="password">Password</label>
           <input class="w-full px-4 py-3 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
                  id="password" name="password" placeholder="Enter your password" required type="password"/>
         </div>
 
         <div class="flex items-center justify-between">
-          <label class="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
-            <input class="rounded text-primary" name="remember" type="checkbox"/> Remember me
+          <label class="flex items-center gap-2 text-xs sm:text-sm text-text-secondary cursor-pointer">
+            <input class="rounded text-primary focus:ring-primary" name="remember" type="checkbox"/> Remember me
           </label>
         </div>
 
-        <button class="w-full bg-primary hover:bg-primary-hover text-white font-headline font-semibold py-3 rounded-lg transition-colors"
+        <button class="w-full bg-primary hover:bg-primary-hover text-white font-headline font-semibold py-3 rounded-lg transition-colors shadow-sm text-sm sm:text-base"
                 type="submit">Sign In</button>
       </form>
 
-      <p class="text-center text-sm text-text-secondary mt-6">
+      <p class="text-center text-xs sm:text-sm text-text-secondary mt-6">
         Don't have an account?
         <a class="text-primary font-medium hover:underline" href="{{ url_for('auth.register') }}">Create one free</a>
       </p>
 
       <!-- Demo credentials -->
-      <div class="mt-6 p-4 bg-indigo-50 rounded-lg border border-indigo-100">
-        <p class="text-xs font-medium text-indigo-700 mb-1">Demo credentials:</p>
-        <p class="text-xs text-indigo-600">Admin: <span class="font-mono">admin@careerpath.ai</span> / <span class="font-mono">admin123</span></p>
-        <p class="text-xs text-indigo-600">Student: <span class="font-mono">ashwini@student.com</span> / <span class="font-mono">student123</span></p>
+      <div class="mt-6 p-4 bg-indigo-50/80 rounded-lg border border-indigo-100">
+        <p class="text-xs font-semibold text-indigo-800 mb-1">Demo credentials:</p>
+        <p class="text-xs text-indigo-700">Admin: <span class="font-mono bg-white px-1 py-0.5 rounded">admin@careerpath.ai</span> / <span class="font-mono bg-white px-1 py-0.5 rounded">admin123</span></p>
+        <p class="text-xs text-indigo-700 mt-1">Student: <span class="font-mono bg-white px-1 py-0.5 rounded">ashwini@student.com</span> / <span class="font-mono bg-white px-1 py-0.5 rounded">student123</span></p>
       </div>
     </div>
   </div>

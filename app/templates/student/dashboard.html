@@ -2,74 +2,27 @@
 {% block title %}Dashboard — CareerPath AI{% endblock %}
 
 {% block body %}
-<div class="flex h-screen overflow-hidden bg-surface">
+<div class="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-surface">
 
-  <!-- ====== SIDEBAR ====== -->
-  <aside class="w-60 bg-card-bg border-r border-border flex flex-col h-full flex-shrink-0">
-    <!-- Brand -->
-    <div class="h-16 px-5 flex items-center border-b border-border">
-      <span class="material-symbols-outlined text-primary fill-icon mr-2">trending_up</span>
-      <span class="font-headline font-bold text-lg text-primary">CareerPath AI</span>
-    </div>
-
-    <!-- Student Info -->
-    <div class="px-5 py-4 border-b border-border">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-          {{ current_user.name[:2].upper() }}
-        </div>
-        <div class="min-w-0">
-          <p class="font-medium text-sm text-text-primary truncate">{{ current_user.name }}</p>
-          <p class="text-xs text-text-muted truncate">{{ profile.degree if profile else 'Student' }}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-      {% set nav_items = [
-        ('student.dashboard', 'space_dashboard', 'Dashboard'),
-        ('student.profile', 'person', 'Profile'),
-        ('resume.upload', 'upload_file', 'Resume Upload'),
-        ('student.career_matches', 'work', 'Career Matches'),
-        ('student.skill_gap', 'analytics', 'Skill Gap Analysis'),
-        ('student.learning', 'school', 'Learning Path'),
-      ] %}
-      {% for endpoint, icon, label in nav_items %}
-      {% set active = request.endpoint == endpoint %}
-      <a href="{{ url_for(endpoint) }}"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors
-                {% if active %}bg-indigo-50 text-primary font-medium{% else %}text-text-secondary hover:bg-surface hover:text-text-primary{% endif %}">
-        <span class="material-symbols-outlined text-[20px] {% if active %}fill-icon{% endif %}">{{ icon }}</span>
-        {{ label }}
-      </a>
-      {% endfor %}
-    </nav>
-
-    <!-- Logout -->
-    <div class="px-3 py-3 border-t border-border">
-      <a href="{{ url_for('auth.logout') }}"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:bg-red-50 hover:text-red-600 transition-colors">
-        <span class="material-symbols-outlined text-[20px]">logout</span>
-        Logout
-      </a>
-    </div>
-  </aside>
+  <!-- Sidebar Partial (Desktop & Mobile Drawer) -->
+  {% include 'partials/student_sidebar.html' %}
 
   <!-- ====== MAIN CONTENT ====== -->
-  <main class="flex-1 overflow-y-auto">
+  <main class="flex-1 overflow-y-auto w-full">
     <!-- Top Header -->
-    <div class="bg-card-bg border-b border-border px-6 py-4 flex items-center justify-between">
+    <div class="bg-card-bg border-b border-border px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
       <div>
-        <h1 class="font-headline font-bold text-xl text-text-primary">
+        <h1 class="font-headline font-bold text-lg sm:text-xl text-text-primary">
           Welcome back, {{ current_user.name.split()[0] }}! 👋
         </h1>
-        <p class="text-sm text-text-muted mt-0.5">Here's your career readiness overview</p>
+        <p class="text-xs sm:text-sm text-text-muted mt-0.5">Here's your career readiness overview</p>
       </div>
-      <span class="text-sm text-text-muted">{{ now.strftime('%d %b %Y') if now else '' }}</span>
+      <span class="text-xs sm:text-sm text-text-muted self-start sm:self-center bg-surface px-3 py-1 rounded-full border border-border sm:border-0 sm:p-0">
+        {{ now.strftime('%d %b %Y') if now else '' }}
+      </span>
     </div>
 
-    <div class="p-6 space-y-6">
+    <div class="p-4 sm:p-6 space-y-6">
 
       <!-- Flash Messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -85,15 +38,15 @@
       {% endwith %}
 
       <!-- Stat Cards Row -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Resume Score -->
-        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+        <div class="bg-card-bg rounded-xl border border-border p-4 sm:p-5 shadow-sm">
           <div class="flex items-center justify-between mb-3">
             <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center">
               <span class="material-symbols-outlined text-primary fill-icon text-[20px]">description</span>
             </div>
             {% if resume %}
-            <span class="text-xs font-medium px-2 py-1 rounded-full bg-green-50 text-green-700">Good</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-green-50 text-green-700">Good</span>
             {% endif %}
           </div>
           <p class="font-headline font-bold text-2xl text-primary">
@@ -103,7 +56,7 @@
         </div>
 
         <!-- Skills Identified -->
-        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+        <div class="bg-card-bg rounded-xl border border-border p-4 sm:p-5 shadow-sm">
           <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center mb-3">
             <span class="material-symbols-outlined text-secondary fill-icon text-[20px]">psychology</span>
           </div>
@@ -112,7 +65,7 @@
         </div>
 
         <!-- Career Matches -->
-        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+        <div class="bg-card-bg rounded-xl border border-border p-4 sm:p-5 shadow-sm">
           <div class="w-10 h-10 rounded-lg bg-sky-50 flex items-center justify-center mb-3">
             <span class="material-symbols-outlined text-tertiary fill-icon text-[20px]">work</span>
           </div>
@@ -121,7 +74,7 @@
         </div>
 
         <!-- Career Readiness -->
-        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+        <div class="bg-card-bg rounded-xl border border-border p-4 sm:p-5 shadow-sm">
           <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center mb-3">
             <span class="material-symbols-outlined text-success fill-icon text-[20px]">verified</span>
           </div>
@@ -135,17 +88,17 @@
 
         <!-- Top Career Recommendations (2/3 width) -->
         <div class="lg:col-span-2 bg-card-bg rounded-xl border border-border shadow-sm">
-          <div class="px-6 py-4 border-b border-border flex items-center justify-between">
+          <div class="px-4 sm:px-6 py-4 border-b border-border flex items-center justify-between">
             <h2 class="font-headline font-semibold text-base text-text-primary">Top Career Recommendations</h2>
-            <a href="{{ url_for('student.career_matches') }}" class="text-xs text-primary hover:underline">View all →</a>
+            <a href="{{ url_for('student.career_matches') }}" class="text-xs text-primary hover:underline font-medium">View all →</a>
           </div>
-          <div class="p-6 space-y-4">
+          <div class="p-4 sm:p-6 space-y-4">
             {% if top_matches %}
               {% for match in top_matches %}
-              <div class="flex items-center gap-4">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-0 rounded-lg bg-surface sm:bg-transparent border sm:border-0 border-border">
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between mb-1">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                       <span class="font-medium text-sm text-text-primary">{{ match.career.title }}</span>
                       <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-primary">{{ match.career.department }}</span>
                     </div>
@@ -163,12 +116,14 @@
                       {% else %}progress-bar-low{% endif %}"
                       style="width: {{ match.match_pct }}%"></div>
                   </div>
-                  <p class="text-xs text-text-muted mt-1">
+                  <p class="text-xs text-text-muted mt-1 truncate">
                     {{ match.matched_skills[:3]|join(', ') }}{% if match.matched_skills|length > 3 %} +{{ match.matched_skills|length - 3 }} more{% endif %}
                   </p>
                 </div>
                 <a href="{{ url_for('student.skill_gap', career_id=match.career_id) }}"
-                   class="text-xs text-primary hover:underline flex-shrink-0">Gap →</a>
+                   class="text-xs text-primary hover:underline font-medium self-end sm:self-center flex-shrink-0 bg-indigo-50 sm:bg-transparent px-3 py-1.5 sm:p-0 rounded-md">
+                  View Skill Gap →
+                </a>
               </div>
               {% endfor %}
             {% else %}
@@ -186,10 +141,10 @@
 
         <!-- Skills Panel (1/3 width) -->
         <div class="bg-card-bg rounded-xl border border-border shadow-sm">
-          <div class="px-6 py-4 border-b border-border">
+          <div class="px-4 sm:px-6 py-4 border-b border-border">
             <h2 class="font-headline font-semibold text-base text-text-primary">Extracted Skills</h2>
           </div>
-          <div class="p-5">
+          <div class="p-4 sm:p-5">
             {% if extracted_skills %}
               <p class="text-xs text-text-muted mb-3 uppercase tracking-wide font-medium">✅ Your Skills</p>
               <div class="flex flex-wrap gap-1.5 mb-4">
@@ -220,19 +175,19 @@
 
         <!-- Profile Card -->
         <div class="bg-card-bg rounded-xl border border-border shadow-sm">
-          <div class="px-6 py-4 border-b border-border flex items-center justify-between">
+          <div class="px-4 sm:px-6 py-4 border-b border-border flex items-center justify-between">
             <h2 class="font-headline font-semibold text-base text-text-primary">Education & Profile</h2>
-            <a href="{{ url_for('student.profile') }}" class="text-xs text-primary hover:underline">Edit →</a>
+            <a href="{{ url_for('student.profile') }}" class="text-xs text-primary hover:underline font-medium">Edit →</a>
           </div>
-          <div class="p-5 space-y-3">
+          <div class="p-4 sm:p-5 space-y-3">
             {% if profile %}
             <div class="flex items-center gap-3 text-sm">
               <span class="material-symbols-outlined text-text-muted text-[18px]">school</span>
-              <span class="text-text-secondary">{{ profile.degree or 'Not specified' }}</span>
+              <span class="text-text-secondary truncate">{{ profile.degree or 'Not specified' }}</span>
             </div>
             <div class="flex items-center gap-3 text-sm">
               <span class="material-symbols-outlined text-text-muted text-[18px]">location_city</span>
-              <span class="text-text-secondary">{{ profile.university or 'University not set' }}</span>
+              <span class="text-text-secondary truncate">{{ profile.university or 'University not set' }}</span>
             </div>
             {% if profile.cgpa %}
             <div class="flex items-center gap-3 text-sm">
@@ -256,10 +211,10 @@
 
         <!-- Quick Actions -->
         <div class="bg-card-bg rounded-xl border border-border shadow-sm">
-          <div class="px-6 py-4 border-b border-border">
+          <div class="px-4 sm:px-6 py-4 border-b border-border">
             <h2 class="font-headline font-semibold text-base text-text-primary">Quick Actions</h2>
           </div>
-          <div class="p-5 space-y-3">
+          <div class="p-4 sm:p-5 space-y-3">
             <a href="{{ url_for('resume.upload') }}"
                class="flex items-center gap-3 p-3 rounded-lg bg-primary text-white hover:bg-primary-hover transition-colors">
               <span class="material-symbols-outlined text-[20px]">upload_file</span>
@@ -289,10 +244,4 @@
     </div>
   </main>
 </div>
-{% endblock %}
-
-{% block extra_scripts %}
-<script>
-  // Inject current datetime for display
-</script>
 {% endblock %}

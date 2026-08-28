@@ -5,6 +5,8 @@
 - **Design Tool**: Google Stitch MCP (Gemini 3.1 Pro)
 - **Stitch Project ID**: 8714857041009259942
 - **Design System ID**: assets/332433763138960182
+- **GitHub Repository**: https://github.com/pranav-6944/Student-Career-Skill-Recommendation-System-.git
+
 
 ## Stitch Screens Generated
 All screens located at: Downloads\Main Projects\Student Career & Skill Recommendation System\stitch_student_career_skill_recommendation_system\

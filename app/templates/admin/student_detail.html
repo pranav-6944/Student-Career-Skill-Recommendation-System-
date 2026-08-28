@@ -1,57 +1,40 @@
 {% extends 'base.html' %}
 {% block title %}{{ student.name }} — Admin{% endblock %}
 {% block body %}
-<div class="flex h-screen overflow-hidden bg-surface">
-  <aside class="w-60 bg-slate-900 flex flex-col h-full flex-shrink-0">
-    <div class="h-16 px-5 flex items-center border-b border-slate-700">
-      <span class="material-symbols-outlined text-indigo-400 fill-icon mr-2">trending_up</span>
-      <div><span class="font-headline font-bold text-base text-white">CareerPath AI</span><span class="block text-xs text-slate-400">Admin Panel</span></div>
-    </div>
-    <nav class="flex-1 px-3 py-4 space-y-0.5">
-      {% for endpoint, icon, label in [('admin.dashboard','space_dashboard','Overview'),('admin.students','group','Manage Students'),('admin.careers','work','Career Roles')] %}
-      {% set active = request.endpoint == endpoint %}
-      <a href="{{ url_for(endpoint) }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors {% if active %}bg-indigo-700 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
-        <span class="material-symbols-outlined text-[20px] {% if active %}fill-icon{% endif %}">{{ icon }}</span>{{ label }}
-      </a>
-      {% endfor %}
-    </nav>
-    <div class="px-3 py-3 border-t border-slate-700">
-      <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-red-900 hover:text-red-200">
-        <span class="material-symbols-outlined text-[20px]">logout</span>Logout
-      </a>
-    </div>
-  </aside>
+<div class="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-surface">
+  <!-- Admin Sidebar Partial -->
+  {% include 'partials/admin_sidebar.html' %}
 
-  <main class="flex-1 overflow-y-auto">
-    <div class="bg-card-bg border-b border-border px-6 py-4">
+  <main class="flex-1 overflow-y-auto w-full">
+    <div class="bg-card-bg border-b border-border px-4 sm:px-6 py-4">
       <p class="text-xs text-text-muted mb-0.5"><a href="{{ url_for('admin.students') }}" class="hover:text-primary">Students</a> &rsaquo; {{ student.name }}</p>
-      <h1 class="font-headline font-bold text-xl text-text-primary">{{ student.name }}</h1>
+      <h1 class="font-headline font-bold text-lg sm:text-xl text-text-primary">{{ student.name }}</h1>
     </div>
 
-    <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <div class="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-3 gap-5">
 
       <!-- Student Info -->
-      <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+      <div class="bg-card-bg rounded-xl border border-border shadow-sm p-4 sm:p-5">
         <div class="text-center mb-4">
           <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-bold text-2xl mx-auto">{{ student.name[:2].upper() }}</div>
           <p class="font-headline font-semibold text-base text-text-primary mt-2">{{ student.name }}</p>
-          <p class="text-xs text-text-muted">{{ student.email }}</p>
+          <p class="text-xs text-text-muted truncate">{{ student.email }}</p>
         </div>
         <div class="space-y-2 text-sm">
           {% if student.profile %}
-          <div class="flex justify-between"><span class="text-text-muted">Degree</span><span class="font-medium">{{ student.profile.degree or '—' }}</span></div>
-          <div class="flex justify-between"><span class="text-text-muted">University</span><span class="font-medium text-right text-xs max-w-[60%]">{{ student.profile.university or '—' }}</span></div>
-          <div class="flex justify-between"><span class="text-text-muted">CGPA</span><span class="font-medium">{{ student.profile.cgpa or '—' }}</span></div>
-          <div class="flex justify-between"><span class="text-text-muted">Year</span><span class="font-medium">{{ student.profile.year or '—' }}</span></div>
+          <div class="flex justify-between"><span class="text-text-muted text-xs sm:text-sm">Degree</span><span class="font-medium text-xs sm:text-sm text-right truncate max-w-[60%]">{{ student.profile.degree or '—' }}</span></div>
+          <div class="flex justify-between"><span class="text-text-muted text-xs sm:text-sm">University</span><span class="font-medium text-right text-xs max-w-[60%] truncate">{{ student.profile.university or '—' }}</span></div>
+          <div class="flex justify-between"><span class="text-text-muted text-xs sm:text-sm">CGPA</span><span class="font-medium text-xs sm:text-sm">{{ student.profile.cgpa or '—' }}</span></div>
+          <div class="flex justify-between"><span class="text-text-muted text-xs sm:text-sm">Year</span><span class="font-medium text-xs sm:text-sm">{{ student.profile.year or '—' }}</span></div>
           {% endif %}
-          <div class="flex justify-between"><span class="text-text-muted">Joined</span><span class="font-medium">{{ student.created_at.strftime('%d %b %Y') }}</span></div>
+          <div class="flex justify-between"><span class="text-text-muted text-xs sm:text-sm">Joined</span><span class="font-medium text-xs sm:text-sm">{{ student.created_at.strftime('%d %b %Y') }}</span></div>
         </div>
       </div>
 
       <!-- Resume & Skills -->
       <div class="space-y-4">
         {% if resume %}
-        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-4 sm:p-5">
           <h3 class="font-headline font-semibold text-sm mb-3">Resume</h3>
           <div class="flex items-center justify-between mb-2">
             <span class="text-sm text-text-secondary">Score</span>
@@ -60,12 +43,12 @@
           <div class="w-full bg-gray-100 rounded-full h-2 mb-3">
             <div class="progress-bar-high h-2 rounded-full" style="width: {{ resume.resume_score }}%"></div>
           </div>
-          <p class="text-xs text-text-muted">{{ resume.original_filename }}</p>
-          <p class="text-xs text-text-muted">{{ resume.uploaded_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+          <p class="text-xs text-text-muted truncate">{{ resume.original_filename }}</p>
+          <p class="text-xs text-text-muted mt-0.5">{{ resume.uploaded_at.strftime('%d %b %Y, %I:%M %p') }}</p>
         </div>
         {% endif %}
 
-        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-4 sm:p-5">
           <h3 class="font-headline font-semibold text-sm mb-3">Extracted Skills ({{ extracted_skills|length }})</h3>
           {% if extracted_skills %}
           <div class="flex flex-wrap gap-1.5">
@@ -80,14 +63,14 @@
       </div>
 
       <!-- Career Matches -->
-      <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+      <div class="bg-card-bg rounded-xl border border-border shadow-sm p-4 sm:p-5">
         <h3 class="font-headline font-semibold text-sm mb-3">Career Matches</h3>
         {% if matches %}
         <div class="space-y-3">
           {% for match in matches %}
           <div>
             <div class="flex justify-between text-xs mb-1">
-              <span class="font-medium text-text-primary">{{ match.career.title }}</span>
+              <span class="font-medium text-text-primary truncate max-w-[70%]">{{ match.career.title }}</span>
               <span class="{% if match.match_pct >= 75 %}text-success{% elif match.match_pct >= 50 %}text-warning{% else %}text-error{% endif %} font-bold">{{ match.match_pct }}%</span>
             </div>
             <div class="w-full bg-gray-100 rounded-full h-1.5">

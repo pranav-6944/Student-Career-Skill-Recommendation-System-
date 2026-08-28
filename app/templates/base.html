@@ -46,14 +46,22 @@
     .progress-bar-high   { background: linear-gradient(90deg, #10B981, #059669); }
     .progress-bar-med    { background: linear-gradient(90deg, #F59E0B, #D97706); }
     .progress-bar-low    { background: linear-gradient(90deg, #EF4444, #DC2626); }
+    
+    /* Mobile Drawer Transitions */
+    .mobile-drawer-overlay {
+      transition: opacity 0.3s ease-in-out;
+    }
+    .mobile-drawer-content {
+      transition: transform 0.3s ease-in-out;
+    }
   </style>
   {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-surface text-text-primary font-body antialiased">
+<body class="bg-surface text-text-primary font-body antialiased selection:bg-indigo-500 selection:text-white">
 
   {% block body %}{% endblock %}
 
-  <!-- Flash Messages -->
+  <!-- Flash Messages & Mobile Menu Scripts -->
   <script>
     // Auto-dismiss flash messages
     setTimeout(() => {
@@ -63,6 +71,19 @@
         setTimeout(() => el.remove(), 500);
       });
     }, 4000);
+
+    // Global Mobile Menu Drawer Toggle
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-drawer');
+      if (!drawer) return;
+      if (drawer.classList.contains('hidden')) {
+        drawer.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      } else {
+        drawer.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
   </script>
   {% block extra_scripts %}{% endblock %}
 </body>
