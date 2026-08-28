@@ -25,6 +25,12 @@ class User(UserMixin, db.Model):
     resumes = db.relationship('Resume', backref='user', lazy=True, cascade='all, delete-orphan')
     career_matches = db.relationship('CareerMatch', backref='user', lazy=True, cascade='all, delete-orphan')
 
+    def __init__(self, name=None, email=None, role='student', **kwargs):
+        super().__init__(**kwargs)
+        if name: self.name = name
+        if email: self.email = email
+        if role: self.role = role
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -48,6 +54,17 @@ class StudentProfile(db.Model):
     linkedin = db.Column(db.String(200))
     github = db.Column(db.String(200))
 
+    def __init__(self, user_id=None, degree=None, university=None, cgpa=None, year=None, phone=None, linkedin=None, github=None, **kwargs):
+        super().__init__(**kwargs)
+        if user_id: self.user_id = user_id
+        if degree: self.degree = degree
+        if university: self.university = university
+        if cgpa is not None: self.cgpa = cgpa
+        if year: self.year = year
+        if phone: self.phone = phone
+        if linkedin: self.linkedin = linkedin
+        if github: self.github = github
+
     def __repr__(self):
         return f'<Profile {self.degree}>'
 
@@ -67,6 +84,15 @@ class Resume(db.Model):
     # Relationships
     extracted_skills = db.relationship('ExtractedSkill', backref='resume', lazy=True, cascade='all, delete-orphan')
 
+    def __init__(self, user_id=None, filename=None, original_filename=None, parsed_text=None, resume_score=0, status='pending', **kwargs):
+        super().__init__(**kwargs)
+        if user_id: self.user_id = user_id
+        if filename: self.filename = filename
+        if original_filename: self.original_filename = original_filename
+        if parsed_text: self.parsed_text = parsed_text
+        if resume_score: self.resume_score = resume_score
+        if status: self.status = status
+
     def __repr__(self):
         return f'<Resume {self.filename}>'
 
@@ -78,6 +104,12 @@ class ExtractedSkill(db.Model):
     resume_id = db.Column(db.Integer, db.ForeignKey('resumes.id'), nullable=False)
     skill_name = db.Column(db.String(100), nullable=False)
     confidence = db.Column(db.Float, default=1.0)
+
+    def __init__(self, resume_id=None, skill_name=None, confidence=1.0, **kwargs):
+        super().__init__(**kwargs)
+        if resume_id: self.resume_id = resume_id
+        if skill_name: self.skill_name = skill_name
+        if confidence: self.confidence = confidence
 
     def __repr__(self):
         return f'<Skill {self.skill_name}>'
@@ -97,6 +129,13 @@ class CareerRole(db.Model):
     skills = db.relationship('CareerSkill', backref='career', lazy=True, cascade='all, delete-orphan')
     matches = db.relationship('CareerMatch', backref='career', lazy=True, cascade='all, delete-orphan')
 
+    def __init__(self, title=None, department=None, description=None, salary_range=None, **kwargs):
+        super().__init__(**kwargs)
+        if title: self.title = title
+        if department: self.department = department
+        if description: self.description = description
+        if salary_range: self.salary_range = salary_range
+
     def get_skill_names(self):
         return [s.skill_name for s in self.skills]
 
@@ -113,6 +152,13 @@ class CareerSkill(db.Model):
     is_required = db.Column(db.Boolean, default=True)
     weight = db.Column(db.Float, default=0.5)   # 0.0 – 1.0
 
+    def __init__(self, career_id=None, skill_name=None, is_required=True, weight=0.5, **kwargs):
+        super().__init__(**kwargs)
+        if career_id: self.career_id = career_id
+        if skill_name: self.skill_name = skill_name
+        self.is_required = is_required
+        if weight is not None: self.weight = weight
+
     def __repr__(self):
         return f'<CareerSkill {self.skill_name}>'
 
@@ -127,6 +173,13 @@ class CareerMatch(db.Model):
     _matched_skills = db.Column('matched_skills', db.Text, default='[]')
     _missing_skills = db.Column('missing_skills', db.Text, default='[]')
     computed_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, user_id=None, career_id=None, match_pct=0.0, computed_at=None, **kwargs):
+        super().__init__(**kwargs)
+        if user_id: self.user_id = user_id
+        if career_id: self.career_id = career_id
+        if match_pct is not None: self.match_pct = match_pct
+        if computed_at: self.computed_at = computed_at
 
     @property
     def matched_skills(self):
@@ -161,6 +214,18 @@ class LearningResource(db.Model):
     rating = db.Column(db.Float)
     is_free = db.Column(db.Boolean, default=False)
     priority = db.Column(db.String(20), default='medium')  # high|medium|low
+
+    def __init__(self, skill_name=None, course_title=None, platform=None, url=None, duration=None, level=None, rating=None, is_free=False, priority='medium', **kwargs):
+        super().__init__(**kwargs)
+        if skill_name: self.skill_name = skill_name
+        if course_title: self.course_title = course_title
+        if platform: self.platform = platform
+        if url: self.url = url
+        if duration: self.duration = duration
+        if level: self.level = level
+        if rating is not None: self.rating = rating
+        self.is_free = is_free
+        if priority: self.priority = priority
 
     def __repr__(self):
         return f'<Resource {self.course_title}>'

@@ -114,7 +114,7 @@
                       {% if match.match_pct >= 75 %}progress-bar-high
                       {% elif match.match_pct >= 50 %}progress-bar-med
                       {% else %}progress-bar-low{% endif %}"
-                      style="width: {{ match.match_pct }}%"></div>
+                      style="width: {{ match.match_pct }}%;"></div>
                   </div>
                   <p class="text-xs text-text-muted mt-1 truncate">
                     {{ match.matched_skills[:3]|join(', ') }}{% if match.matched_skills|length > 3 %} +{{ match.matched_skills|length - 3 }} more{% endif %}
