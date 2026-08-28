@@ -68,3 +68,9 @@ ENV/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Node dependencies & web builds
+node_modules/
+dist/
+.vite/
+
