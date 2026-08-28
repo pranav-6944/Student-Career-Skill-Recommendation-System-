@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard — CareerPath AI{% endblock %}
+
+{% block body %}
+<div class="flex h-screen overflow-hidden bg-surface">
+
+  <!-- Admin Sidebar -->
+  <aside class="w-60 bg-slate-900 flex flex-col h-full flex-shrink-0">
+    <!-- Brand -->
+    <div class="h-16 px-5 flex items-center border-b border-slate-700">
+      <span class="material-symbols-outlined text-indigo-400 fill-icon mr-2">trending_up</span>
+      <div>
+        <span class="font-headline font-bold text-base text-white">CareerPath AI</span>
+        <span class="block text-xs text-slate-400">Admin Panel</span>
+      </div>
+    </div>
+
+    <!-- Admin Info -->
+    <div class="px-5 py-4 border-b border-slate-700">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+          {{ current_user.name[:2].upper() }}
+        </div>
+        <div class="min-w-0">
+          <p class="font-medium text-sm text-white truncate">{{ current_user.name }}</p>
+          <p class="text-xs text-slate-400">Administrator</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Nav -->
+    <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+      {% set admin_nav = [
+        ('admin.dashboard', 'space_dashboard', 'Overview'),
+        ('admin.students', 'group', 'Manage Students'),
+        ('admin.careers', 'work', 'Career Roles'),
+      ] %}
+      {% for endpoint, icon, label in admin_nav %}
+      {% set active = request.endpoint == endpoint %}
+      <a href="{{ url_for(endpoint) }}"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors
+                {% if active %}bg-indigo-700 text-white font-medium{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %}">
+        <span class="material-symbols-outlined text-[20px] {% if active %}fill-icon{% endif %}">{{ icon }}</span>
+        {{ label }}
+      </a>
+      {% endfor %}
+    </nav>
+    <div class="px-3 py-3 border-t border-slate-700">
+      <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-red-900 hover:text-red-200 transition-colors">
+        <span class="material-symbols-outlined text-[20px]">logout</span>Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto">
+    <div class="bg-card-bg border-b border-border px-6 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="font-headline font-bold text-xl text-text-primary">Admin Overview</h1>
+        <p class="text-sm text-text-muted mt-0.5">Platform statistics and recent activity</p>
+      </div>
+      <span class="text-xs px-3 py-1.5 bg-indigo-50 text-primary rounded-full font-medium border border-indigo-200">
+        Admin: {{ current_user.name }}
+      </span>
+    </div>
+
+    <div class="p-6 space-y-6">
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-primary fill-icon text-[20px]">group</span>
+          </div>
+          <p class="font-headline font-bold text-2xl text-primary">{{ total_students }}</p>
+          <p class="text-xs text-text-muted mt-1">Total Students</p>
+        </div>
+        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-secondary fill-icon text-[20px]">work</span>
+          </div>
+          <p class="font-headline font-bold text-2xl text-secondary">{{ total_careers }}</p>
+          <p class="text-xs text-text-muted mt-1">Career Roles</p>
+        </div>
+        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-sky-50 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-tertiary fill-icon text-[20px]">description</span>
+          </div>
+          <p class="font-headline font-bold text-2xl text-tertiary">{{ total_resumes }}</p>
+          <p class="text-xs text-text-muted mt-1">Resumes Uploaded</p>
+        </div>
+        <div class="bg-card-bg rounded-xl border border-border p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center mb-3">
+            <span class="material-symbols-outlined text-success fill-icon text-[20px]">verified</span>
+          </div>
+          <p class="font-headline font-bold text-2xl text-success">{{ avg_readiness }}%</p>
+          <p class="text-xs text-text-muted mt-1">Avg. Readiness</p>
+        </div>
+      </div>
+
+      <!-- Recent Students Table -->
+      <div class="bg-card-bg rounded-xl border border-border shadow-sm">
+        <div class="px-6 py-4 border-b border-border flex items-center justify-between">
+          <h2 class="font-headline font-semibold text-base text-text-primary">Recent Students</h2>
+          <a href="{{ url_for('admin.students') }}" class="text-xs text-primary hover:underline">View All →</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-surface text-xs text-text-muted border-b border-border">
+                <th class="text-left px-6 py-3 font-medium">Student</th>
+                <th class="text-left px-4 py-3 font-medium">Degree</th>
+                <th class="text-left px-4 py-3 font-medium">Resume Score</th>
+                <th class="text-left px-4 py-3 font-medium">Top Match</th>
+                <th class="text-left px-4 py-3 font-medium">Status</th>
+                <th class="text-left px-4 py-3 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+              {% for student in recent_students %}
+              {% set resume = student.resumes|sort(attribute='uploaded_at', reverse=True)|first if student.resumes else None %}
+              {% set best_match = student.career_matches|sort(attribute='match_pct', reverse=True)|first if student.career_matches else None %}
+              <tr class="hover:bg-surface transition-colors text-sm">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                      {{ student.name[:2].upper() }}
+                    </div>
+                    <div>
+                      <p class="font-medium text-text-primary">{{ student.name }}</p>
+                      <p class="text-xs text-text-muted">{{ student.email }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-4 py-4 text-text-secondary text-xs">{{ student.profile.degree if student.profile else '—' }}</td>
+                <td class="px-4 py-4">
+                  {% if resume and resume.status == 'done' %}
+                  <span class="font-medium text-primary">{{ resume.resume_score }}/100</span>
+                  {% else %}
+                  <span class="text-text-muted">—</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-4 text-xs">
+                  {% if best_match %}
+                  <span class="font-medium text-text-primary">{{ best_match.career.title }}</span>
+                  <span class="ml-1 {% if best_match.match_pct >= 75 %}text-success{% elif best_match.match_pct >= 50 %}text-warning{% else %}text-error{% endif %}">{{ best_match.match_pct }}%</span>
+                  {% else %}
+                  <span class="text-text-muted">—</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-4">
+                  {% if resume %}
+                  <span class="text-xs px-2 py-0.5 rounded-full font-medium
+                    {% if resume.status == 'done' %}bg-green-100 text-green-700
+                    {% elif resume.status == 'processing' %}bg-blue-100 text-blue-700
+                    {% elif resume.status == 'failed' %}bg-red-100 text-red-700
+                    {% else %}bg-gray-100 text-gray-600{% endif %}">
+                    {{ resume.status.title() }}
+                  </span>
+                  {% else %}
+                  <span class="text-xs text-text-muted">No resume</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-4">
+                  <a href="{{ url_for('admin.student_detail', user_id=student.id) }}"
+                     class="text-xs text-primary hover:underline">View</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+        <!-- Quick Actions -->
+        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+          <h3 class="font-headline font-semibold text-sm text-text-primary mb-4">Quick Actions</h3>
+          <div class="space-y-2.5">
+            <a href="{{ url_for('admin.careers') }}" class="flex items-center gap-3 p-3 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-hover transition-colors">
+              <span class="material-symbols-outlined text-[18px]">add</span>Add Career Role
+            </a>
+            <a href="{{ url_for('admin.students') }}" class="flex items-center gap-3 p-3 border border-border rounded-lg text-sm text-text-secondary hover:bg-surface transition-colors">
+              <span class="material-symbols-outlined text-primary text-[18px]">group</span>Manage Students
+            </a>
+          </div>
+        </div>
+
+        <!-- Top Careers -->
+        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+          <h3 class="font-headline font-semibold text-sm text-text-primary mb-4">Top Matched Careers</h3>
+          <div class="space-y-3">
+            {% for title, count in top_careers %}
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-text-secondary truncate">{{ title }}</span>
+              <span class="text-xs font-medium text-primary ml-2 flex-shrink-0">{{ count }} students</span>
+            </div>
+            {% endfor %}
+            {% if not top_careers %}
+            <p class="text-xs text-text-muted">No data yet</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Resume Stats -->
+        <div class="bg-card-bg rounded-xl border border-border shadow-sm p-5">
+          <h3 class="font-headline font-semibold text-sm text-text-primary mb-4">Resume Analysis Stats</h3>
+          <div class="space-y-3">
+            {% set total_r = (analyzed + pending + failed) if (analyzed + pending + failed) > 0 else 1 %}
+            <div>
+              <div class="flex justify-between text-xs text-text-muted mb-1"><span>Analyzed</span><span>{{ analyzed }}</span></div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5">
+                <div class="progress-bar-high h-1.5 rounded-full" style="width: {{ [(analyzed/total_r*100)|int, 100]|min }}%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs text-text-muted mb-1"><span>Pending</span><span>{{ pending }}</span></div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5">
+                <div class="progress-bar-med h-1.5 rounded-full" style="width: {{ [(pending/total_r*100)|int, 100]|min }}%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs text-text-muted mb-1"><span>Failed</span><span>{{ failed }}</span></div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5">
+                <div class="progress-bar-low h-1.5 rounded-full" style="width: {{ [(failed/total_r*100)|int, 100]|min }}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+{% endblock %}

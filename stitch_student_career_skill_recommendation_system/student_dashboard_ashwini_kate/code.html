@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CareerPath AI - Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#7C3AED',
+                        tertiary: '#0EA5E9',
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        error: '#EF4444',
+                        surface: '#F8FAFC',
+                        'card-bg': '#FFFFFF',
+                        border: '#E2E8F0',
+                        'text-primary': '#0F172A',
+                        'text-secondary': '#475569',
+                        'text-muted': '#94A3B8',
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        display: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-text-secondary h-screen overflow-hidden flex">
+<!-- Sidebar Navigation -->
+<aside class="w-[240px] bg-card-bg border-r border-border flex flex-col h-full flex-shrink-0">
+<!-- Logo / Brand (Simulated TopNavBar content for sidebar layout) -->
+<div class="h-16 px-6 flex items-center border-b border-border">
+<span class="font-headline font-bold text-xl text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                CareerPath AI
+            </span>
+</div>
+<!-- User Profile -->
+<div class="p-6 border-b border-border">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-headline font-bold">
+                    AK
+                </div>
+<div>
+<h3 class="font-headline font-semibold text-text-primary text-sm">Ashwini Kate</h3>
+<p class="text-xs text-text-muted">B.Sc Computer Science</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto py-4">
+<ul class="px-3 space-y-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+                        Profile
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">upload_file</span>
+                        Resume Upload
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+                        Resume Analysis
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">work</span>
+                        Career Matches
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">troubleshoot</span>
+                        Skill Gap Analysis
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+                        Recommendations
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-surface hover:text-text-primary font-medium text-sm transition-colors mt-4" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                        Settings
+                    </a>
+</li>
+</ul>
+</nav>
+<!-- Logout -->
+<div class="p-4 border-t border-border">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-muted hover:text-error transition-colors text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-8">
+<div class="max-w-[1200px] mx-auto">
+<!-- Header -->
+<header class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-display font-bold text-3xl text-text-primary mb-1">Welcome back, Ashwini! 👋</h1>
+<p class="text-text-secondary text-base">Here's your career readiness overview</p>
+</div>
+<div class="text-sm font-medium text-text-muted flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                    28 Aug 2024
+                </div>
+</header>
+<!-- Row 1: Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<!-- Resume Score -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+<span class="px-2.5 py-1 bg-green-50 text-success text-xs font-medium rounded-full flex items-center gap-1 border border-green-200">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> Good
+                        </span>
+</div>
+<div>
+<div class="font-headline font-bold text-3xl text-text-primary mb-1">72<span class="text-lg text-text-muted font-normal">/100</span></div>
+<h3 class="text-sm font-medium text-text-secondary mb-1">Resume Score</h3>
+<p class="text-xs text-text-muted">Last analyzed 2 days ago</p>
+</div>
+</div>
+<!-- Skills Identified -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">psychology</span>
+</div>
+</div>
+<div>
+<div class="font-headline font-bold text-3xl text-text-primary mb-1">12</div>
+<h3 class="text-sm font-medium text-text-secondary mb-1">Skills Identified</h3>
+<p class="text-xs text-text-muted">from your resume</p>
+</div>
+</div>
+<!-- Career Matches -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-full bg-sky-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">target</span>
+</div>
+</div>
+<div>
+<div class="font-headline font-bold text-3xl text-text-primary mb-1">8</div>
+<h3 class="text-sm font-medium text-text-secondary mb-1">Career Matches</h3>
+<p class="text-xs text-text-muted">roles matched above 50%</p>
+</div>
+</div>
+<!-- Career Readiness -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-4 relative z-10">
+<div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-warning">rocket_launch</span>
+</div>
+<!-- Mini Circular Progress -->
+<div class="relative w-12 h-12">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-gray-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-warning" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="68, 100" stroke-width="3"></path>
+</svg>
+</div>
+</div>
+<div class="relative z-10">
+<div class="font-headline font-bold text-3xl text-text-primary mb-1">68%</div>
+<h3 class="text-sm font-medium text-text-secondary mb-1">Career Readiness</h3>
+<p class="text-xs text-text-muted">Overall readiness score</p>
+</div>
+</div>
+</div>
+<!-- Row 2: Two Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<!-- Top Career Recommendations (Wider Left) -->
+<div class="lg:col-span-2 bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline font-semibold text-xl text-text-primary">Top Career Recommendations</h2>
+<a class="text-primary text-sm font-medium hover:underline flex items-center gap-1" href="#">View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="space-y-4">
+<!-- Match Card 1 -->
+<div class="border border-border rounded-lg p-4 relative overflow-hidden group hover:border-primary transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-success"></div>
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-headline font-semibold text-text-primary">Data Analyst</h3>
+<span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-medium rounded uppercase tracking-wide">Analytics</span>
+</div>
+<p class="text-sm text-text-secondary"><span class="font-medium text-success">82% Match</span> • Python, SQL, Pandas matched</p>
+</div>
+<a class="text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" href="#">View Details <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-2">
+<div class="bg-gradient-to-r from-success to-emerald-600 h-2 rounded-full" style="width: 82%"></div>
+</div>
+</div>
+<!-- Match Card 2 -->
+<div class="border border-border rounded-lg p-4 relative overflow-hidden group hover:border-primary transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-400"></div>
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-headline font-semibold text-text-primary">Business Analyst</h3>
+<span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-medium rounded uppercase tracking-wide">Analytics</span>
+</div>
+<p class="text-sm text-text-secondary"><span class="font-medium text-yellow-600">71% Match</span> • Excel, SQL matched</p>
+</div>
+<a class="text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" href="#">View Details <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-2">
+<div class="bg-gradient-to-r from-warning to-amber-600 h-2 rounded-full" style="width: 71%"></div>
+</div>
+</div>
+<!-- Match Card 3 -->
+<div class="border border-border rounded-lg p-4 relative overflow-hidden group hover:border-primary transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-400"></div>
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-headline font-semibold text-text-primary">Data Scientist</h3>
+<span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-medium rounded uppercase tracking-wide">Analytics</span>
+</div>
+<p class="text-sm text-text-secondary"><span class="font-medium text-yellow-600">58% Match</span> • Python, NumPy matched</p>
+</div>
+<a class="text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" href="#">View Details <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-2">
+<div class="bg-gradient-to-r from-warning to-amber-600 h-2 rounded-full" style="width: 58%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Extracted Skills (Narrower Right) -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col">
+<div class="mb-6">
+<h2 class="font-headline font-semibold text-xl text-text-primary">Extracted Skills</h2>
+<p class="text-xs text-text-muted mt-1">Based on Data Analyst career path</p>
+</div>
+<div class="flex-1 space-y-6">
+<div>
+<h3 class="text-sm font-medium text-text-primary mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-success">check_circle</span>
+                                Matched Skills
+                            </h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-medium">Python</span>
+<span class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-medium">SQL</span>
+<span class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-medium">Pandas</span>
+<span class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-medium">NumPy</span>
+<span class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-medium">Power BI</span>
+<span class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-medium">Excel</span>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-text-primary mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-warning">warning</span>
+                                Skills to Develop
+                            </h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">Statistics</span>
+<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">Machine Learning</span>
+<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">Tableau</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Row 3: Two Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+<!-- Education & Certifications -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)]">
+<h2 class="font-headline font-semibold text-xl text-text-primary mb-6">Education &amp; Certifications</h2>
+<div class="space-y-6">
+<!-- Education -->
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<div>
+<h3 class="font-headline font-semibold text-text-primary">B.Sc Computer Science</h3>
+<p class="text-sm text-text-secondary">University Name • 2021 - 2025</p>
+<p class="text-sm font-medium text-text-primary mt-1">CGPA: 8.2/10</p>
+</div>
+</div>
+<hr class="border-border"/>
+<!-- Certifications -->
+<div>
+<h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-4">Certifications</h3>
+<div class="space-y-4">
+<div class="flex gap-4 items-start">
+<div class="w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">workspace_premium</span>
+</div>
+<div>
+<h4 class="font-medium text-sm text-text-primary">Python for Data Science</h4>
+<p class="text-xs text-text-secondary">Coursera</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">workspace_premium</span>
+</div>
+<div>
+<h4 class="font-medium text-sm text-text-primary">SQL Fundamentals</h4>
+<p class="text-xs text-text-secondary">HackerRank</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Learning Recommendations -->
+<div class="bg-card-bg rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline font-semibold text-xl text-text-primary">Learning Recommendations</h2>
+</div>
+<div class="space-y-4">
+<!-- Course 1 -->
+<div class="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-error flex-shrink-0">
+<span class="material-symbols-outlined">play_lesson</span>
+</div>
+<div>
+<h3 class="font-medium text-sm text-text-primary">Statistics for Data Science</h3>
+<span class="inline-block px-2 py-0.5 bg-red-100 text-error text-[10px] font-medium rounded mt-1">High Priority</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted">chevron_right</span>
+</div>
+<!-- Course 2 -->
+<div class="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-warning flex-shrink-0">
+<span class="material-symbols-outlined">play_lesson</span>
+</div>
+<div>
+<h3 class="font-medium text-sm text-text-primary">Advanced Excel for Analysts</h3>
+<span class="inline-block px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-medium rounded mt-1">Medium Priority</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted">chevron_right</span>
+</div>
+<!-- Course 3 -->
+<div class="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-warning flex-shrink-0">
+<span class="material-symbols-outlined">play_lesson</span>
+</div>
+<div>
+<h3 class="font-medium text-sm text-text-primary">Machine Learning Basics</h3>
+<span class="inline-block px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-medium rounded mt-1">Medium Priority</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

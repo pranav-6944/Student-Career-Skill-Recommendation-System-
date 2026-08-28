@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CareerPath AI - Discover Your Perfect Career Path</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        'primary-hover': '#4338CA',
+                        secondary: '#7C3AED',
+                        tertiary: '#0EA5E9',
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        error: '#EF4444',
+                        surface: '#F8FAFC',
+                        'card-bg': '#FFFFFF',
+                        border: '#E2E8F0',
+                        'text-primary': '#0F172A',
+                        'text-secondary': '#475569',
+                        'text-muted': '#94A3B8',
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        display: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-text-primary font-body antialiased">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface fixed top-0 w-full border-b border-border dark:border-border shadow-sm z-50">
+<div class="flex justify-between items-center h-16 px-6 max-w-7xl mx-auto">
+<!-- Brand -->
+<a class="flex items-center gap-3 group" href="#">
+<img alt="CareerPath AI Logo" class="h-8 w-8 rounded-md shadow-sm group-hover:opacity-90 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYywhK0xQ_s1Ram3x4X8J2kSNXKyJfoE8XSQ3paRNwEp0oWTf9mD2S4flCj5hL_g7t_oW7QoKrpD5pzODfnhTwsWDjDxNgCEoDUY11GTYc6H_zE869FhEdr-5Zc1idcI0Ne0ORUhjUj_YWasmuBh6_SQiCf92HC3Hqg9hHQLvwLm7vNROM-zs-aqJddUm-vozoW16euFsZnBqzw11uQxRsQ6auw5U_ZPDN1x7XTue5a83InDZSv_oRk0nc-r__PEd-tDaHoMykB6o"/>
+<span class="font-headline font-bold text-xl text-primary">CareerPath AI</span>
+</a>
+<!-- Navigation Links (Web) -->
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-text-secondary dark:text-text-secondary hover:text-primary transition-colors duration-200 font-body text-base font-medium active:scale-95 transition-transform" href="#">Features</a>
+<a class="text-text-secondary dark:text-text-secondary hover:text-primary transition-colors duration-200 font-body text-base font-medium active:scale-95 transition-transform" href="#">How It Works</a>
+<a class="text-text-secondary dark:text-text-secondary hover:text-primary transition-colors duration-200 font-body text-base font-medium active:scale-95 transition-transform" href="#">For Students</a>
+<a class="text-text-secondary dark:text-text-secondary hover:text-primary transition-colors duration-200 font-body text-base font-medium active:scale-95 transition-transform" href="#">For Admins</a>
+</nav>
+<!-- Actions -->
+<div class="hidden md:flex gap-4 items-center">
+<a class="font-body text-base font-medium text-text-secondary hover:text-primary transition-colors duration-200" href="#">Login</a>
+<a class="bg-primary hover:bg-primary-hover text-white font-body text-base font-medium px-5 py-2.5 rounded-lg transition-colors duration-200 active:scale-95 shadow-sm" href="#">Get Started</a>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-text-primary hover:text-primary p-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-16">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 pt-12 pb-24 grid md:grid-cols-2 gap-12 items-center min-h-[calc(100vh-64px)]">
+<!-- Left: Copy -->
+<div class="flex flex-col gap-8 max-w-xl">
+<div>
+<span class="inline-flex items-center gap-2 bg-indigo-50 text-primary border border-indigo-100 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
+<span>🎓</span> AI-Powered Career Guidance
+                    </span>
+<h1 class="font-display font-extrabold text-5xl md:text-6xl leading-tight text-text-primary tracking-tight">
+                        Discover Your <br/>
+                        Perfect Career <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Powered by AI &amp; Skill Intelligence</span>
+</h1>
+</div>
+<p class="text-lg text-text-secondary font-body leading-relaxed">
+                    Upload your resume and let our advanced AI map your unique skills to hundreds of tech roles. Discover personalized learning paths to bridge any gaps and land your dream job faster.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center pt-2">
+<button class="bg-primary hover:bg-primary-hover text-white font-medium text-lg px-8 py-4 rounded-lg shadow-md transition-all duration-200 hover:shadow-lg flex items-center gap-2 active:scale-95">
+                        Analyze My Resume <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+<a class="text-primary hover:text-secondary font-medium px-6 py-4 transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">play_circle</span> See How It Works
+                    </a>
+</div>
+<div class="flex flex-wrap gap-x-6 gap-y-3 pt-6 border-t border-border/60">
+<div class="flex items-center gap-2 text-sm text-text-secondary font-medium">
+<span class="text-success material-symbols-outlined text-lg">check_circle</span> 500+ Career Roles Mapped
+                    </div>
+<div class="flex items-center gap-2 text-sm text-text-secondary font-medium">
+<span class="text-success material-symbols-outlined text-lg">check_circle</span> Free for Students
+                    </div>
+<div class="flex items-center gap-2 text-sm text-text-secondary font-medium">
+<span class="text-success material-symbols-outlined text-lg">check_circle</span> AI-Powered Analysis
+                    </div>
+</div>
+</div>
+<!-- Right: Interactive Mockup -->
+<div class="relative flex justify-center lg:justify-end">
+<div class="relative w-full max-w-md">
+<!-- Background Glow -->
+<div class="absolute -inset-0.5 bg-gradient-to-br from-primary to-secondary rounded-2xl blur-xl opacity-30 animate-pulse"></div>
+<!-- Main Card -->
+<div class="relative bg-card-bg rounded-xl shadow-xl border border-border p-6 flex flex-col gap-6">
+<!-- Header -->
+<div class="flex items-center gap-4 border-b border-border pb-4">
+<div class="w-14 h-14 rounded-full bg-slate-100 border-2 border-white shadow-sm overflow-hidden bg-cover bg-center" data-alt="A professional headshot of a young female college student named Ashwini Kate, facing forward with a confident, bright smile. She has dark hair and is wearing a neat, casual blue button-down shirt. The background is a soft, blurred modern tech office space in a light-mode aesthetic, relying on bright whites and subtle grays." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDfWxEnJUmCTkOkikP1-bG5QrQq478YLChyBy0yom_hpZYVthdsSEPTOg1WyN4rkuoHcIaGOiAXo5GoRRemxphSN7TOhppnT7q1_nqsq3xoy_3VN05TyhZENfTyJtSyJ1zW6ScW6Wi9G0hhf6_8s2jQ78VvNC8AgiacEugEc0fa9MTCGMrMBXslfN0Q37EYcdHQCf2k7bA0W0ia5gmytaFLgorOVIAPhxCBS9RsW-sy894JNdxoiXRRXlgFeybW8t8zE-18MtK4YDw')"></div>
+<div>
+<h3 class="font-headline font-bold text-lg text-text-primary">Ashwini Kate</h3>
+<p class="text-sm text-text-muted">B.Sc Computer Science</p>
+</div>
+</div>
+<!-- Match Card -->
+<div class="bg-surface rounded-lg border-l-4 border-success p-5 flex flex-col gap-4 shadow-[0_1px_3px_rgba(0,0,0,0.1)] relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-success/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start z-10">
+<div>
+<h4 class="font-headline font-semibold text-text-primary">Data Analyst</h4>
+<p class="text-sm text-text-secondary mt-1">Strong Technical Foundation</p>
+</div>
+<div class="bg-emerald-50 text-success font-bold px-3 py-1 rounded-full text-sm border border-emerald-100 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span> 82% Match
+                                </div>
+</div>
+<div class="w-full bg-slate-200 rounded-full h-2 z-10 overflow-hidden">
+<div class="bg-gradient-to-r from-emerald-500 to-emerald-400 h-2 rounded-full w-[82%] relative">
+<div class="absolute inset-0 bg-white/20 animate-[pulse_2s_ease-in-out_infinite]"></div>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 z-10 pt-2">
+<span class="bg-[#DCFCE7] text-[#16A34A] border border-[#BBF7D0] px-2.5 py-1 rounded-md text-xs font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> Python
+                                </span>
+<span class="bg-[#DCFCE7] text-[#16A34A] border border-[#BBF7D0] px-2.5 py-1 rounded-md text-xs font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> SQL
+                                </span>
+<span class="bg-[#FEF3C7] text-[#D97706] border border-[#FDE68A] px-2.5 py-1 rounded-md text-xs font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">model_training</span> Statistics
+                                </span>
+</div>
+</div>
+<!-- Secondary Match (blurred/background) -->
+<div class="bg-surface/50 rounded-lg border-l-4 border-warning/50 p-4 flex flex-col gap-3 shadow-sm opacity-60">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-semibold text-text-primary text-sm">Product Manager</h4>
+<span class="text-warning font-bold text-xs">65% Match</span>
+</div>
+<div class="w-full bg-slate-200/50 rounded-full h-1.5">
+<div class="bg-gradient-to-r from-amber-500 to-amber-400 h-1.5 rounded-full w-[65%]"></div>
+</div>
+</div>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute -right-12 top-20 bg-white p-3 rounded-xl shadow-lg border border-border/50 animate-[bounce_4s_infinite]">
+<span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+<div class="absolute -left-8 bottom-16 bg-white p-3 rounded-xl shadow-lg border border-border/50 animate-[bounce_5s_infinite_reverse]">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Grid Section -->
+<section class="bg-white py-24 border-y border-border">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<h2 class="font-display font-bold text-3xl md:text-4xl text-text-primary mb-4">How CareerPath AI Works</h2>
+<p class="text-text-secondary text-lg">A simple, powerful process to translate your academic experience into a clear career trajectory.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface rounded-xl p-8 border border-border shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow group relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<div class="w-12 h-12 bg-indigo-100 text-primary rounded-full flex items-center justify-center mb-6 relative z-10">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">upload_file</span>
+</div>
+<h3 class="font-headline font-semibold text-xl text-text-primary mb-3 relative z-10">1. Resume Analysis</h3>
+<p class="text-text-secondary relative z-10">Securely upload your resume (PDF/DOCX). Our AI extracts your skills, projects, and coursework with high precision.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-xl p-8 border border-border shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow group relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<div class="w-12 h-12 bg-purple-100 text-secondary rounded-full flex items-center justify-center mb-6 relative z-10">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">join_inner</span>
+</div>
+<h3 class="font-headline font-semibold text-xl text-text-primary mb-3 relative z-10">2. Career Matching</h3>
+<p class="text-text-secondary relative z-10">We map your extracted profile against 50+ specialized tech roles, providing a detailed compatibility score for each.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-xl p-8 border border-border shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow group relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<div class="w-12 h-12 bg-sky-100 text-tertiary rounded-full flex items-center justify-center mb-6 relative z-10">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+</div>
+<h3 class="font-headline font-semibold text-xl text-text-primary mb-3 relative z-10">3. Skill Gap Learning</h3>
+<p class="text-text-secondary relative z-10">Identify exactly what you're missing for your dream role and get personalized, curated course recommendations to upskill fast.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-card-bg dark:bg-card-bg w-full py-8 border-t border-border dark:border-border">
+<div class="flex flex-col md:flex-row justify-between items-center px-6 max-w-7xl mx-auto gap-4">
+<div class="flex items-center gap-2">
+<span class="font-headline font-bold text-lg text-primary">CareerPath AI</span>
+</div>
+<div class="text-text-muted dark:text-text-muted font-body text-sm text-center">
+                © 2024 CareerPath AI. Made for Students.
+            </div>
+<nav class="flex gap-6">
+<a class="text-text-muted hover:text-secondary transition-colors font-body text-sm opacity-100 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-text-muted hover:text-secondary transition-colors font-body text-sm opacity-100 hover:opacity-80" href="#">Terms of Service</a>
+<a class="text-text-muted hover:text-secondary transition-colors font-body text-sm opacity-100 hover:opacity-80" href="#">Contact</a>
+</nav>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,222 @@
+[
+  {
+    "skill_name": "Statistics",
+    "course_title": "Statistics for Data Science & Machine Learning",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/learn/statistics",
+    "duration": "8 weeks",
+    "level": "Beginner",
+    "rating": 4.7,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Advanced Excel",
+    "course_title": "Excel for Data Analysts – VLOOKUP to Power Query",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/excel-data-analyst",
+    "duration": "12 hours",
+    "level": "Intermediate",
+    "rating": 4.5,
+    "is_free": false,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Machine Learning",
+    "course_title": "Machine Learning Specialization",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/specializations/machine-learning-introduction",
+    "duration": "3 months",
+    "level": "Intermediate",
+    "rating": 4.9,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Deep Learning",
+    "course_title": "Deep Learning Specialization",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/specializations/deep-learning",
+    "duration": "5 months",
+    "level": "Advanced",
+    "rating": 4.9,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "SQL",
+    "course_title": "Advanced SQL for Data Analysis",
+    "platform": "Mode Analytics",
+    "url": "https://mode.com/sql-tutorial",
+    "duration": "Self-paced",
+    "level": "Intermediate",
+    "rating": 4.6,
+    "is_free": true,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Tableau",
+    "course_title": "Tableau for Beginners – Data Visualization",
+    "platform": "YouTube",
+    "url": "https://www.youtube.com/results?search_query=tableau+tutorial",
+    "duration": "6 hours",
+    "level": "Beginner",
+    "rating": 4.4,
+    "is_free": true,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Power BI",
+    "course_title": "Microsoft Power BI – Full Course",
+    "platform": "YouTube",
+    "url": "https://www.youtube.com/results?search_query=power+bi+tutorial",
+    "duration": "8 hours",
+    "level": "Beginner",
+    "rating": 4.5,
+    "is_free": true,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Python",
+    "course_title": "Python for Everybody Specialization",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/specializations/python",
+    "duration": "4 months",
+    "level": "Beginner",
+    "rating": 4.8,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "JavaScript",
+    "course_title": "The Complete JavaScript Course",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/the-complete-javascript-course",
+    "duration": "69 hours",
+    "level": "Beginner",
+    "rating": 4.7,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "React",
+    "course_title": "React – The Complete Guide",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux",
+    "duration": "48 hours",
+    "level": "Intermediate",
+    "rating": 4.7,
+    "is_free": false,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Docker",
+    "course_title": "Docker & Kubernetes: The Practical Guide",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/docker-kubernetes-the-practical-guide",
+    "duration": "23 hours",
+    "level": "Intermediate",
+    "rating": 4.7,
+    "is_free": false,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "AWS",
+    "course_title": "AWS Cloud Practitioner Essentials",
+    "platform": "AWS Training",
+    "url": "https://aws.amazon.com/training/learn-about/cloud-practitioner",
+    "duration": "6 hours",
+    "level": "Beginner",
+    "rating": 4.6,
+    "is_free": true,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Git",
+    "course_title": "Git & GitHub Bootcamp",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/git-and-github-bootcamp",
+    "duration": "17 hours",
+    "level": "Beginner",
+    "rating": 4.7,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Data Structures",
+    "course_title": "Data Structures & Algorithms in Python",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/data-structures-algorithms-python",
+    "duration": "32 hours",
+    "level": "Intermediate",
+    "rating": 4.6,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Business Domain Knowledge",
+    "course_title": "Business Analysis Fundamentals",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/business-analysis-fundamentals",
+    "duration": "8 hours",
+    "level": "Beginner",
+    "rating": 4.4,
+    "is_free": false,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "Requirements Analysis",
+    "course_title": "Requirements Engineering & Analysis",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/learn/requirements-engineering",
+    "duration": "4 weeks",
+    "level": "Beginner",
+    "rating": 4.3,
+    "is_free": false,
+    "priority": "medium"
+  },
+  {
+    "skill_name": "TensorFlow",
+    "course_title": "TensorFlow Developer Certificate",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/professional-certificates/tensorflow-in-practice",
+    "duration": "4 months",
+    "level": "Intermediate",
+    "rating": 4.8,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Networking",
+    "course_title": "The Bits and Bytes of Computer Networking",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/learn/computer-networking",
+    "duration": "5 weeks",
+    "level": "Beginner",
+    "rating": 4.7,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Ethical Hacking",
+    "course_title": "The Complete Ethical Hacking Course",
+    "platform": "Udemy",
+    "url": "https://www.udemy.com/course/penetration-testing",
+    "duration": "25 hours",
+    "level": "Beginner",
+    "rating": 4.5,
+    "is_free": false,
+    "priority": "high"
+  },
+  {
+    "skill_name": "Linux",
+    "course_title": "Linux Command Line Basics",
+    "platform": "Coursera",
+    "url": "https://www.coursera.org/learn/unix",
+    "duration": "3 weeks",
+    "level": "Beginner",
+    "rating": 4.5,
+    "is_free": false,
+    "priority": "medium"
+  }
+]

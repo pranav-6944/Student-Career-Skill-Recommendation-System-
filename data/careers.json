@@ -1,0 +1,175 @@
+[
+  {
+    "title": "Data Analyst",
+    "department": "Data & Analytics",
+    "description": "Collects, processes, and performs statistical analyses on large datasets to help companies make data-driven decisions.",
+    "salary_range": "₹4.5 – 12 LPA",
+    "required_skills": [
+      {"name": "Python", "weight": 0.9, "required": true},
+      {"name": "SQL", "weight": 0.9, "required": true},
+      {"name": "Pandas", "weight": 0.8, "required": true},
+      {"name": "Excel", "weight": 0.7, "required": true},
+      {"name": "Statistics", "weight": 0.85, "required": true},
+      {"name": "Power BI", "weight": 0.65, "required": false},
+      {"name": "NumPy", "weight": 0.6, "required": false},
+      {"name": "Tableau", "weight": 0.55, "required": false},
+      {"name": "Data Visualization", "weight": 0.7, "required": false},
+      {"name": "Advanced Excel", "weight": 0.6, "required": false}
+    ]
+  },
+  {
+    "title": "Business Analyst",
+    "department": "Business & Strategy",
+    "description": "Bridges business needs and technology solutions by analyzing processes, eliciting requirements, and recommending improvements.",
+    "salary_range": "₹6 – 15 LPA",
+    "required_skills": [
+      {"name": "Excel", "weight": 0.85, "required": true},
+      {"name": "SQL", "weight": 0.75, "required": true},
+      {"name": "Power BI", "weight": 0.7, "required": true},
+      {"name": "Requirements Analysis", "weight": 0.9, "required": true},
+      {"name": "Business Domain Knowledge", "weight": 0.85, "required": true},
+      {"name": "Presentation Skills", "weight": 0.7, "required": false},
+      {"name": "JIRA", "weight": 0.6, "required": false},
+      {"name": "Agile", "weight": 0.65, "required": false},
+      {"name": "UML", "weight": 0.55, "required": false}
+    ]
+  },
+  {
+    "title": "Data Scientist",
+    "department": "AI & Machine Learning",
+    "description": "Uses advanced analytics, machine learning, and statistical methods to extract insights and build predictive models from complex data.",
+    "salary_range": "₹8 – 20 LPA",
+    "required_skills": [
+      {"name": "Python", "weight": 0.95, "required": true},
+      {"name": "Machine Learning", "weight": 0.95, "required": true},
+      {"name": "Statistics", "weight": 0.9, "required": true},
+      {"name": "Pandas", "weight": 0.8, "required": true},
+      {"name": "NumPy", "weight": 0.75, "required": true},
+      {"name": "Deep Learning", "weight": 0.7, "required": false},
+      {"name": "TensorFlow", "weight": 0.65, "required": false},
+      {"name": "Scikit-learn", "weight": 0.8, "required": true},
+      {"name": "SQL", "weight": 0.7, "required": false},
+      {"name": "R", "weight": 0.5, "required": false}
+    ]
+  },
+  {
+    "title": "Software Developer",
+    "department": "Software Engineering",
+    "description": "Designs, develops, and maintains software applications using programming languages and software development methodologies.",
+    "salary_range": "₹5 – 18 LPA",
+    "required_skills": [
+      {"name": "Python", "weight": 0.7, "required": false},
+      {"name": "Java", "weight": 0.7, "required": false},
+      {"name": "JavaScript", "weight": 0.8, "required": true},
+      {"name": "Data Structures", "weight": 0.9, "required": true},
+      {"name": "Algorithms", "weight": 0.9, "required": true},
+      {"name": "Git", "weight": 0.8, "required": true},
+      {"name": "OOP", "weight": 0.85, "required": true},
+      {"name": "REST APIs", "weight": 0.75, "required": true},
+      {"name": "SQL", "weight": 0.65, "required": false},
+      {"name": "Agile", "weight": 0.6, "required": false}
+    ]
+  },
+  {
+    "title": "Web Developer",
+    "department": "Web & Mobile",
+    "description": "Creates and maintains websites and web applications using front-end and back-end technologies.",
+    "salary_range": "₹4 – 14 LPA",
+    "required_skills": [
+      {"name": "HTML", "weight": 0.95, "required": true},
+      {"name": "CSS", "weight": 0.9, "required": true},
+      {"name": "JavaScript", "weight": 0.95, "required": true},
+      {"name": "React", "weight": 0.75, "required": false},
+      {"name": "Python", "weight": 0.6, "required": false},
+      {"name": "SQL", "weight": 0.65, "required": false},
+      {"name": "Git", "weight": 0.75, "required": true},
+      {"name": "REST APIs", "weight": 0.7, "required": true},
+      {"name": "Node.js", "weight": 0.65, "required": false}
+    ]
+  },
+  {
+    "title": "ML Engineer",
+    "department": "AI & Machine Learning",
+    "description": "Builds and deploys machine learning models and pipelines at scale, bridging data science and software engineering.",
+    "salary_range": "₹10 – 25 LPA",
+    "required_skills": [
+      {"name": "Python", "weight": 0.95, "required": true},
+      {"name": "Machine Learning", "weight": 0.95, "required": true},
+      {"name": "Deep Learning", "weight": 0.85, "required": true},
+      {"name": "TensorFlow", "weight": 0.8, "required": false},
+      {"name": "Scikit-learn", "weight": 0.8, "required": true},
+      {"name": "MLOps", "weight": 0.75, "required": true},
+      {"name": "Docker", "weight": 0.7, "required": true},
+      {"name": "SQL", "weight": 0.6, "required": false},
+      {"name": "NumPy", "weight": 0.75, "required": true},
+      {"name": "Pandas", "weight": 0.7, "required": true}
+    ]
+  },
+  {
+    "title": "Database Administrator",
+    "department": "IT & Infrastructure",
+    "description": "Manages, maintains, and optimizes relational and non-relational databases ensuring performance, availability, and security.",
+    "salary_range": "₹5 – 14 LPA",
+    "required_skills": [
+      {"name": "SQL", "weight": 0.95, "required": true},
+      {"name": "Database Design", "weight": 0.9, "required": true},
+      {"name": "PostgreSQL", "weight": 0.8, "required": true},
+      {"name": "MySQL", "weight": 0.75, "required": true},
+      {"name": "Oracle", "weight": 0.7, "required": false},
+      {"name": "Backup & Recovery", "weight": 0.8, "required": true},
+      {"name": "Performance Tuning", "weight": 0.75, "required": true},
+      {"name": "Python", "weight": 0.5, "required": false},
+      {"name": "Excel", "weight": 0.5, "required": false}
+    ]
+  },
+  {
+    "title": "Cloud Engineer",
+    "department": "Cloud & DevOps",
+    "description": "Designs, builds, and manages cloud infrastructure and services on platforms like AWS, Azure, or GCP.",
+    "salary_range": "₹8 – 22 LPA",
+    "required_skills": [
+      {"name": "AWS", "weight": 0.85, "required": false},
+      {"name": "Azure", "weight": 0.75, "required": false},
+      {"name": "Docker", "weight": 0.8, "required": true},
+      {"name": "Kubernetes", "weight": 0.75, "required": true},
+      {"name": "Linux", "weight": 0.85, "required": true},
+      {"name": "Python", "weight": 0.7, "required": false},
+      {"name": "SQL", "weight": 0.5, "required": false},
+      {"name": "Networking", "weight": 0.75, "required": true},
+      {"name": "Terraform", "weight": 0.7, "required": false}
+    ]
+  },
+  {
+    "title": "DevOps Engineer",
+    "department": "Cloud & DevOps",
+    "description": "Automates and streamlines software development, testing, and deployment pipelines using CI/CD and infrastructure-as-code tools.",
+    "salary_range": "₹8 – 22 LPA",
+    "required_skills": [
+      {"name": "Docker", "weight": 0.9, "required": true},
+      {"name": "Kubernetes", "weight": 0.85, "required": true},
+      {"name": "Linux", "weight": 0.9, "required": true},
+      {"name": "Git", "weight": 0.85, "required": true},
+      {"name": "CI/CD", "weight": 0.9, "required": true},
+      {"name": "Python", "weight": 0.7, "required": false},
+      {"name": "Bash", "weight": 0.8, "required": true},
+      {"name": "AWS", "weight": 0.7, "required": false},
+      {"name": "Terraform", "weight": 0.7, "required": false}
+    ]
+  },
+  {
+    "title": "Cybersecurity Analyst",
+    "department": "Security & Compliance",
+    "description": "Protects organizational systems and networks from cyber threats by monitoring, detecting, and responding to security incidents.",
+    "salary_range": "₹6 – 18 LPA",
+    "required_skills": [
+      {"name": "Networking", "weight": 0.9, "required": true},
+      {"name": "Linux", "weight": 0.85, "required": true},
+      {"name": "Python", "weight": 0.7, "required": false},
+      {"name": "SQL", "weight": 0.5, "required": false},
+      {"name": "Ethical Hacking", "weight": 0.85, "required": true},
+      {"name": "Cryptography", "weight": 0.75, "required": true},
+      {"name": "SIEM Tools", "weight": 0.7, "required": true},
+      {"name": "Incident Response", "weight": 0.8, "required": true}
+    ]
+  }
+]

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CareerPath AI - Admin Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: '#4F46E5', 50: '#EEF2FF', 100: '#E0E7FF', 200: '#C7D2FE', 300: '#A5B4FC', 400: '#818CF8', 500: '#6366F1', 600: '#4F46E5', 700: '#4338CA', 800: '#3730A3', 900: '#312E81' },
+                        secondary: { DEFAULT: '#7C3AED', 50: '#F5F3FF', 100: '#EDE9FE', 200: '#DDD6FE', 300: '#C4B5FD', 400: '#A78BFA', 500: '#8B5CF6', 600: '#7C3AED', 700: '#6D28D9', 800: '#5B21B6', 900: '#4C1D95' },
+                        tertiary: { DEFAULT: '#0EA5E9', 50: '#F0F9FF', 100: '#E0F2FE', 200: '#BAE6FD', 300: '#7DD3FC', 400: '#38BDF8', 500: '#0EA5E9', 600: '#0284C7', 700: '#0369A1', 800: '#075985', 900: '#0C4A6E' },
+                        success: { DEFAULT: '#10B981', 50: '#F0FDF4', 100: '#DCFCE7', 200: '#BBF7D0', 300: '#86EFAC', 400: '#4ADE80', 500: '#22C55E', 600: '#16A34A', 700: '#15803D', 800: '#166534', 900: '#14532D' },
+                        warning: { DEFAULT: '#F59E0B', 50: '#FFFBEB', 100: '#FEF3C7', 200: '#FDE68A', 300: '#FCD34D', 400: '#FBBF24', 500: '#F59E0B', 600: '#D97706', 700: '#B45309', 800: '#92400E', 900: '#78350F' },
+                        error: { DEFAULT: '#EF4444', 50: '#FEF2F2', 100: '#FEE2E2', 200: '#FECACA', 300: '#FCA5A5', 400: '#F87171', 500: '#EF4444', 600: '#DC2626', 700: '#B91C1C', 800: '#991B1B', 900: '#7F1D1D' },
+                        surface: '#F8FAFC',
+                        card: '#FFFFFF',
+                        border: '#E2E8F0',
+                        textPrimary: '#0F172A',
+                        textSecondary: '#475569',
+                        textMuted: '#94A3B8'
+                    },
+                    borderRadius: { DEFAULT: "0.25rem", md: "0.375rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+                    fontFamily: { headline: ["Plus Jakarta Sans", "sans-serif"], display: ["Plus Jakarta Sans", "sans-serif"], body: ["Inter", "sans-serif"], label: ["Inter", "sans-serif"] },
+                    boxShadow: { card: '0 1px 3px rgba(0,0,0,0.1)' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface font-body text-textSecondary antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-[240px] bg-white border-r border-slate-200 flex flex-col py-6 px-4 z-50">
+<!-- Brand -->
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="work" data-weight="fill" style="font-variation-settings: 'FILL' 1;">work</span>
+</div>
+<div>
+<div class="font-headline text-xl font-bold text-primary">CareerPath AI</div>
+<div class="text-xs text-textMuted font-medium tracking-wide uppercase">Admin Dashboard</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto space-y-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md bg-primary-50 text-primary-700 font-medium text-sm transition-colors group" href="#">
+<span class="material-symbols-outlined text-primary-600" data-icon="dashboard">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors" data-icon="group">group</span>
+                Students
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors" data-icon="work">work</span>
+                Career Roles
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors" data-icon="psychology">psychology</span>
+                Skills
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors" data-icon="library_books">library_books</span>
+                Resources
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors" data-icon="description">description</span>
+                Resume Reports
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+<div class="mt-auto pt-6 border-t border-slate-100">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-2.5 rounded-md font-medium text-sm hover:bg-primary-700 transition-colors shadow-sm mb-6">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                Add New Role
+            </button>
+<div class="flex items-center gap-3 px-2">
+<img alt="CareerPath AI Admin Avatar" class="w-10 h-10 rounded-full object-cover border border-slate-200" data-alt="A professional headshot of a middle-aged Indian professor, Rajesh Kumar, wearing smart casual attire in a bright modern academic office setting. High resolution, shallow depth of field, warm inviting light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT6OSTkks2XBqBLtidtET3rl47u95F4KI_HweHpKlUsf6etmowYSI36iou1ERsnVs80_UFkxgn0HRb_Y3XTyKMIgVpFSBHCA7o2wW_fQ0t04qqSHrIm06LQX_EDtGDtAUoFX2hsCM3t_HxMzJNCjlVkpqy-9grE6REEwlInFEP5IBYL5KBpmr0ItQ1MyLuPShkVfQGTDlBNCYX0MFwzVxC1g4mFt1CVDLYO-RLVMlK5vWeLXiYzj4JemSad8aPB6CWFM7_0KuoRwI"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-textPrimary truncate">Prof. Rajesh Kumar</p>
+<p class="text-xs text-textMuted truncate">System Admin</p>
+</div>
+<button class="text-textMuted hover:text-error transition-colors p-1" title="Logout">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] flex-1 h-full overflow-y-auto bg-surface">
+<!-- TopAppBar Placeholder (Hidden on Desktop per rules, but content requires header) -->
+<div class="px-8 pt-8 pb-6 sticky top-0 bg-surface/90 backdrop-blur-sm z-30 border-b border-border/50">
+<div class="flex justify-between items-end max-w-[1200px] mx-auto">
+<div>
+<p class="text-sm text-textMuted font-medium mb-1" id="current-date">Tuesday, October 24, 2023</p>
+<h1 class="text-[32px] font-headline font-bold text-textPrimary leading-tight">Admin Overview</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-border shadow-sm">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span class="text-xs font-medium text-textSecondary">System Active</span>
+</div>
+<div class="bg-primary-50 text-primary-700 px-3 py-1.5 rounded-md text-sm font-medium border border-primary-100 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="shield_person">shield_person</span>
+                         Admin: Prof. Rajesh Kumar
+                     </div>
+</div>
+</div>
+</div>
+<div class="px-8 pb-12 max-w-[1200px] mx-auto space-y-6 mt-6">
+<!-- Row 1: Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Stat Card 1 -->
+<div class="bg-card rounded-lg shadow-card p-6 border border-border relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+</div>
+<span class="flex items-center text-xs font-medium text-success gap-1 bg-success-50 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            +24
+                        </span>
+</div>
+<h3 class="text-[32px] font-headline font-bold text-textPrimary leading-none mb-1">1,248</h3>
+<p class="text-sm text-textMuted">Total Students</p>
+<p class="text-xs text-textSecondary mt-3 pt-3 border-t border-slate-100">Active this month</p>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-card rounded-lg shadow-card p-6 border border-border relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-full bg-secondary-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="work">work</span>
+</div>
+<span class="text-xs font-medium text-secondary-600 bg-secondary-50 px-2 py-1 rounded-full">+8 New</span>
+</div>
+<h3 class="text-[32px] font-headline font-bold text-textPrimary leading-none mb-1">52</h3>
+<p class="text-sm text-textMuted">Career Roles</p>
+<p class="text-xs text-textSecondary mt-3 pt-3 border-t border-slate-100">Added this quarter</p>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-card rounded-lg shadow-card p-6 border border-border relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-full bg-tertiary-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="description">description</span>
+</div>
+<span class="text-xs font-medium text-warning-700 bg-warning-50 px-2 py-1 rounded-full border border-warning-200">102 Pending</span>
+</div>
+<h3 class="text-[32px] font-headline font-bold text-textPrimary leading-none mb-1">986</h3>
+<p class="text-sm text-textMuted">Resumes Analyzed</p>
+<p class="text-xs text-textSecondary mt-3 pt-3 border-t border-slate-100">Across all batches</p>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-card rounded-lg shadow-card p-6 border border-border relative overflow-hidden group flex flex-col justify-between">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-success"></div>
+<div class="flex justify-between items-start mb-2">
+<div class="w-12 h-12 rounded-full bg-success-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-success" data-icon="monitoring">monitoring</span>
+</div>
+</div>
+<div class="flex items-end gap-3 mb-1">
+<h3 class="text-[32px] font-headline font-bold text-textPrimary leading-none">64%</h3>
+<div class="flex-1 mb-1">
+<div class="w-full bg-slate-100 rounded-full h-2">
+<div class="bg-gradient-to-r from-success to-success-400 h-2 rounded-full" style="width: 64%"></div>
+</div>
+</div>
+</div>
+<p class="text-sm text-textMuted">Avg. Career Readiness</p>
+<p class="text-xs text-textSecondary mt-3 pt-3 border-t border-slate-100">Across all active students</p>
+</div>
+</div>
+<!-- Row 2: Tables & Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left: Recent Student Activity (66%) -->
+<div class="lg:col-span-2 bg-card rounded-lg shadow-card border border-border flex flex-col">
+<div class="p-6 border-b border-border flex justify-between items-center">
+<div>
+<h2 class="text-xl font-headline font-semibold text-textPrimary">Recent Student Activity</h2>
+<p class="text-sm text-textMuted mt-1">Latest resume uploads and analysis statuses</p>
+</div>
+<button class="p-2 hover:bg-slate-50 rounded-md text-textMuted transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left text-sm">
+<thead class="bg-surface text-textMuted font-medium text-xs uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4 rounded-tl-lg">Student Name</th>
+<th class="px-6 py-4">Course</th>
+<th class="px-6 py-4">Resume Score</th>
+<th class="px-6 py-4">Top Match</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 rounded-tr-lg text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs">AK</div>
+                                        Ashwini Kate
+                                    </td>
+<td class="px-6 py-4 text-textSecondary">B.Tech CS</td>
+<td class="px-6 py-4 font-semibold text-textPrimary">82/100</td>
+<td class="px-6 py-4 text-textSecondary">Software Engineer</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] font-medium bg-success-50 text-success-700 border border-success-200">
+                                            Analyzed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary hover:text-primary-700 font-medium" href="#">View</a>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-100 text-secondary-700 flex items-center justify-center font-bold text-xs">RS</div>
+                                        Ravi Sharma
+                                    </td>
+<td class="px-6 py-4 text-textSecondary">MCA</td>
+<td class="px-6 py-4 text-textMuted">-</td>
+<td class="px-6 py-4 text-textMuted">-</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] font-medium bg-warning-50 text-warning-700 border border-warning-200">
+                                            Pending
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary hover:text-primary-700 font-medium" href="#">Analyze</a>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-100 text-tertiary-700 flex items-center justify-center font-bold text-xs">PD</div>
+                                        Priya Desai
+                                    </td>
+<td class="px-6 py-4 text-textSecondary">B.E. IT</td>
+<td class="px-6 py-4 font-semibold text-textPrimary">65/100</td>
+<td class="px-6 py-4 text-textSecondary">Data Analyst</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] font-medium bg-success-50 text-success-700 border border-success-200">
+                                            Analyzed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary hover:text-primary-700 font-medium" href="#">View</a>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs">AP</div>
+                                        Amit Patil
+                                    </td>
+<td class="px-6 py-4 text-textSecondary">B.Sc Data Science</td>
+<td class="px-6 py-4 text-textMuted">-</td>
+<td class="px-6 py-4 text-textMuted">Processing...</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] font-medium bg-tertiary-50 text-tertiary-700 border border-tertiary-200">
+                                            In Progress
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-textMuted">Wait</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors border-b-0">
+<td class="px-6 py-4 font-medium text-textPrimary flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-success-100 text-success-700 flex items-center justify-center font-bold text-xs">SJ</div>
+                                        Sneha Joshi
+                                    </td>
+<td class="px-6 py-4 text-textSecondary">B.Tech E&amp;TC</td>
+<td class="px-6 py-4 font-semibold text-textPrimary">78/100</td>
+<td class="px-6 py-4 text-textSecondary">Systems Analyst</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] font-medium bg-success-50 text-success-700 border border-success-200">
+                                            Analyzed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary hover:text-primary-700 font-medium" href="#">View</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-border bg-slate-50 rounded-b-lg text-center">
+<a class="text-sm font-medium text-primary hover:text-primary-700 transition-colors inline-flex items-center gap-1" href="#">
+                            View All Students <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Right: Quick Actions & Top Careers (33%) -->
+<div class="space-y-6 flex flex-col">
+<!-- Quick Actions -->
+<div class="bg-card rounded-lg shadow-card border border-border p-6">
+<h2 class="text-[18px] font-headline font-semibold text-textPrimary mb-4">System Quick Actions</h2>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-2.5 px-4 rounded-md font-medium text-sm hover:bg-primary-700 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="work">work</span>
+                                Add New Career Role
+                            </button>
+<button class="w-full flex items-center justify-center gap-2 bg-white text-primary py-2.5 px-4 rounded-md font-medium text-sm border border-primary hover:bg-primary-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+                                Add Skill to Database
+                            </button>
+<button class="w-full flex items-center justify-center gap-2 bg-secondary-600 text-white py-2.5 px-4 rounded-md font-medium text-sm hover:bg-secondary-700 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="pending_actions">pending_actions</span>
+                                Review Pending Resumes (102)
+                            </button>
+<button class="w-full flex items-center justify-center gap-2 bg-white text-textSecondary py-2.5 px-4 rounded-md font-medium text-sm border border-slate-300 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                                Export Student Reports
+                            </button>
+</div>
+</div>
+<!-- Top Matched Careers -->
+<div class="bg-card rounded-lg shadow-card border border-border p-6 flex-1">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-[18px] font-headline font-semibold text-textPrimary">Top Matched Careers</h2>
+<span class="text-xs text-textMuted">This Month</span>
+</div>
+<ul class="space-y-4">
+<li class="flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-50 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="monitoring">monitoring</span>
+</div>
+<span class="font-medium text-sm text-textPrimary">Data Analyst</span>
+</div>
+<span class="text-sm font-semibold text-textSecondary bg-slate-100 px-2.5 py-0.5 rounded-full">342</span>
+</li>
+<li class="flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary-50 text-secondary flex items-center justify-center group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="code">code</span>
+</div>
+<span class="font-medium text-sm text-textPrimary">Software Developer</span>
+</div>
+<span class="text-sm font-semibold text-textSecondary bg-slate-100 px-2.5 py-0.5 rounded-full">289</span>
+</li>
+<li class="flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary-50 text-tertiary flex items-center justify-center group-hover:bg-tertiary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="domain">domain</span>
+</div>
+<span class="font-medium text-sm text-textPrimary">Business Analyst</span>
+</div>
+<span class="text-sm font-semibold text-textSecondary bg-slate-100 px-2.5 py-0.5 rounded-full">156</span>
+</li>
+<li class="flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-100 text-slate-500 flex items-center justify-center group-hover:bg-slate-800 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="web">web</span>
+</div>
+<span class="font-medium text-sm text-textPrimary">Web Developer</span>
+</div>
+<span class="text-sm font-semibold text-textSecondary bg-slate-100 px-2.5 py-0.5 rounded-full">98</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Row 3: Career Roles Overview & Resume Analysis Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left: Career Roles Overview (66%) -->
+<div class="lg:col-span-2 bg-card rounded-lg shadow-card border border-border flex flex-col">
+<div class="p-6 border-b border-border flex justify-between items-center">
+<h2 class="text-xl font-headline font-semibold text-textPrimary">Career Roles Overview</h2>
+<a class="text-sm font-medium text-primary hover:text-primary-700 transition-colors" href="#">Manage Roles</a>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left text-sm">
+<thead class="bg-surface text-textMuted font-medium text-xs uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4">Career Title</th>
+<th class="px-6 py-4 text-center">Required Skills</th>
+<th class="px-6 py-4">Avg Match %</th>
+<th class="px-6 py-4 text-right">Students Targeting</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary">Full Stack Developer</td>
+<td class="px-6 py-4 text-center"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md text-xs font-semibold">24</span></td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+<div class="bg-success h-full" style="width: 72%"></div>
+</div>
+<span class="text-xs font-semibold">72%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-medium">450</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary">Data Scientist</td>
+<td class="px-6 py-4 text-center"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md text-xs font-semibold">18</span></td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+<div class="bg-warning-500 h-full" style="width: 58%"></div>
+</div>
+<span class="text-xs font-semibold">58%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-medium">320</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4 font-medium text-textPrimary">UX/UI Designer</td>
+<td class="px-6 py-4 text-center"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md text-xs font-semibold">15</span></td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+<div class="bg-success h-full" style="width: 81%"></div>
+</div>
+<span class="text-xs font-semibold">81%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-medium">180</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right: Resume Analysis Stats (33%) -->
+<div class="bg-card rounded-lg shadow-card border border-border p-6 flex flex-col">
+<h2 class="text-[18px] font-headline font-semibold text-textPrimary mb-6">Resume Analysis Queue</h2>
+<div class="space-y-5 flex-1">
+<!-- Analyzed -->
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="font-medium text-textPrimary">Successfully Analyzed</span>
+<span class="text-success font-semibold">80%</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2">
+<div class="bg-success h-2 rounded-full" style="width: 80%"></div>
+</div>
+<p class="text-xs text-textMuted mt-1">986 resumes</p>
+</div>
+<!-- Pending -->
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="font-medium text-textPrimary">Pending Processing</span>
+<span class="text-warning-600 font-semibold">8%</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2">
+<div class="bg-warning-500 h-2 rounded-full" style="width: 8%"></div>
+</div>
+<p class="text-xs text-textMuted mt-1">102 resumes in queue</p>
+</div>
+<!-- Failed -->
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="font-medium text-textPrimary">Analysis Failed</span>
+<span class="text-error font-semibold">1%</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2">
+<div class="bg-error h-2 rounded-full" style="width: 1%"></div>
+</div>
+<p class="text-xs text-textMuted mt-1">12 requires manual review</p>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-slate-100">
+<button class="w-full flex items-center justify-center gap-2 bg-white text-error py-2 px-4 rounded-md font-medium text-sm border border-error-200 hover:bg-error-50 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="restart_alt">restart_alt</span>
+                            Re-run Failed Analyses
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Set current date dynamically for the header
+        const dateElement = document.getElementById('current-date');
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
+</body></html>
