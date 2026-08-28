@@ -71,11 +71,14 @@ Landing → Register/Login → Dashboard → Resume Upload → Analysis → Care
   - `app/routes/resume.py`: `/resume/`, `/resume/upload`, `/resume/analysis`
   - `app/routes/admin.py`: `/admin/`, `/admin/students`, `/admin/students/<id>`, `/admin/careers`
 - **Templates (`app/templates/`)**:
-  - `base.html`: Shared Tailwind + Google Fonts + Material Symbols layout
-  - `auth/login.html`, `auth/register.html`
-  - `student/dashboard.html`, `student/resume_upload.html`, `student/career_matches.html`, `student/skill_gap.html`, `student/learning.html`, `student/profile.html`
-  - `admin/dashboard.html`, `admin/students.html`, `admin/careers.html`, `admin/student_detail.html`
+  - `base.html`: Shared Tailwind + Google Fonts + Material Symbols layout + global `toggleMobileMenu()` JavaScript drawer script.
+  - `partials/student_sidebar.html`: Responsive student navigation with desktop sidebar, mobile sticky top bar, and backdrop drawer.
+  - `partials/admin_sidebar.html`: Responsive admin navigation with desktop sidebar, mobile sticky top bar, and backdrop drawer.
+  - `auth/login.html`, `auth/register.html`: Touch-friendly forms with responsive grid stacking.
+  - `student/`: Dashboard, Resume Upload, Career Matches, Skill Gap, Learning Path, Profile with mobile-friendly card grids (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`).
+  - `admin/`: Overview, Students, Careers, Student Detail with horizontally scrollable tables and responsive action buttons.
 - **Seed Script (`seed_db.py`)**: Populates 10 career roles, 20+ courses, 60+ master skills, admin user & demo student.
+
 
 ## Test Credentials
 - **Admin**: `admin@careerpath.ai` / `admin123`
