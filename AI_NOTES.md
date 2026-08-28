@@ -70,14 +70,31 @@ Landing → Register/Login → Dashboard → Resume Upload → Analysis → Care
   - `app/routes/student.py`: `/student/dashboard`, `/student/profile`, `/student/career-matches`, `/student/skill-gap`, `/student/learning`
   - `app/routes/resume.py`: `/resume/`, `/resume/upload`, `/resume/analysis`
   - `app/routes/admin.py`: `/admin/`, `/admin/students`, `/admin/students/<id>`, `/admin/careers`
-- **Templates (`app/templates/`)**:
-  - `base.html`: Shared Tailwind + Google Fonts + Material Symbols layout + global `toggleMobileMenu()` JavaScript drawer script.
-  - `partials/student_sidebar.html`: Responsive student navigation with desktop sidebar, mobile sticky top bar, and backdrop drawer.
-  - `partials/admin_sidebar.html`: Responsive admin navigation with desktop sidebar, mobile sticky top bar, and backdrop drawer.
-  - `auth/login.html`, `auth/register.html`: Touch-friendly forms with responsive grid stacking.
-  - `student/`: Dashboard, Resume Upload, Career Matches, Skill Gap, Learning Path, Profile with mobile-friendly card grids (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`).
-  - `admin/`: Overview, Students, Careers, Student Detail with horizontally scrollable tables and responsive action buttons.
-- **Seed Script (`seed_db.py`)**: Populates 10 career roles, 20+ courses, 60+ master skills, admin user & demo student.
+## React + TypeScript + shadcn UI Redesign (v2.0)
+
+### Tech Stack:
+- **Framework**: React 18.3, TypeScript 5.4, Vite 5.2
+- **Styling**: Tailwind CSS 3.4, PostCSS, Autoprefixer, Dark OLED / Slate Theme
+- **UI Components**: shadcn UI pattern (`@/components/ui/`) with `clsx`, `tailwind-merge` (`cn` utility), `lucide-react` icons
+- **Custom Components**:
+  - `components/ui/spark-badge.tsx`: Canvas rain particle animated credential badge iframe container
+  - `components/ui/spark-badge-utils/spark-badge-markup.ts`: HTML/Canvas animated badge source
+  - `components/ui/demo.tsx`: SparkBadge standalone 1:1 aspect demo wrapper
+  - `components/ui/button.tsx`, `card.tsx`, `badge.tsx`, `progress.tsx`
+
+### Full Website + Web Application Features:
+- **Marketing Website**: Sticky glassmorphic navbar mode switcher, Hero with `SparkBadge` showcase, Feature grid with stock images, Student testimonials, and Footer.
+- **Interactive Student Web App**:
+  - **Dashboard**: Readiness Ring, Top Recommended Roles, Extracted Skills, Quick Action buttons.
+  - **Resume Upload & Parser**: File upload dropzone + sample resume simulator (instant extraction of skills & score).
+  - **Career Matcher**: Interactive match list with search, category filtering (High/Medium/Low), and weighted progress bars.
+  - **Skill Gap Matrix**: Matched vs Missing skills breakdown with priority badges.
+  - **Personalized Learning Path**: Course platform cards with rating badges, duration, and course links.
+  - **Admin Console**: Student directory, analytics, and Career Role CRUD management.
+
+### Development Server:
+- **URL**: `http://localhost:3000/`
+
 
 
 ## Test Credentials
