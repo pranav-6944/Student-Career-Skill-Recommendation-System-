@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { useTheme } from '@/src/themeContext';
 
 interface NavbarProps {
-  currentMode: 'website' | 'webapp' | 'admin';
-  setMode: (mode: 'website' | 'webapp' | 'admin') => void;
+  currentMode: 'website' | 'webapp' | 'admin' | 'auth';
+  setMode: (mode: 'website' | 'webapp' | 'admin' | 'auth') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
@@ -139,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
                   <button
                     onClick={() => {
                       setProfileDropdownOpen(false);
-                      window.location.href = '/';
+                      setMode('auth');
                     }}
                     className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
                   >
@@ -152,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
 
           {/* Launch App Button */}
           {currentMode === 'website' && (
-            <Button size="default" onClick={() => setMode('webapp')} className="hidden sm:inline-flex gap-1.5 font-bold shadow-md">
+            <Button size="default" onClick={() => setMode('auth')} className="hidden sm:inline-flex gap-1.5 font-bold shadow-md">
               Launch App
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>

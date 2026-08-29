@@ -21,6 +21,14 @@ test.describe('Student Career & Skill Recommendation System E2E', () => {
   test('Navigate to Dashboard from Landing Page', async ({ page }) => {
     const exploreBtn = page.getByRole('button', { name: /Explore Student Dashboard/i });
     await exploreBtn.click();
+    
+    // Should now be on Auth view
+    await expect(page.getByText('Welcome back')).toBeVisible();
+    
+    // Click Sign In
+    await page.fill('input[type="email"]', 'test@test.com');
+    await page.fill('input[type="password"]', 'password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
 
     // Should now be in the WebApp view
     await expect(page.getByText('Student Career Dashboard')).toBeVisible();
@@ -30,6 +38,9 @@ test.describe('Student Career & Skill Recommendation System E2E', () => {
   test('Dashboard Sidebar Navigation works correctly', async ({ page }) => {
     // Enter app
     await page.getByRole('button', { name: /Explore Student Dashboard/i }).click();
+    await page.fill('input[type="email"]', 'test@test.com');
+    await page.fill('input[type="password"]', 'password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
     
     // Default view is dashboard
     await expect(page.getByText('Student Career Dashboard')).toBeVisible();
@@ -54,6 +65,9 @@ test.describe('Student Career & Skill Recommendation System E2E', () => {
   test('Internal Dashboard Navigation Links Work', async ({ page }) => {
     // Enter app
     await page.getByRole('button', { name: /Explore Student Dashboard/i }).click();
+    await page.fill('input[type="email"]', 'test@test.com');
+    await page.fill('input[type="password"]', 'password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
     
     // From Dashboard, click "Skill Gap Matrix →" on a career match
     const skillGapBtn = page.getByRole('button', { name: /Skill Gap Matrix/i }).first();
@@ -73,6 +87,9 @@ test.describe('Student Career & Skill Recommendation System E2E', () => {
   test('Log Out button resets session', async ({ page }) => {
     // Enter app
     await page.getByRole('button', { name: /Explore Student Dashboard/i }).click();
+    await page.fill('input[type="email"]', 'test@test.com');
+    await page.fill('input[type="password"]', 'password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
     
     // Dashboard is visible
     await expect(page.getByText('Student Career Dashboard')).toBeVisible();
@@ -85,8 +102,8 @@ test.describe('Student Career & Skill Recommendation System E2E', () => {
     const logoutBtn = page.getByRole('button', { name: /Log Out/i });
     await logoutBtn.click();
     
-    // Should redirect to root and show landing page again
-    await expect(page.getByRole('button', { name: 'Analyze My Resume', exact: true })).toBeVisible();
+    // Should redirect to auth and show welcome back again
+    await expect(page.getByText('Welcome back')).toBeVisible();
     
     // Dashboard should not be visible
     await expect(page.getByText('Student Career Dashboard')).not.toBeVisible();

@@ -20,7 +20,12 @@ interface CareerRoleItem {
   missingSkills: string[];
 }
 
-export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ initialMode = 'webapp' }) => {
+interface WebAppViewProps {
+  initialMode?: 'webapp' | 'admin';
+  onLogout?: () => void;
+}
+
+export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', onLogout }) => {
   const { role } = useTheme();
 
   const [activeView, setActiveView] = useState<'dashboard' | 'resume' | 'careers' | 'gap' | 'learning' | 'profile' | 'admin'>(
