@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, ArrowRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -40,28 +40,29 @@ export const CareerExplorerSection: React.FC<{ onLaunchApp: () => void }> = ({ o
   const activeRole = roles[activeRoleIndex];
 
   return (
-    <section class="py-20 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 border-t border-slate-200 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 border-t border-slate-200 dark:border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <p class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-            EXPLORE HIGH-DEMAND ROLES
-          </p>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
+          <Badge variant="default" className="px-3.5 py-1">EXPLORE HIGH-DEMAND ROLES</Badge>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Popular Mapped Career Roles
           </h2>
+          <p className="text-slate-600 dark:text-slate-400 text-base">
+            Click roles below to preview core technical skill benchmarks.
+          </p>
         </div>
 
         {/* Role Tab Selector */}
-        <div class="flex items-center justify-center gap-2 flex-wrap mb-10">
+        <div className="flex items-center justify-center gap-3 flex-wrap mb-10">
           {roles.map((r, idx) => (
             <button
               key={idx}
               onClick={() => setActiveRoleIndex(idx)}
-              class={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                 activeRoleIndex === idx
                   ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-indigo-500'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-500'
               }`}
             >
               {r.title}
@@ -70,42 +71,39 @@ export const CareerExplorerSection: React.FC<{ onLaunchApp: () => void }> = ({ o
         </div>
 
         {/* Selected Role Detailed Card */}
-        <Card class="max-w-4xl mx-auto p-8 border-indigo-500/30 shadow-2xl">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div class="space-y-2">
-              <div class="flex items-center gap-2 flex-wrap">
+        <Card className="max-w-4xl mx-auto p-8 sm:p-10 border-2 border-indigo-500/30 shadow-2xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant="default">{activeRole.department}</Badge>
-                <Badge variant="success" class="gap-1">
-                  <TrendingUp class="w-3 h-3" />
+                <Badge variant="success" className="gap-1">
+                  <TrendingUp className="w-3.5 h-3.5" />
                   {activeRole.growth}
                 </Badge>
               </div>
-              <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+              <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
                 {activeRole.title}
               </h3>
-              <p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">
-                Average Industry Package: <span class="text-indigo-600 dark:text-indigo-400 font-bold">{activeRole.salary}</span>
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-semibold">
+                Average Industry Package: <span className="text-indigo-600 dark:text-indigo-400 font-extrabold">{activeRole.salary}</span>
               </p>
             </div>
 
-            <Button onClick={onLaunchApp} size="lg" class="gap-2 self-start md:self-center">
+            <Button onClick={onLaunchApp} size="lg" className="gap-2 self-start md:self-center font-extrabold px-6 shadow-xl">
               Check My Match Percentage
-              <ArrowRight class="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
 
-          <div class="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
-            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+          <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
               Core Industry Skill Standards ({activeRole.skills.length}):
             </p>
-            <div class="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               {activeRole.skills.map((sk, idx) => (
-                <span
-                  key={idx}
-                  class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-slate-700"
-                >
+                <Badge key={idx} variant="secondary" className="text-xs font-bold py-1 px-3">
                   ✓ {sk}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
