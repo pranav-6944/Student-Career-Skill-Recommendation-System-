@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sparkles, Github, Twitter, Linkedin, Mail } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<{ setMode?: (mode: any) => void }> = ({ setMode }) => {
   return (
     <footer className="bg-slate-950 border-t border-slate-900 text-slate-400 text-xs py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -15,14 +15,14 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap gap-6 text-slate-400">
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <a href="#how" className="hover:text-white transition-colors">How It Works</a>
-            <a href="#careers" className="hover:text-white transition-colors">Career Mappings</a>
-            <a href="#features" className="hover:text-white transition-colors">For Institutions</a>
-            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-            <a href="mailto:support@careerpath.ai" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="mailto:support@careerpath.ai" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="mailto:support@careerpath.ai" className="hover:text-white transition-colors">Contact Us</a>
+            <a href="#features" className="hover:text-white transition-colors" onClick={() => setMode?.('website')}>Features</a>
+            <a href="#how" className="hover:text-white transition-colors" onClick={() => setMode?.('website')}>How It Works</a>
+            <a href="#careers" className="hover:text-white transition-colors" onClick={() => setMode?.('website')}>Career Mappings</a>
+            <a href="#features" className="hover:text-white transition-colors" onClick={() => setMode?.('website')}>For Institutions</a>
+            <a href="#faq" className="hover:text-white transition-colors" onClick={() => setMode?.('website')}>FAQ</a>
+            <button onClick={() => setMode?.('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
+            <button onClick={() => setMode?.('terms')} className="hover:text-white transition-colors">Terms of Service</button>
+            <button onClick={() => setMode?.('contact')} className="hover:text-white transition-colors">Contact Us</button>
           </div>
 
           <div className="flex items-center gap-4 text-slate-400">

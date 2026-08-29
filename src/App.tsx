@@ -14,8 +14,11 @@ import { CTABannerSection } from '@/components/CTABannerSection';
 import { WebAppView } from '@/components/WebAppView';
 import { SignInView } from '@/components/SignInView';
 import { Footer } from '@/components/Footer';
+import { PrivacyPolicyView } from '@/components/PrivacyPolicyView';
+import { TermsOfServiceView } from '@/components/TermsOfServiceView';
+import { ContactUsView } from '@/components/ContactUsView';
 
-type AppMode = 'website' | 'webapp' | 'admin' | 'auth';
+type AppMode = 'website' | 'webapp' | 'admin' | 'auth' | 'privacy' | 'terms' | 'contact';
 
 export function AppContent() {
   const { setCurrentUser, logout } = useTheme();
@@ -51,7 +54,22 @@ export function AppContent() {
           <TestimonialsSection />
           <FAQSection />
           <CTABannerSection onLaunchApp={() => setMode('auth')} />
-          <Footer />
+          <Footer setMode={setMode} />
+        </main>
+      ) : mode === 'privacy' ? (
+        <main className="flex-1">
+          <PrivacyPolicyView />
+          <Footer setMode={setMode} />
+        </main>
+      ) : mode === 'terms' ? (
+        <main className="flex-1">
+          <TermsOfServiceView />
+          <Footer setMode={setMode} />
+        </main>
+      ) : mode === 'contact' ? (
+        <main className="flex-1">
+          <ContactUsView />
+          <Footer setMode={setMode} />
         </main>
       ) : mode === 'auth' ? (
         <main className="flex-1 bg-slate-50 dark:bg-slate-950">

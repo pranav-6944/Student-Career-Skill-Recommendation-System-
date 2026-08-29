@@ -3,7 +3,7 @@ import { Sparkles, LayoutDashboard, Globe, Shield, ArrowRight, Sun, Moon, User, 
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/src/themeContext';
 
-type AppMode = 'website' | 'webapp' | 'admin' | 'auth';
+type AppMode = 'website' | 'webapp' | 'admin' | 'auth' | 'privacy' | 'terms' | 'contact';
 
 interface NavbarProps {
   currentMode: AppMode;
@@ -82,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
           <button
             onClick={() => setMode('website')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer ${
-              currentMode === 'website'
+              ['website', 'privacy', 'terms', 'contact'].includes(currentMode)
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
             }`}
