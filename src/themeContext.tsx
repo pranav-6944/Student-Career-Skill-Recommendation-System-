@@ -56,12 +56,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // Also clear any stale per-user profile data if switching users
       const prevEmail = readSession()?.email;
       if (prevEmail && prevEmail !== user.email) {
-        // New user — clear previous user's saved profile
-        localStorage.removeItem('cp_name');
-        localStorage.removeItem('cp_degree');
-        localStorage.removeItem('cp_university');
-        localStorage.removeItem('cp_cgpa');
-        localStorage.removeItem('cp_year');
+        // New user — previous localStorage logic removed, profile handled by DB now
       }
     } else {
       sessionStorage.removeItem('careerpath_session');

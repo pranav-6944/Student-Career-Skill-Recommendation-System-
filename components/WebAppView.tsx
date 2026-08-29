@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   LayoutDashboard, FileText, Briefcase, BarChart2, GraduationCap, User, Shield,
   UploadCloud, CheckCircle2, AlertTriangle, ArrowRight, Search, Plus, Trash2,
@@ -32,19 +32,38 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     initialMode === 'admin' && role === 'admin' ? 'admin' : 'dashboard'
   );
 
-  // Build a per-user localStorage key prefix so each account has isolated profile data
-  const userKey = currentUser?.email ? `cp_${btoa(currentUser.email)}_` : 'cp_';
-
-  // Student Profile State — keyed per user so multiple accounts don't share data
-  const [studentName, setStudentName] = useState(() =>
-    localStorage.getItem(userKey + 'name') || currentUser?.name || 'Student'
-  );
-  const [degree, setDegree] = useState(() => localStorage.getItem(userKey + 'degree') || 'B.Sc Computer Science');
-  const [university, setUniversity] = useState(() => localStorage.getItem(userKey + 'university') || 'Your University');
-  const [cgpa, setCgpa] = useState(() => localStorage.getItem(userKey + 'cgpa') || '');
-  const [year, setYear] = useState(() => localStorage.getItem(userKey + 'year') || '1');
+  // Student Profile State
+  const [studentName, setStudentName] = useState(currentUser?.name || 'Student');
+  const [degree, setDegree] = useState('B.Sc Computer Science');
+  const [university, setUniversity] = useState('Your University');
+  const [cgpa, setCgpa] = useState('');
+  const [year, setYear] = useState('1');
   const [profileSaveMsg, setProfileSaveMsg] = useState('');
-  
+
+  // Fetch initial profile from backend
+  useEffect(() => {
+    if (!currentUser?.email) return;
+    
+    fetch(`http://localhost:8000/api/profile?email=${encodeURIComponent(currentUser.email)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.detail) return; // Error or not found
+        setDegree(data.degree || 'B.Sc Computer Science');
+        setUniversity(data.university || 'Your University');
+        setCgpa(data.cgpa || '');
+        setYear(data.year || '1');
+        
+        if (data.extracted_skills) {
+          const skillsArray = data.extracted_skills.split(',').map((s: string) => s.trim()).filter(Boolean);
+          if (skillsArray.length > 0) {
+            setExtractedSkills(skillsArray);
+            setResumeScore(Math.min(100, 50 + (skillsArray.length * 4)));
+          }
+        }
+      })
+      .catch(err => console.error("Failed to fetch profile", err));
+  }, [currentUser?.email]);
+
   // Resume & Extracted Skills State
   const [resumeName, setResumeName] = useState('Ashwini_Kate_Resume_2024.pdf');
   const [resumeScore, setResumeScore] = useState(82);
@@ -122,22 +141,22 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     setIsParsing(true);
     setUploadSuccessMsg('');
     setResumeName(file.name);
-    
+
     try {
       const formData = new FormData();
       formData.append('file', file);
-      
-      const response = await fetch('http://localhost:8000/api/extract-resume', {
+
+      const response = await fetch(`http://localhost:8000/api/extract-resume?email=${encodeURIComponent(currentUser?.email || '')}`, {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to extract skills from resume. Please ensure the backend is running.');
       }
-      
+
       const data = await response.json();
-      
+
       // Update state with actual NLP extracted skills
       if (data.skills && data.skills.length > 0) {
         setExtractedSkills(data.skills);
@@ -218,7 +237,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
   const filteredCareers = careerList.filter(c => {
     const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          c.department.toLowerCase().includes(searchQuery.toLowerCase());
+      c.department.toLowerCase().includes(searchQuery.toLowerCase());
     if (!matchesSearch) return false;
     if (matchFilter === 'high') return c.matchPct >= 75;
     if (matchFilter === 'medium') return c.matchPct >= 50 && c.matchPct < 75;
@@ -228,7 +247,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-300">
-      
+
       {/* Hidden File Input */}
       <input
         type="file"
@@ -260,9 +279,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
           <nav className="p-3 space-y-1.5">
             <button
               onClick={() => setActiveView('dashboard')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeView === 'dashboard' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeView === 'dashboard' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               <LayoutDashboard className="w-4 h-4" />
               Dashboard
@@ -270,9 +288,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             <button
               onClick={() => setActiveView('resume')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeView === 'resume' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeView === 'resume' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               <FileText className="w-4 h-4" />
               Resume Upload & Parser
@@ -280,9 +297,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             <button
               onClick={() => setActiveView('careers')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeView === 'careers' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeView === 'careers' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               <Briefcase className="w-4 h-4" />
               Career Matches ({careerList.length})
@@ -290,9 +306,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             <button
               onClick={() => setActiveView('gap')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeView === 'gap' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeView === 'gap' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               <BarChart2 className="w-4 h-4" />
               Skill Gap Matrix
@@ -300,9 +315,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             <button
               onClick={() => setActiveView('learning')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeView === 'learning' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeView === 'learning' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               <GraduationCap className="w-4 h-4" />
               Learning Path
@@ -310,9 +324,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             <button
               onClick={() => setActiveView('profile')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeView === 'profile' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeView === 'profile' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               <User className="w-4 h-4" />
               My Profile
@@ -323,9 +336,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
               <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
                 <button
                   onClick={() => setActiveView('admin')}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
-                    activeView === 'admin' ? 'bg-amber-500 text-slate-950 font-black shadow-md' : 'text-amber-600 dark:text-amber-400 hover:bg-amber-500/10'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${activeView === 'admin' ? 'bg-amber-500 text-slate-950 font-black shadow-md' : 'text-amber-600 dark:text-amber-400 hover:bg-amber-500/10'
+                    }`}
                 >
                   <Shield className="w-4 h-4" />
                   Admin Console
@@ -346,7 +358,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
               onClick={onLogout}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border border-red-200 dark:border-red-900/40 transition-colors cursor-pointer"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
               Log Out
             </button>
           )}
@@ -402,7 +414,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             {/* Recommendations & Skills */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
+
               <Card className="lg:col-span-8 p-6 sm:p-8 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Top Recommended Career Roles</h3>
@@ -477,10 +489,10 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
+
               {/* Dropzone Container with Interactive Click & Drag Handling */}
               <Card className="lg:col-span-8 p-6 sm:p-8 space-y-6">
-                
+
                 <div
                   onClick={() => fileInputRef.current?.click()}
                   onDragOver={(e) => e.preventDefault()}
@@ -490,7 +502,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                   <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                     {isParsing ? <Loader2 className="w-8 h-8 animate-spin text-indigo-600 dark:text-indigo-400" /> : <UploadCloud className="w-8 h-8" />}
                   </div>
-                  
+
                   <div>
                     <p className="text-lg font-extrabold text-slate-900 dark:text-white">
                       {isParsing ? 'Parsing Resume with NLP Engine...' : 'Drag & Drop your PDF or DOCX resume here'}
@@ -602,9 +614,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                 <button
                   key={f}
                   onClick={() => setMatchFilter(f)}
-                  className={`px-4 py-2 rounded-full text-xs font-extrabold capitalize transition-all cursor-pointer ${
-                    matchFilter === f ? 'bg-indigo-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-2 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
-                  }`}
+                  className={`px-4 py-2 rounded-full text-xs font-extrabold capitalize transition-all cursor-pointer ${matchFilter === f ? 'bg-indigo-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-2 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
+                    }`}
                 >
                   {f === 'all' ? 'All Roles' : f === 'high' ? 'High Match (>75%)' : f === 'medium' ? 'Medium (50-75%)' : 'Low (<50%)'}
                 </button>
@@ -683,9 +694,8 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                 <button
                   key={c.id}
                   onClick={() => setSelectedCareerId(c.id)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
-                    selectedCareerId === c.id ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  }`}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${selectedCareerId === c.id ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
                 >
                   {c.title} ({c.matchPct}%)
                 </button>
@@ -694,7 +704,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
             {/* Matrix Side-by-Side */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              
+
               <Card className="p-6 sm:p-8 border-l-8 border-l-emerald-500">
                 <h3 className="font-extrabold text-xl text-slate-900 dark:text-white mb-2 flex items-center gap-2.5">
                   <CheckCircle2 className="w-6 h-6 text-emerald-500" />
@@ -744,7 +754,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
+
               <div className="lg:col-span-8 space-y-5">
                 {[
                   {
@@ -900,13 +910,26 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
               <Button
                 size="sm"
                 className="w-full py-3 font-extrabold shadow-md"
-                onClick={() => {
-                  localStorage.setItem(userKey + 'name', studentName);
-                  localStorage.setItem(userKey + 'degree', degree);
-                  localStorage.setItem(userKey + 'university', university);
-                  localStorage.setItem(userKey + 'cgpa', cgpa);
-                  localStorage.setItem(userKey + 'year', year);
-                  setProfileSaveMsg('Profile saved successfully!');
+                onClick={async () => {
+                  try {
+                    const response = await fetch(`http://localhost:8000/api/profile?email=${encodeURIComponent(currentUser?.email || '')}`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        degree,
+                        university,
+                        cgpa,
+                        year,
+                        extracted_skills: extractedSkills.join(",")
+                      })
+                    });
+                    
+                    if (!response.ok) throw new Error("Failed to save profile");
+                    
+                    setProfileSaveMsg('Profile saved to database successfully!');
+                  } catch (e) {
+                    setProfileSaveMsg('Error saving profile');
+                  }
                   setTimeout(() => setProfileSaveMsg(''), 3000);
                 }}
               >
@@ -932,7 +955,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
+
               <Card className="lg:col-span-5 p-6 sm:p-8 space-y-5">
                 <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">Add New Career Role</h3>
                 <form onSubmit={handleAddCareer} className="space-y-4">

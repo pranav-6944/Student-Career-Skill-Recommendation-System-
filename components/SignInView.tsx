@@ -33,44 +33,56 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
   const [error, setError] = useState('');
   const [githubClicked, setGithubClicked] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
       const emailLower = email.toLowerCase().trim();
 
       if (isLogin) {
-        // Admin login
-        if (emailLower === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          onSignInSuccess({ email: ADMIN_EMAIL, name: 'Administrator', role: 'admin' });
-          return;
+        // Sign In
+        const response = await fetch('http://localhost:8000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailLower, password })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.detail || 'Failed to sign in');
         }
-        // Demo student login
-        if (emailLower === STUDENT_EMAIL && password === STUDENT_PASSWORD) {
-          onSignInSuccess({ email: STUDENT_EMAIL, name: 'Ashwini Kate', role: 'student' });
-          return;
-        }
-        // Any valid email + 6+ char password → sign them in with their email-derived name
-        if (emailLower.includes('@') && emailLower.includes('.') && password.length >= 6) {
-          onSignInSuccess({ email: emailLower, name: nameFromEmail(emailLower), role: 'student' });
-          return;
-        }
-        // Invalid
-        setError('Password must be at least 6 characters. Or use the demo credentials below.');
+
+        const data = await response.json();
+        onSignInSuccess({ email: data.user.email, name: data.user.full_name, role: data.user.role as any });
       } else {
         // Sign Up
         if (password.length < 6) {
-          setError('Password must be at least 6 characters.');
-          setIsLoading(false);
-          return;
+          throw new Error('Password must be at least 6 characters.');
         }
+
         const displayName = fullName.trim() || nameFromEmail(email);
-        onSignInSuccess({ email: email.toLowerCase().trim(), name: displayName, role: 'student' });
+
+        const response = await fetch('http://localhost:8000/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailLower, password, full_name: displayName })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.detail || 'Failed to create account');
+        }
+
+        const data = await response.json();
+        onSignInSuccess({ email: data.email, name: data.full_name, role: data.role as any });
       }
-    }, 800);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGithub = () => {
