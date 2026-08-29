@@ -52,12 +52,12 @@ export const Hero: React.FC<HeroProps> = ({ onLaunchApp }) => {
 
             {/* Styled Primary Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-              <Button size="lg" variant="default" onClick={onLaunchApp} className="gap-2.5 text-base px-6 py-3.5 shadow-xl font-extrabold">
+              <Button size="lg" variant="glow" onClick={onLaunchApp} className="gap-2.5 text-base px-6 py-3.5 shadow-xl font-extrabold">
                 <UploadCloud className="w-5 h-5" />
                 Analyze My Resume
                 <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
-              <Button size="lg" variant="outline" onClick={onLaunchApp} className="gap-2.5 text-base px-6 py-3.5 font-extrabold border-2">
+              <Button size="lg" variant="secondary" onClick={onLaunchApp} className="gap-2.5 text-base px-6 py-3.5 font-extrabold border-2">
                 Explore Student Dashboard
               </Button>
             </div>

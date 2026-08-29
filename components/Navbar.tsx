@@ -95,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
           </button>
 
-          {/* Role Switcher */}
+          {/* Role Profile Dropdown */}
           <div className="relative">
             <button
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
@@ -112,48 +112,47 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
 
             {/* Profile Dropdown */}
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-2.5 z-50 text-xs space-y-1">
-                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
+              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-2 z-50 text-xs space-y-1">
+                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
                   <p className="font-bold text-slate-900 dark:text-white">Active Account</p>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     Role: <span className="font-bold text-indigo-600 dark:text-indigo-400 uppercase">{role}</span>
                   </p>
                 </div>
 
-                <p className="px-3 pt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Switch Perspective:</p>
-                
                 <button
-                  onClick={() => handleRoleChange('student')}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left font-medium transition-colors cursor-pointer ${
-                    role === 'student' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    if (role === 'admin') {
+                      setMode('admin');
+                    } else {
+                      setMode('webapp');
+                    }
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 >
-                  <span className="flex items-center gap-2">
-                    <User className="w-3.5 h-3.5" />
-                    Student Mode
-                  </span>
-                  {role === 'student' && <span className="text-[10px] text-emerald-500 font-bold">Active</span>}
+                  <User className="w-3.5 h-3.5" />
+                  My Profile Settings
                 </button>
 
-                <button
-                  onClick={() => handleRoleChange('admin')}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left font-medium transition-colors cursor-pointer ${
-                    role === 'admin' ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <Shield className="w-3.5 h-3.5 text-amber-500" />
-                    Admin Mode
-                  </span>
-                  {role === 'admin' && <span className="text-[10px] text-amber-500 font-bold">Active</span>}
-                </button>
+                <div className="pt-1 border-t border-slate-100 dark:border-slate-800 mt-1">
+                  <button
+                    onClick={() => {
+                      setProfileDropdownOpen(false);
+                      setMode('website');
+                    }}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+                  >
+                    Log Out
+                  </button>
+                </div>
               </div>
             )}
           </div>
 
           {/* Launch App Button */}
           {currentMode === 'website' && (
-            <Button size="sm" onClick={() => setMode('webapp')} className="hidden sm:inline-flex gap-1.5 font-bold shadow-md">
+            <Button size="default" onClick={() => setMode('webapp')} className="hidden sm:inline-flex gap-1.5 font-bold shadow-md">
               Launch App
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
