@@ -32,7 +32,7 @@ export const HowItWorksSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
+    <section id="how" className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">

@@ -18,7 +18,11 @@ export const Footer: React.FC = () => {
             <a href="#features" className="hover:text-white transition-colors">Features</a>
             <a href="#how" className="hover:text-white transition-colors">How It Works</a>
             <a href="#careers" className="hover:text-white transition-colors">Career Mappings</a>
-            <a href="#admin" className="hover:text-white transition-colors">For Institutions</a>
+            <a href="#features" className="hover:text-white transition-colors">For Institutions</a>
+            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
+            <a href="mailto:support@careerpath.ai" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="mailto:support@careerpath.ai" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="mailto:support@careerpath.ai" className="hover:text-white transition-colors">Contact Us</a>
           </div>
 
           <div className="flex items-center gap-4 text-slate-400">
