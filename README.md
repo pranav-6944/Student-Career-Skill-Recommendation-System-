@@ -6,76 +6,108 @@ CareerPath AI is an intelligent career guidance platform designed for college st
 
 ## 🌟 Key Features
 
-- **📄 NLP Resume Parsing & Scoring**: Parses PDF and DOCX files to extract skills, education, work experience, projects, and certifications, scoring resume quality from 0–100.
+- **📄 NLP Resume Parsing & Scoring**: Parses PDF and DOCX files to extract skills using advanced natural language processing (spaCy) and provides a resume score.
 - **🎯 Career Matching Engine**: Calculates weighted match scores across multiple career paths (Data Analyst, Software Developer, ML Engineer, Web Developer, etc.).
 - **📊 Skill Gap Analysis**: Breaks down matched vs. missing skills for any target career with priority tagging (High/Medium).
 - **📚 Curated Learning Paths**: Pairs missing skills directly with courses from Coursera, Udemy, YouTube, and Mode Analytics.
 - **👨‍💼 Admin Management Panel**: Provides real-time platform statistics, student directory management, and custom career role CRUD operations.
+- **🔐 Secure Authentication**: Includes full user authentication with secure password hashing (`bcrypt`) and persistent session management.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Backend**: Flask 3.x, Python 3.13, SQLAlchemy, Werkzeug, Flask-Login
-- **NLP & Document Extraction**: `PyPDF2`, `python-docx`, Phrase matching
-- **Frontend**: HTML5, Jinja2 Templating, Tailwind CSS, Google Fonts, Material Symbols
-- **Database**: SQLite (`careerpath.db`)
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Lucide React
+- **Backend API**: Python 3.10+, FastAPI, Uvicorn
+- **Database**: SQLite (`careerpath.db`), SQLAlchemy ORM
+- **NLP & Document Extraction**: `spaCy`, `PyPDF2`, `python-docx`
+- **Authentication**: `bcrypt`
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### 1. Prerequisites
-Ensure you have **Python 3.10+** installed.
+This project is separated into a frontend (React/Vite) and a backend (FastAPI). **You must run both simultaneously** for the application to work.
 
-### 2. Installation
-Clone the repository and install requirements:
+### 1. Prerequisites
+- **Node.js** (v18+)
+- **Python** (v3.10+)
+
+### 2. Backend Setup (FastAPI)
+
+Open a terminal and navigate to the `backend` directory:
+
 ```bash
-git clone https://github.com/pranav-6944/Student-Career-Skill-Recommendation-System-.git
-cd Student-Career-Skill-Recommendation-System-
+cd backend
+```
+
+Create a virtual environment:
+```bash
+# On Windows
+python -m venv venv
+.\venv\Scripts\activate
+
+# On Mac/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install the required Python packages:
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Database Seeding
-Initialize the database with sample career roles, master skills, learning courses, and default accounts:
+Download the spaCy English NLP model:
 ```bash
-python seed_db.py
+python -m spacy download en_core_web_sm
 ```
 
-### 4. Run the Server
-Launch the Flask development server:
+Run the FastAPI server:
 ```bash
-python run.py
+python main.py
 ```
+*The backend API will now be running at `http://localhost:8000`.*
 
-Open your browser and navigate to `http://127.0.0.1:5000`.
+### 3. Frontend Setup (React / Vite)
+
+Open a **new** terminal and stay in the root directory:
+
+```bash
+# Install Node dependencies
+npm install
+
+# Start the Vite development server
+npm run dev
+```
+*(If `npm run dev` doesn't work, you can start it on port 3000 explicitly using `node "node_modules/vite/bin/vite.js" --port 3000`)*
+
+*The frontend UI will now be running at `http://localhost:3000`.*
 
 ---
 
-## 🔑 Default Credentials
+## 🔑 Using the Platform
 
-| Role | Email | Password |
-|---|---|---|
-| **Admin** | `admin@careerpath.ai` | `admin123` |
-| **Demo Student** | `ashwini@student.com` | `student123` |
+1. **Access the App**: Navigate to `http://localhost:3000` in your web browser.
+2. **Sign Up**: Click "Go to App" and select "Sign up for free". Create a new account with your email and password.
+3. **Upload Resume**: Go to the Dashboard and upload a PDF or DOCX resume. The Python backend will extract your skills and save them to your profile.
+4. **View Profile**: Navigate to the "Profile" tab to view and update your University, Degree, and CGPA. This data is securely stored in the SQLite database.
 
 ---
 
 ## 📂 Project Structure
 
 ```
-├── app/
-│   ├── routes/          # Auth, Student, Resume, Admin blueprints
-│   ├── services/        # Resume parser, Skill extractor, Career matcher, Gap analyzer
-│   ├── templates/       # Jinja2 templates for all UI views
-│   ├── static/          # CSS, images, and user upload directory
-│   └── models.py        # SQLAlchemy database schemas
-├── data/
-│   ├── careers.json     # Predefined career roles & required skills
-│   ├── skills_db.json   # Master skill vocabulary & aliases
-│   └── courses.json     # Curated learning resources
-├── config.py            # Flask configuration
-├── run.py               # Entry point
-├── seed_db.py           # Database seeder script
-└── requirements.txt     # Dependencies
+├── backend/
+│   ├── main.py          # FastAPI application entry point & routes
+│   ├── database.py      # SQLAlchemy engine setup
+│   ├── models.py        # SQLite Database tables (User, Profile)
+│   ├── schemas.py       # Pydantic validation schemas
+│   ├── nlp_engine.py    # spaCy NLP processing logic
+│   ├── parsers.py       # PDF and DOCX extraction utilities
+│   └── requirements.txt # Python dependencies
+├── components/          # React UI components (Dashboard, Authentication, etc.)
+├── src/                 # React context (theme, sessions) and global CSS
+├── public/              # Static assets (favicons)
+├── package.json         # Node.js dependencies
+└── vite.config.ts       # Vite bundler configuration
 ```
