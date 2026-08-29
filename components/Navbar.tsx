@@ -64,9 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
 
         {/* Brand — always goes to website */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setMode('website')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 flex items-center justify-center shadow-md shadow-indigo-500/20">
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
+          <img src="/Logo.png" alt="CareerPath AI Logo" className="w-10 h-10 object-contain drop-shadow-md" />
           <div>
             <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
               CareerPath <span className="text-indigo-600 dark:text-indigo-400 font-black">AI</span>
