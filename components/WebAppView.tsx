@@ -117,31 +117,46 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   const [newSalary, setNewSalary] = useState('');
   const [newSkillsStr, setNewSkillsStr] = useState('');
 
-  // Real File Upload & Parser Handler
-  const handleProcessFile = (file: File) => {
+  // Real File Upload & Parser Handler connecting to Python FastAPI
+  const handleProcessFile = async (file: File) => {
     setIsParsing(true);
     setUploadSuccessMsg('');
+    setResumeName(file.name);
     
-    // Simulate real NLP Parsing execution delay
-    setTimeout(() => {
-      setResumeName(file.name);
-      const isPdf = file.name.endsWith('.pdf');
-      const isDoc = file.name.endsWith('.docx') || file.name.endsWith('.doc');
-
-      if (file.name.toLowerCase().includes('web') || file.name.toLowerCase().includes('front') || file.name.toLowerCase().includes('dev')) {
-        setResumeScore(88);
-        setExtractedSkills(['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Git', 'REST APIs', 'Python', 'Tailwind']);
-      } else if (file.name.toLowerCase().includes('ai') || file.name.toLowerCase().includes('ml') || file.name.toLowerCase().includes('data')) {
-        setResumeScore(92);
-        setExtractedSkills(['Python', 'SQL', 'Pandas', 'NumPy', 'Statistics', 'Scikit-Learn', 'Power BI', 'Excel', 'TensorFlow']);
-      } else {
-        setResumeScore(85);
-        setExtractedSkills(['Python', 'SQL', 'Pandas', 'NumPy', 'Excel', 'Git', 'Power BI', 'Agile']);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await fetch('http://localhost:8000/api/extract-resume', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to extract skills from resume. Please ensure the backend is running.');
       }
-
+      
+      const data = await response.json();
+      
+      // Update state with actual NLP extracted skills
+      if (data.skills && data.skills.length > 0) {
+        setExtractedSkills(data.skills);
+        // Calculate a dynamic score based on the number of skills found for UI
+        setResumeScore(Math.min(100, 50 + (data.skills.length * 4)));
+        setUploadSuccessMsg(`Successfully parsed ${file.name} using Real NLP! Found ${data.skills.length} skills.`);
+      } else {
+        setExtractedSkills([]);
+        setResumeScore(30);
+        setUploadSuccessMsg(`Parsed ${file.name}, but couldn't find any known technical skills in the text.`);
+      }
+    } catch (error) {
+      console.error(error);
+      setUploadSuccessMsg(`Error parsing resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setExtractedSkills([]);
+      setResumeScore(0);
+    } finally {
       setIsParsing(false);
-      setUploadSuccessMsg(`Successfully parsed ${file.name}! Skills extracted and career matches updated.`);
-    }, 1200);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
