@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BrainCircuit, Mail, Lock, ArrowRight, Github, Loader2, AlertCircle } from 'lucide-react';
+import { BrainCircuit, Mail, Lock, User, ArrowRight, Github, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import type { UserSession } from '@/src/themeContext';
 
 interface SignInViewProps {
-  onSignInSuccess: (role: 'student' | 'admin') => void;
+  onSignInSuccess: (user: UserSession) => void;
 }
 
-// Test credentials (frontend-only simulation — no real backend)
+// Hardcoded demo credentials — no real backend
 const ADMIN_EMAIL = 'admin@careerpath.ai';
 const ADMIN_PASSWORD = 'admin123';
 const STUDENT_EMAIL = 'ashwini@student.com';
 const STUDENT_PASSWORD = 'student123';
 
+// Derive a display name from an email: "john.doe@gmail.com" → "John Doe"
+const nameFromEmail = (email: string): string => {
+  const local = email.split('@')[0];
+  return local
+    .replace(/[._\-+]/g, ' ')
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+};
+
 export function SignInView({ onSignInSuccess }: SignInViewProps) {
   const [isLogin, setIsLogin] = useState(true);
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,34 +40,35 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
 
     setTimeout(() => {
       setIsLoading(false);
+      const emailLower = email.toLowerCase().trim();
 
       if (isLogin) {
-        // Admin login check
-        if (email.toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          onSignInSuccess('admin');
+        // Admin login
+        if (emailLower === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+          onSignInSuccess({ email: ADMIN_EMAIL, name: 'Administrator', role: 'admin' });
           return;
         }
-        // Student login check — accept exact student creds OR any registered email with 6+ char password
-        if (email.toLowerCase() === STUDENT_EMAIL && password === STUDENT_PASSWORD) {
-          onSignInSuccess('student');
+        // Demo student login
+        if (emailLower === STUDENT_EMAIL && password === STUDENT_PASSWORD) {
+          onSignInSuccess({ email: STUDENT_EMAIL, name: 'Ashwini Kate', role: 'student' });
           return;
         }
-        // Allow any properly formatted email with 6+ char password for demo sign-up flow
-        if (email.includes('@') && email.includes('.') && password.length >= 6) {
-          onSignInSuccess('student');
+        // Any valid email + 6+ char password → sign them in with their email-derived name
+        if (emailLower.includes('@') && emailLower.includes('.') && password.length >= 6) {
+          onSignInSuccess({ email: emailLower, name: nameFromEmail(emailLower), role: 'student' });
           return;
         }
-        // Wrong credentials
-        setError('Invalid email or password. Try student123 or admin123.');
-        setIsLoading(false);
-        return;
+        // Invalid
+        setError('Password must be at least 6 characters. Or use the demo credentials below.');
       } else {
-        // Sign up — always creates a student account in simulation mode
+        // Sign Up
         if (password.length < 6) {
           setError('Password must be at least 6 characters.');
+          setIsLoading(false);
           return;
         }
-        onSignInSuccess('student');
+        const displayName = fullName.trim() || nameFromEmail(email);
+        onSignInSuccess({ email: email.toLowerCase().trim(), name: displayName, role: 'student' });
       }
     }, 800);
   };
@@ -68,7 +81,7 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
   return (
     <div className="min-h-[85vh] flex items-center justify-center p-4 relative">
 
-      {/* Background glow decoration */}
+      {/* Background glow */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]" />
@@ -82,62 +95,81 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
             <BrainCircuit className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-            {isLogin ? 'Welcome back' : 'Create an account'}
+            {isLogin ? 'Welcome back' : 'Create account'}
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-            {isLogin ? 'Sign in to access your career dashboard' : 'Sign up to jumpstart your career path'}
+            {isLogin
+              ? 'Sign in to access your personal career dashboard'
+              : 'Sign up to get personalized career recommendations'}
           </p>
         </div>
 
-        {/* Error Message */}
+        {/* Error Banner */}
         {error && (
-          <div className="mb-5 flex items-center gap-2 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl px-4 py-3 text-sm text-red-700 dark:text-red-400 font-medium">
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
-            {error}
+          <div className="mb-5 flex items-start gap-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl px-4 py-3 text-sm text-red-700 dark:text-red-400 font-medium">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
           </div>
         )}
 
-        {/* Demo Credentials Hint */}
+        {/* Demo Credentials (only on login mode) */}
         {isLogin && (
-          <div className="mb-5 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 rounded-xl px-4 py-3 text-xs text-indigo-700 dark:text-indigo-300 font-medium space-y-1">
-            <p className="font-bold text-indigo-800 dark:text-indigo-200">Demo Credentials:</p>
-            <p>🎓 Student: <code>ashwini@student.com</code> / <code>student123</code></p>
-            <p>🛡️ Admin: <code>admin@careerpath.ai</code> / <code>admin123</code></p>
+          <div className="mb-5 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 rounded-xl px-4 py-3 text-xs space-y-1.5">
+            <p className="font-bold text-indigo-800 dark:text-indigo-200 flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" /> Demo Credentials
+            </p>
+            <p className="text-indigo-700 dark:text-indigo-300">
+              🎓 <strong>Student:</strong> <code className="bg-indigo-100 dark:bg-indigo-900 px-1 rounded">ashwini@student.com</code> / <code className="bg-indigo-100 dark:bg-indigo-900 px-1 rounded">student123</code>
+            </p>
+            <p className="text-indigo-700 dark:text-indigo-300">
+              🛡️ <strong>Admin:</strong> <code className="bg-indigo-100 dark:bg-indigo-900 px-1 rounded">admin@careerpath.ai</code> / <code className="bg-indigo-100 dark:bg-indigo-900 px-1 rounded">admin123</code>
+            </p>
+            <p className="text-slate-500 dark:text-slate-500 text-[11px] pt-0.5">
+              Or sign in with your own Gmail / email — your account will be created automatically.
+            </p>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          {/* Full Name — sign up only */}
           {!isLogin && (
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-xs font-bold text-slate-700 dark:text-slate-300 block">Full Name</label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Your full name"
-                required
-                className="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
+            <div className="space-y-1.5">
+              <label htmlFor="fullname" className="text-xs font-bold text-slate-700 dark:text-slate-300 block">Full Name</label>
+              <div className="relative">
+                <User className="absolute left-3.5 top-3.5 h-4.5 w-4.5 text-slate-400" />
+                <input
+                  id="fullname"
+                  type="text"
+                  placeholder="Your full name"
+                  value={fullName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFullName(e.target.value)}
+                  className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                />
+              </div>
             </div>
           )}
 
-          <div className="space-y-2">
+          {/* Email */}
+          <div className="space-y-1.5">
             <label htmlFor="email" className="text-xs font-bold text-slate-700 dark:text-slate-300 block">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3.5 h-5 w-5 text-slate-400" />
+              <Mail className="absolute left-3.5 top-3.5 h-4.5 w-4.5 text-slate-400" />
               <input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="you@gmail.com"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 required
-                className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
+          {/* Password */}
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label htmlFor="password" className="text-xs font-bold text-slate-700 dark:text-slate-300 block">Password</label>
               {isLogin && (
@@ -147,20 +179,21 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
               )}
             </div>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-slate-400" />
+              <Lock className="absolute left-3.5 top-3.5 h-4.5 w-4.5 text-slate-400" />
               <input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Min. 6 characters"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
               />
             </div>
           </div>
 
+          {/* Submit Button */}
           <Button
             type="submit"
             size="lg"
@@ -169,18 +202,20 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
             className="w-full h-12 text-base font-extrabold gap-2 mt-2"
           >
             {isLoading ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> Signing in...</>
+              <><Loader2 className="w-4 h-4 animate-spin" /> {isLogin ? 'Signing in...' : 'Creating account...'}</>
             ) : (
               <>{isLogin ? 'Sign In' : 'Create Account'} <ArrowRight className="w-4 h-4" /></>
             )}
           </Button>
 
-          <div className="relative flex items-center py-2">
+          {/* Divider */}
+          <div className="relative flex items-center py-1">
             <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
-            <span className="flex-shrink-0 mx-4 text-xs font-bold text-slate-400 uppercase tracking-wider">or continue with</span>
+            <span className="flex-shrink-0 mx-4 text-xs font-bold text-slate-400 uppercase tracking-wider">or</span>
             <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
           </div>
 
+          {/* GitHub OAuth (Coming Soon) */}
           <Button
             type="button"
             variant="outline"
@@ -189,15 +224,17 @@ export function SignInView({ onSignInSuccess }: SignInViewProps) {
             className="w-full h-12 gap-2 font-bold"
           >
             <Github className="w-5 h-5" />
-            {githubClicked ? 'GitHub OAuth — Coming Soon!' : 'Continue with GitHub'}
+            {githubClicked ? '⚡ GitHub OAuth — Coming Soon!' : 'Continue with GitHub'}
           </Button>
+
         </form>
 
-        <div className="mt-8 text-center">
+        {/* Toggle Sign In / Sign Up */}
+        <div className="mt-7 text-center">
           <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button
-              onClick={() => { setIsLogin(!isLogin); setError(''); }}
+              onClick={() => { setIsLogin(!isLogin); setError(''); setFullName(''); }}
               className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
             >
               {isLogin ? 'Sign up for free' : 'Sign in here'}

@@ -63,7 +63,7 @@ test.describe('Student Career & Skill Recommendation System E2E', () => {
 
     // Toggle to sign up
     await page.getByRole('button', { name: /Sign up for free/i }).click();
-    await expect(page.getByText('Create an account')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Create account' })).toBeVisible();
     await expect(page.getByLabel(/Full Name/i)).toBeVisible();
 
     // Toggle back to sign in

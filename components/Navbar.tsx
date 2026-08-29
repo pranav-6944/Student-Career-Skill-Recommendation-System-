@@ -13,7 +13,7 @@ interface NavbarProps {
 const isAuthenticated = (mode: AppMode) => mode === 'webapp' || mode === 'admin';
 
 export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
-  const { theme, toggleTheme, role } = useTheme();
+  const { theme, toggleTheme, role, currentUser } = useTheme();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -139,10 +139,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
                 className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs font-bold cursor-pointer transition-colors"
               >
                 <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[10px] text-white ${role === 'admin' ? 'bg-amber-500' : 'bg-indigo-600'}`}>
-                  {role === 'admin' ? 'AD' : 'AK'}
+                  {currentUser
+                    ? currentUser.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+                    : role === 'admin' ? 'AD' : '?'}
                 </div>
-                <span className="hidden sm:inline">
-                  {role === 'admin' ? 'Admin Profile' : 'Ashwini Kate'}
+                <span className="hidden sm:inline max-w-[120px] truncate">
+                  {currentUser ? currentUser.name : role === 'admin' ? 'Admin Profile' : 'Student'}
                 </span>
                 <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -151,10 +153,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
               {profileDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-2 z-50 text-xs space-y-1">
                   <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
-                    <p className="font-bold text-slate-900 dark:text-white">
-                      {role === 'admin' ? 'Administrator' : 'Ashwini Kate'}
+                    <p className="font-bold text-slate-900 dark:text-white truncate">
+                      {currentUser ? currentUser.name : role === 'admin' ? 'Administrator' : 'Student'}
                     </p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+                      {currentUser?.email}
+                    </p>
+                    <p className="text-[11px] mt-0.5">
                       Role: <span className={`font-bold uppercase ${role === 'admin' ? 'text-amber-500' : 'text-indigo-600 dark:text-indigo-400'}`}>{role}</span>
                     </p>
                   </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from '@/src/themeContext';
-import { useTheme } from '@/src/themeContext';
+import { ThemeProvider, useTheme } from '@/src/themeContext';
+import type { UserSession } from '@/src/themeContext';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { BentoSection } from '@/components/BentoSection';
@@ -18,19 +18,18 @@ import { Footer } from '@/components/Footer';
 type AppMode = 'website' | 'webapp' | 'admin' | 'auth';
 
 export function AppContent() {
-  const { setRole } = useTheme();
+  const { setCurrentUser, logout } = useTheme();
   const [mode, setMode] = useState<AppMode>('website');
 
-  const handleSignInSuccess = (role: 'student' | 'admin') => {
-    setRole(role);
-    // Route admin to admin console, students to dashboard
-    setMode(role === 'admin' ? 'admin' : 'webapp');
+  const handleSignInSuccess = (user: UserSession) => {
+    // Save the full user session to context (persisted in sessionStorage)
+    setCurrentUser(user);
+    // Route admin → admin console, student → dashboard
+    setMode(user.role === 'admin' ? 'admin' : 'webapp');
   };
 
   const handleLogout = () => {
-    // Clear session role on logout
-    setRole('student');
-    sessionStorage.removeItem('careerpath_role');
+    logout();
     setMode('auth');
   };
 

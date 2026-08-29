@@ -26,18 +26,23 @@ interface WebAppViewProps {
 }
 
 export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', onLogout }) => {
-  const { role } = useTheme();
+  const { role, currentUser } = useTheme();
 
   const [activeView, setActiveView] = useState<'dashboard' | 'resume' | 'careers' | 'gap' | 'learning' | 'profile' | 'admin'>(
     initialMode === 'admin' && role === 'admin' ? 'admin' : 'dashboard'
   );
 
-  // Student Profile State — loaded from localStorage for persistence
-  const [studentName, setStudentName] = useState(() => localStorage.getItem('cp_name') || 'Ashwini Kate');
-  const [degree, setDegree] = useState(() => localStorage.getItem('cp_degree') || 'B.Sc Computer Science');
-  const [university, setUniversity] = useState(() => localStorage.getItem('cp_university') || 'Savitribai Phule Pune University');
-  const [cgpa, setCgpa] = useState(() => localStorage.getItem('cp_cgpa') || '8.4');
-  const [year, setYear] = useState(() => localStorage.getItem('cp_year') || '3');
+  // Build a per-user localStorage key prefix so each account has isolated profile data
+  const userKey = currentUser?.email ? `cp_${btoa(currentUser.email)}_` : 'cp_';
+
+  // Student Profile State — keyed per user so multiple accounts don't share data
+  const [studentName, setStudentName] = useState(() =>
+    localStorage.getItem(userKey + 'name') || currentUser?.name || 'Student'
+  );
+  const [degree, setDegree] = useState(() => localStorage.getItem(userKey + 'degree') || 'B.Sc Computer Science');
+  const [university, setUniversity] = useState(() => localStorage.getItem(userKey + 'university') || 'Your University');
+  const [cgpa, setCgpa] = useState(() => localStorage.getItem(userKey + 'cgpa') || '');
+  const [year, setYear] = useState(() => localStorage.getItem(userKey + 'year') || '1');
   const [profileSaveMsg, setProfileSaveMsg] = useState('');
   
   // Resume & Extracted Skills State
@@ -805,6 +810,17 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
             </div>
 
             <Card className="p-6 sm:p-8 space-y-5">
+              {/* Account Email — read-only */}
+              {currentUser?.email && (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Account Email</label>
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-500 dark:text-slate-400 font-medium flex items-center gap-2">
+                    <span>📧</span> {currentUser.email}
+                    <span className="ml-auto text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">Read-only</span>
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
                 <input
@@ -870,11 +886,11 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                 size="sm"
                 className="w-full py-3 font-extrabold shadow-md"
                 onClick={() => {
-                  localStorage.setItem('cp_name', studentName);
-                  localStorage.setItem('cp_degree', degree);
-                  localStorage.setItem('cp_university', university);
-                  localStorage.setItem('cp_cgpa', cgpa);
-                  localStorage.setItem('cp_year', year);
+                  localStorage.setItem(userKey + 'name', studentName);
+                  localStorage.setItem(userKey + 'degree', degree);
+                  localStorage.setItem(userKey + 'university', university);
+                  localStorage.setItem(userKey + 'cgpa', cgpa);
+                  localStorage.setItem(userKey + 'year', year);
                   setProfileSaveMsg('Profile saved successfully!');
                   setTimeout(() => setProfileSaveMsg(''), 3000);
                 }}
