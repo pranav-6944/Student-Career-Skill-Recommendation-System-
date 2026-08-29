@@ -29,37 +29,37 @@ export const FAQSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section class="py-20 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 border-t border-slate-200 dark:border-slate-800">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 border-t border-slate-200 dark:border-slate-800">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <p class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
             FREQUENTLY ASKED QUESTIONS
           </p>
-          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Got Questions? We Have Answers
           </h2>
         </div>
 
-        <div class="space-y-4">
+        <div className="space-y-4">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
               <Card
                 key={idx}
-                class="overflow-hidden cursor-pointer transition-all duration-200"
+                className="overflow-hidden cursor-pointer transition-all duration-200"
                 onClick={() => setOpenIndex(isOpen ? null : idx)}
               >
-                <div class="p-5 flex items-center justify-between gap-4">
-                  <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-3">
-                    <HelpCircle class="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                <div className="p-5 flex items-center justify-between gap-4">
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-3">
+                    <HelpCircle className="w-4 h-4 text-indigo-500 flex-shrink-0" />
                     {faq.q}
                   </h3>
-                  <ChevronDown class={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-indigo-500' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-indigo-500' : ''}`} />
                 </div>
 
                 {isOpen && (
-                  <div class="px-5 pb-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800/60 leading-relaxed">
+                  <div className="px-5 pb-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800/60 leading-relaxed">
                     {faq.a}
                   </div>
                 )}

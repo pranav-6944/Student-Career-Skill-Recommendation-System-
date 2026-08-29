@@ -124,21 +124,21 @@ export const SPARK_BADGE_MARKUP = `
   </style>
 </head>
 <body>
-  <div class="badge-container">
+  <div className="badge-container">
     <canvas id="rainCanvas"></canvas>
     
-    <div class="badge-card">
-      <div class="badge-icon">
+    <div className="badge-card">
+      <div className="badge-icon">
         <svg viewBox="0 0 24 24">
           <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
         </svg>
       </div>
-      <div class="badge-title">AI Career Certified</div>
-      <div class="badge-subtitle">Verified Readiness · 94.8%</div>
-      <div class="badge-pills">
-        <span class="pill verified">✓ Python</span>
-        <span class="pill verified">✓ Data Science</span>
-        <span class="pill">SQL Master</span>
+      <div className="badge-title">AI Career Certified</div>
+      <div className="badge-subtitle">Verified Readiness · 94.8%</div>
+      <div className="badge-pills">
+        <span className="pill verified">✓ Python</span>
+        <span className="pill verified">✓ Data Science</span>
+        <span className="pill">SQL Master</span>
       </div>
     </div>
   </div>

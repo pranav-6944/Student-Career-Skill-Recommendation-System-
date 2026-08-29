@@ -201,7 +201,7 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
   });
 
   return (
-    <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-300">
       
       {/* Hidden File Input */}
       <input
@@ -209,99 +209,99 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
         ref={fileInputRef}
         onChange={handleFileChange}
         accept=".pdf,.docx,.doc,.txt"
-        class="hidden"
+        className="hidden"
       />
 
       {/* Sidebar Navigation */}
-      <aside class="w-full md:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-shrink-0 flex flex-col justify-between">
+      <aside className="w-full md:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-shrink-0 flex flex-col justify-between">
         <div>
           {/* User Profile Summary Header */}
-          <div class="p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-100/60 dark:bg-slate-900/80 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center font-bold text-white shadow-md">
+          <div className="p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-100/60 dark:bg-slate-900/80 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center font-bold text-white shadow-md">
               {role === 'admin' ? 'AD' : studentName.substring(0, 2).toUpperCase()}
             </div>
-            <div class="min-w-0 flex-1">
-              <p class="font-bold text-sm text-slate-900 dark:text-white truncate">
+            <div className="min-w-0 flex-1">
+              <p className="font-bold text-sm text-slate-900 dark:text-white truncate">
                 {role === 'admin' ? 'Admin Panel' : studentName}
               </p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
+              <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                 {role === 'admin' ? 'Administrator' : degree}
               </p>
             </div>
           </div>
 
           {/* Nav Items */}
-          <nav class="p-3 space-y-1.5">
+          <nav className="p-3 space-y-1.5">
             <button
               onClick={() => setActiveView('dashboard')}
-              class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeView === 'dashboard' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <LayoutDashboard class="w-4 h-4" />
+              <LayoutDashboard className="w-4 h-4" />
               Dashboard
             </button>
 
             <button
               onClick={() => setActiveView('resume')}
-              class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeView === 'resume' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <FileText class="w-4 h-4" />
+              <FileText className="w-4 h-4" />
               Resume Upload & Parser
             </button>
 
             <button
               onClick={() => setActiveView('careers')}
-              class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeView === 'careers' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <Briefcase class="w-4 h-4" />
+              <Briefcase className="w-4 h-4" />
               Career Matches ({careerList.length})
             </button>
 
             <button
               onClick={() => setActiveView('gap')}
-              class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeView === 'gap' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <BarChart2 class="w-4 h-4" />
+              <BarChart2 className="w-4 h-4" />
               Skill Gap Matrix
             </button>
 
             <button
               onClick={() => setActiveView('learning')}
-              class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeView === 'learning' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <GraduationCap class="w-4 h-4" />
+              <GraduationCap className="w-4 h-4" />
               Learning Path
             </button>
 
             <button
               onClick={() => setActiveView('profile')}
-              class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeView === 'profile' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <User class="w-4 h-4" />
+              <User className="w-4 h-4" />
               My Profile
             </button>
 
             {/* ADMIN CONSOLE BUTTON — VISIBLE ONLY IF ROLE IS ADMIN! */}
             {role === 'admin' && (
-              <div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
+              <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
                 <button
                   onClick={() => setActiveView('admin')}
-                  class={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                     activeView === 'admin' ? 'bg-amber-500 text-slate-950 font-black shadow-md' : 'text-amber-600 dark:text-amber-400 hover:bg-amber-500/10'
                   }`}
                 >
-                  <Shield class="w-4 h-4" />
+                  <Shield className="w-4 h-4" />
                   Admin Console
                 </button>
               </div>
@@ -309,88 +309,88 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
           </nav>
         </div>
 
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500">
-          <p class="font-bold text-slate-700 dark:text-slate-300">CareerPath AI v2.0</p>
-          <p>Role Context: <span class="uppercase font-bold text-indigo-600 dark:text-indigo-400">{role}</span></p>
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500">
+          <p className="font-bold text-slate-700 dark:text-slate-300">CareerPath AI v2.0</p>
+          <p>Role Context: <span className="uppercase font-bold text-indigo-600 dark:text-indigo-400">{role}</span></p>
         </div>
       </aside>
 
       {/* Main Content Area with Generous Spacing */}
-      <main class="flex-1 overflow-y-auto p-6 sm:p-8 lg:p-10 space-y-8">
+      <main className="flex-1 overflow-y-auto p-6 sm:p-8 lg:p-10 space-y-8">
 
         {/* 1. DASHBOARD VIEW */}
         {activeView === 'dashboard' && (
-          <div class="space-y-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Student Career Dashboard</h1>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Real-time overview of extracted skills, readiness score, and top career matches.</p>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Student Career Dashboard</h1>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Real-time overview of extracted skills, readiness score, and top career matches.</p>
               </div>
-              <Button size="sm" onClick={() => setActiveView('resume')} class="gap-2 shadow-md">
-                <UploadCloud class="w-4 h-4" />
+              <Button size="sm" onClick={() => setActiveView('resume')} className="gap-2 shadow-md">
+                <UploadCloud className="w-4 h-4" />
                 Upload New Resume
               </Button>
             </div>
 
             {/* Stat Cards Grid with Spacing & 2px Borders */}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card class="p-6">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">Resume Score</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="p-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">Resume Score</span>
                   <Badge variant="success">Good</Badge>
                 </div>
-                <p class="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400 mt-3">{resumeScore}/100</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">{resumeName}</p>
+                <p className="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400 mt-3">{resumeScore}/100</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">{resumeName}</p>
               </Card>
 
-              <Card class="p-6">
-                <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">Extracted Skills</span>
-                <p class="text-3xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400 mt-3">{extractedSkills.length}</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Verified from resume</p>
+              <Card className="p-6">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">Extracted Skills</span>
+                <p className="text-3xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400 mt-3">{extractedSkills.length}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Verified from resume</p>
               </Card>
 
-              <Card class="p-6">
-                <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">Career Matches</span>
-                <p class="text-3xl sm:text-4xl font-black text-sky-600 dark:text-sky-400 mt-3">{careerList.length}</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Roles mapped</p>
+              <Card className="p-6">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">Career Matches</span>
+                <p className="text-3xl sm:text-4xl font-black text-sky-600 dark:text-sky-400 mt-3">{careerList.length}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Roles mapped</p>
               </Card>
 
-              <Card class="p-6">
-                <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">Career Readiness</span>
-                <p class="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 mt-3">74.5%</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Top-3 average</p>
+              <Card className="p-6">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">Career Readiness</span>
+                <p className="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 mt-3">74.5%</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Top-3 average</p>
               </Card>
             </div>
 
             {/* Recommendations & Skills */}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               
-              <Card class="lg:col-span-8 p-6 sm:p-8 space-y-6">
-                <div class="flex items-center justify-between">
-                  <h3 class="font-extrabold text-xl text-slate-900 dark:text-white">Top Recommended Career Roles</h3>
-                  <button onClick={() => setActiveView('careers')} class="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
+              <Card className="lg:col-span-8 p-6 sm:p-8 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Top Recommended Career Roles</h3>
+                  <button onClick={() => setActiveView('careers')} className="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
                     View all ({careerList.length}) →
                   </button>
                 </div>
 
-                <div class="space-y-5">
+                <div className="space-y-5">
                   {careerList.slice(0, 3).map((role) => (
-                    <div key={role.id} class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
-                      <div class="flex items-center justify-between">
+                    <div key={role.id} className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
                         <div>
-                          <p class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">{role.title}</p>
-                          <p class="text-xs text-slate-500 dark:text-slate-400">{role.department} · {role.salary}</p>
+                          <p className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">{role.title}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{role.department} · {role.salary}</p>
                         </div>
-                        <span class="text-lg font-black text-emerald-600 dark:text-emerald-400">{role.matchPct}%</span>
+                        <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">{role.matchPct}%</span>
                       </div>
                       <Progress value={role.matchPct} indicatorClassName="bg-emerald-500" />
-                      <div class="flex items-center justify-between pt-1 text-xs">
-                        <span class="text-slate-500 dark:text-slate-400 truncate max-w-[70%]">
-                          Matched: <span class="text-slate-800 dark:text-slate-200 font-semibold">{role.matchedSkills.join(', ')}</span>
+                      <div className="flex items-center justify-between pt-1 text-xs">
+                        <span className="text-slate-500 dark:text-slate-400 truncate max-w-[70%]">
+                          Matched: <span className="text-slate-800 dark:text-slate-200 font-semibold">{role.matchedSkills.join(', ')}</span>
                         </span>
                         <button
                           onClick={() => { setSelectedCareerId(role.id); setActiveView('gap'); }}
-                          class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex-shrink-0"
+                          className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex-shrink-0"
                         >
                           Skill Gap →
                         </button>
@@ -400,23 +400,23 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
                 </div>
               </Card>
 
-              <Card class="lg:col-span-4 p-6 sm:p-8 space-y-6">
-                <h3 class="font-extrabold text-xl text-slate-900 dark:text-white">Extracted Skills</h3>
-                <div class="flex flex-wrap gap-2">
+              <Card className="lg:col-span-4 p-6 sm:p-8 space-y-6">
+                <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Extracted Skills</h3>
+                <div className="flex flex-wrap gap-2">
                   {extractedSkills.map((sk, idx) => (
-                    <Badge key={idx} variant="success" class="text-xs">
+                    <Badge key={idx} variant="success" className="text-xs">
                       ✓ {sk}
                     </Badge>
                   ))}
                 </div>
 
-                <div class="pt-6 border-t border-slate-200 dark:border-slate-800">
-                  <p class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-3">
+                <div className="pt-6 border-t border-slate-200 dark:border-slate-800">
+                  <p className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-3">
                     ⚠️ Missing Core Skills
                   </p>
-                  <div class="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {['Statistics', 'Advanced Excel', 'Machine Learning'].map((ms, idx) => (
-                      <Badge key={idx} variant="warning" class="text-xs">
+                      <Badge key={idx} variant="warning" className="text-xs">
                         ! {ms}
                       </Badge>
                     ))}
@@ -430,81 +430,81 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
 
         {/* 2. RESUME UPLOAD VIEW */}
         {activeView === 'resume' && (
-          <div class="space-y-8">
+          <div className="space-y-8">
             <div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Resume Parser & Analyzer</h1>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Upload your resume file or test sample resume presets to trigger instant NLP extraction.</p>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Resume Parser & Analyzer</h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Upload your resume file or test sample resume presets to trigger instant NLP extraction.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               
               {/* Dropzone Container with Interactive Click & Drag Handling */}
-              <Card class="lg:col-span-8 p-6 sm:p-8 space-y-6">
+              <Card className="lg:col-span-8 p-6 sm:p-8 space-y-6">
                 
                 <div
                   onClick={() => fileInputRef.current?.click()}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={handleDrop}
-                  class="border-3 border-dashed border-indigo-500/40 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-3xl p-10 sm:p-12 flex flex-col items-center justify-center space-y-4 hover:border-indigo-500 transition-all cursor-pointer group text-center"
+                  className="border-3 border-dashed border-indigo-500/40 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-3xl p-10 sm:p-12 flex flex-col items-center justify-center space-y-4 hover:border-indigo-500 transition-all cursor-pointer group text-center"
                 >
-                  <div class="w-16 h-16 rounded-2xl bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    {isParsing ? <Loader2 class="w-8 h-8 animate-spin text-indigo-600 dark:text-indigo-400" /> : <UploadCloud class="w-8 h-8" />}
+                  <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    {isParsing ? <Loader2 className="w-8 h-8 animate-spin text-indigo-600 dark:text-indigo-400" /> : <UploadCloud className="w-8 h-8" />}
                   </div>
                   
                   <div>
-                    <p class="text-lg font-extrabold text-slate-900 dark:text-white">
+                    <p className="text-lg font-extrabold text-slate-900 dark:text-white">
                       {isParsing ? 'Parsing Resume with NLP Engine...' : 'Drag & Drop your PDF or DOCX resume here'}
                     </p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                       Supports PDF, DOCX, DOC, TXT files up to 10MB
                     </p>
                   </div>
 
-                  <Button size="sm" type="button" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} class="shadow-md">
+                  <Button size="sm" type="button" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="shadow-md">
                     Select File from Computer
                   </Button>
                 </div>
 
                 {/* Upload Success Alert */}
                 {uploadSuccessMsg && (
-                  <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
-                    <Check class="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                     <span>{uploadSuccessMsg}</span>
                   </div>
                 )}
 
                 {/* Demo Presets */}
-                <div class="pt-4 border-t border-slate-200 dark:border-slate-800 text-left space-y-3">
-                  <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-left space-y-3">
+                  <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Instant Demo Presets (Click to Test):
                   </p>
-                  <div class="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-3">
                     <Button size="sm" variant="outline" onClick={() => handleSimulateResumeUpload('datascience')}>
-                      <Sparkles class="w-3.5 h-3.5 mr-2 text-indigo-500" />
+                      <Sparkles className="w-3.5 h-3.5 mr-2 text-indigo-500" />
                       Load Data Science Resume
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => handleSimulateResumeUpload('webdev')}>
-                      <Sparkles class="w-3.5 h-3.5 mr-2 text-emerald-500" />
+                      <Sparkles className="w-3.5 h-3.5 mr-2 text-emerald-500" />
                       Load Full-Stack Dev Resume
                     </Button>
                   </div>
                 </div>
 
                 {/* Parsed Output Card */}
-                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-left space-y-4">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Parsed File:</span>
-                    <span class="text-xs font-black text-indigo-600 dark:text-indigo-400">{resumeName}</span>
+                <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-left space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Parsed File:</span>
+                    <span className="text-xs font-black text-indigo-600 dark:text-indigo-400">{resumeName}</span>
                   </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Parsed Quality Score:</span>
-                    <span class="text-base font-black text-emerald-600 dark:text-emerald-400">{resumeScore} / 100</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Parsed Quality Score:</span>
+                    <span className="text-base font-black text-emerald-600 dark:text-emerald-400">{resumeScore} / 100</span>
                   </div>
                   <div>
-                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-2">Extracted Entity Skills ({extractedSkills.length}):</span>
-                    <div class="flex flex-wrap gap-2">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-2">Extracted Entity Skills ({extractedSkills.length}):</span>
+                    <div className="flex flex-wrap gap-2">
                       {extractedSkills.map((s, idx) => (
-                        <Badge key={idx} variant="success" class="text-xs">✓ {s}</Badge>
+                        <Badge key={idx} variant="success" className="text-xs">✓ {s}</Badge>
                       ))}
                     </div>
                   </div>
@@ -512,19 +512,19 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
               </Card>
 
               {/* Tips & Extraction Info */}
-              <Card class="lg:col-span-4 p-6 sm:p-8 space-y-4">
-                <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Parsing Guidelines</h3>
-                <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-4 leading-relaxed">
-                  <li class="flex items-start gap-2.5">
-                    <CheckCircle2 class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+              <Card className="lg:col-span-4 p-6 sm:p-8 space-y-4">
+                <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">Parsing Guidelines</h3>
+                <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-4 leading-relaxed">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                     <span>Include explicit technical skills section to boost NLP scoring.</span>
                   </li>
-                  <li class="flex items-start gap-2.5">
-                    <CheckCircle2 class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                     <span>Name specific frameworks (e.g. React, Pandas, Docker) in projects.</span>
                   </li>
-                  <li class="flex items-start gap-2.5">
-                    <CheckCircle2 class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                     <span>List certifications with issuer names (e.g. Coursera, AWS).</span>
                   </li>
                 </ul>
@@ -536,33 +536,33 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
 
         {/* 3. CAREER MATCHES VIEW */}
         {activeView === 'careers' && (
-          <div class="space-y-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Career Role Matches</h1>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Comparing your extracted qualifications against predefined industry roles.</p>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Career Role Matches</h1>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Comparing your extracted qualifications against predefined industry roles.</p>
               </div>
 
               {/* Search Input */}
-              <div class="relative w-full sm:w-64">
-                <Search class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <div className="relative w-full sm:w-64">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   placeholder="Search roles or skills..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  class="w-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
                 />
               </div>
             </div>
 
             {/* Filter Pills */}
-            <div class="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
               {(['all', 'high', 'medium', 'low'] as const).map((f) => (
                 <button
                   key={f}
                   onClick={() => setMatchFilter(f)}
-                  class={`px-4 py-2 rounded-full text-xs font-extrabold capitalize transition-all cursor-pointer ${
+                  className={`px-4 py-2 rounded-full text-xs font-extrabold capitalize transition-all cursor-pointer ${
                     matchFilter === f ? 'bg-indigo-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-2 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
@@ -572,44 +572,44 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
             </div>
 
             {/* Career Cards Grid with Generous Spacing */}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {filteredCareers.map((c) => (
-                <Card key={c.id} class="p-6 sm:p-8 space-y-5">
-                  <div class="flex items-start justify-between">
+                <Card key={c.id} className="p-6 sm:p-8 space-y-5">
+                  <div className="flex items-start justify-between">
                     <div>
-                      <h3 class="font-extrabold text-xl text-slate-900 dark:text-white">{c.title}</h3>
-                      <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{c.department} · {c.salary}</p>
+                      <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">{c.title}</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{c.department} · {c.salary}</p>
                     </div>
-                    <span class="text-2xl font-black text-emerald-600 dark:text-emerald-400">{c.matchPct}%</span>
+                    <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{c.matchPct}%</span>
                   </div>
 
                   <Progress value={c.matchPct} indicatorClassName="bg-emerald-500" />
 
-                  <div class="space-y-3 text-xs">
+                  <div className="space-y-3 text-xs">
                     <div>
-                      <span class="text-slate-500 dark:text-slate-400 font-bold block mb-1.5">Matched Skills ({c.matchedSkills.length}):</span>
-                      <div class="flex flex-wrap gap-1.5">
+                      <span className="text-slate-500 dark:text-slate-400 font-bold block mb-1.5">Matched Skills ({c.matchedSkills.length}):</span>
+                      <div className="flex flex-wrap gap-1.5">
                         {c.matchedSkills.map((s, idx) => (
-                          <Badge key={idx} variant="success" class="text-[10px]">✓ {s}</Badge>
+                          <Badge key={idx} variant="success" className="text-[10px]">✓ {s}</Badge>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <span class="text-slate-500 dark:text-slate-400 font-bold block mb-1.5">Missing Skills ({c.missingSkills.length}):</span>
-                      <div class="flex flex-wrap gap-1.5">
+                      <span className="text-slate-500 dark:text-slate-400 font-bold block mb-1.5">Missing Skills ({c.missingSkills.length}):</span>
+                      <div className="flex flex-wrap gap-1.5">
                         {c.missingSkills.map((s, idx) => (
-                          <Badge key={idx} variant="warning" class="text-[10px]">! {s}</Badge>
+                          <Badge key={idx} variant="warning" className="text-[10px]">! {s}</Badge>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  <div class="flex items-center gap-3 pt-3">
+                  <div className="flex items-center gap-3 pt-3">
                     <Button
                       size="sm"
                       onClick={() => { setSelectedCareerId(c.id); setActiveView('gap'); }}
-                      class="flex-1 text-xs font-bold"
+                      className="flex-1 text-xs font-bold"
                     >
                       Skill Gap Matrix →
                     </Button>
@@ -617,7 +617,7 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
                       size="sm"
                       variant="outline"
                       onClick={() => { setSelectedCareerId(c.id); setActiveView('learning'); }}
-                      class="flex-1 text-xs font-bold"
+                      className="flex-1 text-xs font-bold"
                     >
                       Learning Path
                     </Button>
@@ -630,20 +630,20 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
 
         {/* 4. SKILL GAP MATRIX VIEW */}
         {activeView === 'gap' && (
-          <div class="space-y-8">
+          <div className="space-y-8">
             <div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Skill Gap Matrix</h1>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Comparing your profile against target career standards for <span class="text-indigo-600 dark:text-indigo-400 font-bold">{selectedCareer.title}</span>.</p>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Skill Gap Matrix</h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Comparing your profile against target career standards for <span className="text-indigo-600 dark:text-indigo-400 font-bold">{selectedCareer.title}</span>.</p>
             </div>
 
             {/* Target Role Selector */}
-            <div class="flex items-center gap-2 flex-wrap bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800">
-              <span class="text-xs text-slate-500 dark:text-slate-400 font-bold px-2">Target Role:</span>
+            <div className="flex items-center gap-2 flex-wrap bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-bold px-2">Target Role:</span>
               {careerList.map(c => (
                 <button
                   key={c.id}
                   onClick={() => setSelectedCareerId(c.id)}
-                  class={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                     selectedCareerId === c.id ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
@@ -653,37 +653,37 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
             </div>
 
             {/* Matrix Side-by-Side */}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
-              <Card class="p-6 sm:p-8 border-l-8 border-l-emerald-500">
-                <h3 class="font-extrabold text-xl text-slate-900 dark:text-white mb-2 flex items-center gap-2.5">
-                  <CheckCircle2 class="w-6 h-6 text-emerald-500" />
+              <Card className="p-6 sm:p-8 border-l-8 border-l-emerald-500">
+                <h3 className="font-extrabold text-xl text-slate-900 dark:text-white mb-2 flex items-center gap-2.5">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-500" />
                   Matched Skills ({selectedCareer.matchedSkills.length})
                 </h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Qualifications you already possess for this position</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">Qualifications you already possess for this position</p>
 
-                <div class="space-y-3">
+                <div className="space-y-3">
                   {selectedCareer.matchedSkills.map((s, idx) => (
-                    <div key={idx} class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-900 dark:text-white">✓ {s}</span>
-                      <Badge variant="success" class="text-[10px]">Verified</Badge>
+                    <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">✓ {s}</span>
+                      <Badge variant="success" className="text-[10px]">Verified</Badge>
                     </div>
                   ))}
                 </div>
               </Card>
 
-              <Card class="p-6 sm:p-8 border-l-8 border-l-amber-500">
-                <h3 class="font-extrabold text-xl text-slate-900 dark:text-white mb-2 flex items-center gap-2.5">
-                  <AlertTriangle class="w-6 h-6 text-amber-500" />
+              <Card className="p-6 sm:p-8 border-l-8 border-l-amber-500">
+                <h3 className="font-extrabold text-xl text-slate-900 dark:text-white mb-2 flex items-center gap-2.5">
+                  <AlertTriangle className="w-6 h-6 text-amber-500" />
                   Skills to Develop ({selectedCareer.missingSkills.length})
                 </h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Acquire these skills to boost match to 95%+</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">Acquire these skills to boost match to 95%+</p>
 
-                <div class="space-y-3">
+                <div className="space-y-3">
                   {selectedCareer.missingSkills.map((s, idx) => (
-                    <div key={idx} class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-900 dark:text-white">! {s}</span>
-                      <Button size="sm" variant="ghost" onClick={() => setActiveView('learning')} class="text-[11px] h-7 text-indigo-600 dark:text-indigo-400 font-bold">
+                    <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">! {s}</span>
+                      <Button size="sm" variant="ghost" onClick={() => setActiveView('learning')} className="text-[11px] h-7 text-indigo-600 dark:text-indigo-400 font-bold">
                         Find Courses →
                       </Button>
                     </div>
@@ -697,15 +697,15 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
 
         {/* 5. LEARNING PATH VIEW */}
         {activeView === 'learning' && (
-          <div class="space-y-8">
+          <div className="space-y-8">
             <div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Personalized Learning Roadmap</h1>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Curated courses mapped to your missing skills for <span class="text-indigo-600 dark:text-indigo-400 font-bold">{selectedCareer.title}</span>.</p>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Personalized Learning Roadmap</h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Curated courses mapped to your missing skills for <span className="text-indigo-600 dark:text-indigo-400 font-bold">{selectedCareer.title}</span>.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               
-              <div class="lg:col-span-8 space-y-5">
+              <div className="lg:col-span-8 space-y-5">
                 {[
                   {
                     title: "Statistics for Data Science & Machine Learning",
@@ -735,21 +735,21 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
                     free: true,
                   },
                 ].map((course, idx) => (
-                  <Card key={idx} class="p-6 space-y-3">
-                    <div class="flex items-start justify-between gap-4">
-                      <div class="space-y-2">
-                        <Badge variant="warning" class="text-[10px]">
+                  <Card key={idx} className="p-6 space-y-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2">
+                        <Badge variant="warning" className="text-[10px]">
                           Fills gap: {course.skill}
                         </Badge>
-                        <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">{course.title}</h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                        <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">{course.title}</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                           {course.platform} · {course.duration} · ⭐ {course.rating}
-                          {course.free && <span class="ml-2 text-emerald-600 dark:text-emerald-400 font-extrabold">· FREE</span>}
+                          {course.free && <span className="ml-2 text-emerald-600 dark:text-emerald-400 font-extrabold">· FREE</span>}
                         </p>
                       </div>
                       <a href={course.url} target="_blank" rel="noreferrer">
-                        <Button size="sm" class="gap-1.5 text-xs font-bold shadow-md">
-                          Start <ExternalLink class="w-3.5 h-3.5" />
+                        <Button size="sm" className="gap-1.5 text-xs font-bold shadow-md">
+                          Start <ExternalLink className="w-3.5 h-3.5" />
                         </Button>
                       </a>
                     </div>
@@ -757,16 +757,16 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
                 ))}
               </div>
 
-              <Card class="lg:col-span-4 p-6 sm:p-8 space-y-5">
-                <h3 class="font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                  <Award class="w-5 h-5 text-amber-500" />
+              <Card className="lg:col-span-4 p-6 sm:p-8 space-y-5">
+                <h3 className="font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                  <Award className="w-5 h-5 text-amber-500" />
                   Target Certifications
                 </h3>
-                <ul class="space-y-3 text-xs">
+                <ul className="space-y-3 text-xs">
                   {['Google Data Analytics Professional', 'IBM Data Science Certification', 'HackerRank SQL Gold Badge'].map((cert, idx) => (
-                    <li key={idx} class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                      <span class="font-bold text-slate-800 dark:text-slate-200">{cert}</span>
-                      <span class="text-indigo-600 dark:text-indigo-400 font-extrabold">Target</span>
+                    <li key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">{cert}</span>
+                      <span className="text-indigo-600 dark:text-indigo-400 font-extrabold">Target</span>
                     </li>
                   ))}
                 </ul>
@@ -778,39 +778,39 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
 
         {/* 6. PROFILE VIEW */}
         {activeView === 'profile' && (
-          <div class="space-y-8 max-w-2xl">
+          <div className="space-y-8 max-w-2xl">
             <div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Student Profile Settings</h1>
-              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Update your academic credentials and degree details.</p>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Student Profile Settings</h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Update your academic credentials and degree details.</p>
             </div>
 
-            <Card class="p-6 sm:p-8 space-y-5">
+            <Card className="p-6 sm:p-8 space-y-5">
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                  className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                 />
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Degree</label>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Degree</label>
                   <input
                     type="text"
                     value={degree}
                     onChange={(e) => setDegree(e.target.value)}
-                    class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                   />
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Year of Study</label>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Year of Study</label>
                   <select
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                    className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                   >
                     <option value="1">Year 1</option>
                     <option value="2">Year 2</option>
@@ -821,117 +821,117 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">University / College</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">University / College</label>
                 <input
                   type="text"
                   value={university}
                   onChange={(e) => setUniversity(e.target.value)}
-                  class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                  className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">CGPA</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">CGPA</label>
                 <input
                   type="text"
                   value={cgpa}
                   onChange={(e) => setCgpa(e.target.value)}
-                  class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                  className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                 />
               </div>
 
-              <Button size="sm" class="w-full py-3 font-extrabold shadow-md">Save Profile Changes</Button>
+              <Button size="sm" className="w-full py-3 font-extrabold shadow-md">Save Profile Changes</Button>
             </Card>
           </div>
         )}
 
         {/* 7. ADMIN VIEW — ACCESSIBLE ONLY IF ROLE IS ADMIN */}
         {activeView === 'admin' && role === 'admin' && (
-          <div class="space-y-8">
-            <div class="flex items-center justify-between">
+          <div className="space-y-8">
+            <div className="flex items-center justify-between">
               <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5">
-                  <Shield class="w-7 h-7 text-amber-500" />
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5">
+                  <Shield className="w-7 h-7 text-amber-500" />
                   Institutional Admin Console
                 </h1>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Manage student records, view system analytics, and configure career role skills.</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Manage student records, view system analytics, and configure career role skills.</p>
               </div>
-              <Badge variant="warning" class="px-3.5 py-1.5">Admin Authorized</Badge>
+              <Badge variant="warning" className="px-3.5 py-1.5">Admin Authorized</Badge>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               
-              <Card class="lg:col-span-5 p-6 sm:p-8 space-y-5">
-                <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Add New Career Role</h3>
-                <form onSubmit={handleAddCareer} class="space-y-4">
+              <Card className="lg:col-span-5 p-6 sm:p-8 space-y-5">
+                <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">Add New Career Role</h3>
+                <form onSubmit={handleAddCareer} className="space-y-4">
                   <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Role Title *</label>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Role Title *</label>
                     <input
                       type="text"
                       placeholder="e.g. DevOps Engineer"
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
                       required
-                      class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                      className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                     />
                   </div>
 
                   <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Department</label>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Department</label>
                     <input
                       type="text"
                       placeholder="e.g. Cloud & DevOps"
                       value={newDept}
                       onChange={(e) => setNewDept(e.target.value)}
-                      class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                      className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                     />
                   </div>
 
                   <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Salary Range</label>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Salary Range</label>
                     <input
                       type="text"
                       placeholder="e.g. ₹8 – 20 LPA"
                       value={newSalary}
                       onChange={(e) => setNewSalary(e.target.value)}
-                      class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                      className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                     />
                   </div>
 
                   <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Required Skills (comma-separated)</label>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Required Skills (comma-separated)</label>
                     <input
                       type="text"
                       placeholder="Docker, Kubernetes, Linux, Git"
                       value={newSkillsStr}
                       onChange={(e) => setNewSkillsStr(e.target.value)}
-                      class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
+                      className="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:border-indigo-500"
                     />
                   </div>
 
-                  <Button size="sm" type="submit" variant="emerald" class="w-full py-3 font-extrabold shadow-md">
-                    <Plus class="w-4 h-4 mr-1" />
+                  <Button size="sm" type="submit" variant="emerald" className="w-full py-3 font-extrabold shadow-md">
+                    <Plus className="w-4 h-4 mr-1" />
                     Create Career Role
                   </Button>
                 </form>
               </Card>
 
-              <div class="lg:col-span-7 space-y-6">
-                <Card class="p-6 sm:p-8 space-y-5">
-                  <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Configured Career Roles ({careerList.length})</h3>
-                  <div class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+              <div className="lg:col-span-7 space-y-6">
+                <Card className="p-6 sm:p-8 space-y-5">
+                  <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">Configured Career Roles ({careerList.length})</h3>
+                  <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
                     {careerList.map((c) => (
-                      <div key={c.id} class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
-                        <div class="min-w-0">
-                          <p class="font-bold text-xs text-slate-900 dark:text-white">{c.title}</p>
-                          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{c.department} · {c.matchedSkills.concat(c.missingSkills).join(', ')}</p>
+                      <div key={c.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-bold text-xs text-slate-900 dark:text-white">{c.title}</p>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{c.department} · {c.matchedSkills.concat(c.missingSkills).join(', ')}</p>
                         </div>
                         <button
                           onClick={() => handleDeleteCareer(c.id)}
-                          class="p-2 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
+                          className="p-2 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
                           title="Delete role"
                         >
-                          <Trash2 class="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     ))}

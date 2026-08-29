@@ -17,14 +17,14 @@ export function AppContent() {
   const [mode, setMode] = useState<'website' | 'webapp' | 'admin'>('website');
 
   return (
-    <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-300">
       
       {/* Top Navbar */}
       <Navbar currentMode={mode} setMode={setMode} />
 
       {/* Mode Views */}
       {mode === 'website' ? (
-        <main class="flex-1">
+        <main className="flex-1">
           <Hero onLaunchApp={() => setMode('webapp')} />
           <BentoSection onLaunchApp={() => setMode('webapp')} />
           <HowItWorksSection />
@@ -37,7 +37,7 @@ export function AppContent() {
           <Footer />
         </main>
       ) : (
-        <main class="flex-1">
+        <main className="flex-1">
           <WebAppView initialMode={mode === 'admin' ? 'admin' : 'webapp'} />
         </main>
       )}
