@@ -32,12 +32,13 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     initialMode === 'admin' && role === 'admin' ? 'admin' : 'dashboard'
   );
 
-  // Student Profile State
-  const [studentName, setStudentName] = useState('Ashwini Kate');
-  const [degree, setDegree] = useState('B.Sc Computer Science');
-  const [university, setUniversity] = useState('Savitribai Phule Pune University');
-  const [cgpa, setCgpa] = useState('8.4');
-  const [year, setYear] = useState('3');
+  // Student Profile State — loaded from localStorage for persistence
+  const [studentName, setStudentName] = useState(() => localStorage.getItem('cp_name') || 'Ashwini Kate');
+  const [degree, setDegree] = useState(() => localStorage.getItem('cp_degree') || 'B.Sc Computer Science');
+  const [university, setUniversity] = useState(() => localStorage.getItem('cp_university') || 'Savitribai Phule Pune University');
+  const [cgpa, setCgpa] = useState(() => localStorage.getItem('cp_cgpa') || '8.4');
+  const [year, setYear] = useState(() => localStorage.getItem('cp_year') || '3');
+  const [profileSaveMsg, setProfileSaveMsg] = useState('');
   
   // Resume & Extracted Skills State
   const [resumeName, setResumeName] = useState('Ashwini_Kate_Resume_2024.pdf');
@@ -314,9 +315,21 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
           </nav>
         </div>
 
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500">
-          <p className="font-bold text-slate-700 dark:text-slate-300">CareerPath AI v2.0</p>
-          <p>Role Context: <span className="uppercase font-bold text-indigo-600 dark:text-indigo-400">{role}</span></p>
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+          <div className="text-[11px] text-slate-500">
+            <p className="font-bold text-slate-700 dark:text-slate-300">CareerPath AI v2.0</p>
+            <p>Role: <span className={`uppercase font-bold ${role === 'admin' ? 'text-amber-500' : 'text-indigo-600 dark:text-indigo-400'}`}>{role}</span></p>
+          </div>
+          {/* Log Out Button in Sidebar */}
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border border-red-200 dark:border-red-900/40 transition-colors cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Log Out
+            </button>
+          )}
         </div>
       </aside>
 
@@ -720,7 +733,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                     duration: "8 weeks",
                     rating: 4.8,
                     skill: "Statistics",
-                    url: "https://www.coursera.org",
+                    url: "https://www.coursera.org/search?query=statistics+for+data+science",
                     free: false,
                   },
                   {
@@ -729,7 +742,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                     duration: "12 hours",
                     rating: 4.6,
                     skill: "Advanced Excel",
-                    url: "https://www.udemy.com",
+                    url: "https://www.udemy.com/courses/search/?q=advanced+excel+for+data+analysts",
                     free: true,
                   },
                   {
@@ -738,7 +751,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                     duration: "6 hours",
                     rating: 4.7,
                     skill: "Tableau",
-                    url: "https://www.youtube.com",
+                    url: "https://www.youtube.com/results?search_query=tableau+bootcamp+for+beginners",
                     free: true,
                   },
                 ].map((course, idx) => (
@@ -847,8 +860,29 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                 />
               </div>
 
-              <Button size="sm" className="w-full py-3 font-extrabold shadow-md">Save Profile Changes</Button>
+              {profileSaveMsg && (
+                <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-xl px-4 py-3 text-xs text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-2">
+                  ✓ {profileSaveMsg}
+                </div>
+              )}
+
+              <Button
+                size="sm"
+                className="w-full py-3 font-extrabold shadow-md"
+                onClick={() => {
+                  localStorage.setItem('cp_name', studentName);
+                  localStorage.setItem('cp_degree', degree);
+                  localStorage.setItem('cp_university', university);
+                  localStorage.setItem('cp_cgpa', cgpa);
+                  localStorage.setItem('cp_year', year);
+                  setProfileSaveMsg('Profile saved successfully!');
+                  setTimeout(() => setProfileSaveMsg(''), 3000);
+                }}
+              >
+                Save Profile Changes
+              </Button>
             </Card>
+
           </div>
         )}
 

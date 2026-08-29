@@ -1,32 +1,68 @@
-import React, { useState } from 'react';
-import { Sparkles, LayoutDashboard, Globe, Shield, ArrowRight, Sun, Moon, User, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Sparkles, LayoutDashboard, Globe, Shield, ArrowRight, Sun, Moon, User, ChevronDown, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/src/themeContext';
 
+type AppMode = 'website' | 'webapp' | 'admin' | 'auth';
+
 interface NavbarProps {
-  currentMode: 'website' | 'webapp' | 'admin' | 'auth';
-  setMode: (mode: 'website' | 'webapp' | 'admin' | 'auth') => void;
+  currentMode: AppMode;
+  setMode: (mode: AppMode) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
-  const { theme, toggleTheme, role, setRole } = useTheme();
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+const isAuthenticated = (mode: AppMode) => mode === 'webapp' || mode === 'admin';
 
-  const handleRoleChange = (newRole: 'student' | 'admin') => {
-    setRole(newRole);
+export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
+  const { theme, toggleTheme, role } = useTheme();
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close dropdown when mode changes
+  useEffect(() => {
     setProfileDropdownOpen(false);
-    if (newRole === 'admin') {
-      setMode('admin');
-    } else if (currentMode === 'admin') {
+  }, [currentMode]);
+
+  const handleStudentAppClick = () => {
+    // If not authenticated, go to login first
+    if (!isAuthenticated(currentMode)) {
+      setMode('auth');
+    } else {
       setMode('webapp');
     }
+  };
+
+  const handleAdminClick = () => {
+    if (role === 'admin') {
+      setMode('admin');
+    }
+  };
+
+  const handleLogout = () => {
+    setProfileDropdownOpen(false);
+    setMode('auth');
+  };
+
+  const handleGoToDashboard = () => {
+    setProfileDropdownOpen(false);
+    setMode(role === 'admin' ? 'admin' : 'webapp');
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
-        {/* Brand */}
+
+        {/* Brand — always goes to website */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setMode('website')}>
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 flex items-center justify-center shadow-md shadow-indigo-500/20">
             <Sparkles className="w-5 h-5 text-white" />
@@ -41,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
           </div>
         </div>
 
-        {/* Desktop Nav Navigation */}
+        {/* Center Nav — mode switcher */}
         <div className="hidden md:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-inner">
           <button
             onClick={() => setMode('website')}
@@ -54,9 +90,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
             <Globe className="w-3.5 h-3.5" />
             Website
           </button>
-          
+
           <button
-            onClick={() => setMode('webapp')}
+            onClick={handleStudentAppClick}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer ${
               currentMode === 'webapp'
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
@@ -67,10 +103,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
             Student App
           </button>
 
-          {/* ADMIN CONSOLE BUTTON — Visible ONLY when User Role is Admin! */}
+          {/* Admin Console — ONLY shown when role is admin */}
           {role === 'admin' && (
             <button
-              onClick={() => setMode('admin')}
+              onClick={handleAdminClick}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer ${
                 currentMode === 'admin'
                   ? 'bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/30'
@@ -85,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
 
         {/* Right Controls */}
         <div className="flex items-center gap-3">
-          
+
           {/* Dark / Light Toggle */}
           <button
             onClick={toggleTheme}
@@ -95,65 +131,60 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
           </button>
 
-          {/* Role Profile Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs font-bold cursor-pointer transition-colors"
-            >
-              <div className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px]">
-                {role === 'admin' ? 'AD' : 'AK'}
-              </div>
-              <span className="hidden sm:inline">
-                {role === 'admin' ? 'Admin Profile' : 'Ashwini Kate (Student)'}
-              </span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </button>
-
-            {/* Profile Dropdown */}
-            {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-2 z-50 text-xs space-y-1">
-                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
-                  <p className="font-bold text-slate-900 dark:text-white">Active Account</p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                    Role: <span className="font-bold text-indigo-600 dark:text-indigo-400 uppercase">{role}</span>
-                  </p>
+          {/* Profile Dropdown — ONLY shown when authenticated (webapp or admin mode) */}
+          {isAuthenticated(currentMode) && (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs font-bold cursor-pointer transition-colors"
+              >
+                <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[10px] text-white ${role === 'admin' ? 'bg-amber-500' : 'bg-indigo-600'}`}>
+                  {role === 'admin' ? 'AD' : 'AK'}
                 </div>
+                <span className="hidden sm:inline">
+                  {role === 'admin' ? 'Admin Profile' : 'Ashwini Kate'}
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
 
-                <button
-                  onClick={() => {
-                    setProfileDropdownOpen(false);
-                    if (role === 'admin') {
-                      setMode('admin');
-                    } else {
-                      setMode('webapp');
-                    }
-                  }}
-                  className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                >
-                  <User className="w-3.5 h-3.5" />
-                  My Profile Settings
-                </button>
+              {/* Dropdown Menu */}
+              {profileDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-2 z-50 text-xs space-y-1">
+                  <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
+                    <p className="font-bold text-slate-900 dark:text-white">
+                      {role === 'admin' ? 'Administrator' : 'Ashwini Kate'}
+                    </p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      Role: <span className={`font-bold uppercase ${role === 'admin' ? 'text-amber-500' : 'text-indigo-600 dark:text-indigo-400'}`}>{role}</span>
+                    </p>
+                  </div>
 
-                <div className="pt-1 border-t border-slate-100 dark:border-slate-800 mt-1">
                   <button
-                    onClick={() => {
-                      setProfileDropdownOpen(false);
-                      setMode('auth');
-                    }}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+                    onClick={handleGoToDashboard}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                   >
-                    Log Out
+                    <User className="w-3.5 h-3.5" />
+                    {role === 'admin' ? 'Admin Console' : 'My Dashboard'}
                   </button>
-                </div>
-              </div>
-            )}
-          </div>
 
-          {/* Launch App Button */}
-          {currentMode === 'website' && (
+                  <div className="pt-1 border-t border-slate-100 dark:border-slate-800 mt-1">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      Log Out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Launch App Button — shown on website/auth mode only */}
+          {(currentMode === 'website' || currentMode === 'auth') && (
             <Button size="default" onClick={() => setMode('auth')} className="hidden sm:inline-flex gap-1.5 font-bold shadow-md">
-              Launch App
+              {currentMode === 'auth' ? 'Sign In' : 'Launch App'}
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           )}

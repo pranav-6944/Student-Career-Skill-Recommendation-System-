@@ -74,3 +74,10 @@ node_modules/
 dist/
 .vite/
 
+# Playwright test artifacts
+test-results/
+playwright-report/
+.playwright/
+
+# Strix security scanner output
+strix/

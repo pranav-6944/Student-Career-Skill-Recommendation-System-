@@ -19,7 +19,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   });
 
-  const [role, setRole] = useState<UserRole>('student');
+  // Persist role in sessionStorage so it survives page refreshes within a session
+  const [role, setRoleState] = useState<UserRole>(() => {
+    const saved = sessionStorage.getItem('careerpath_role');
+    return (saved === 'admin' || saved === 'student') ? saved : 'student';
+  });
+
+  const setRole = (newRole: UserRole) => {
+    sessionStorage.setItem('careerpath_role', newRole);
+    setRoleState(newRole);
+  };
 
   useEffect(() => {
     const root = document.documentElement;
