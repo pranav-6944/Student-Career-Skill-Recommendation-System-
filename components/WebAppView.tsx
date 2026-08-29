@@ -685,7 +685,7 @@ export const WebAppView: React.FC<{ initialMode?: 'webapp' | 'admin' }> = ({ ini
                   {selectedCareer.missingSkills.map((s, idx) => (
                     <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white">! {s}</span>
-                      <Button size="sm" variant="outline" onClick={() => setActiveView('learning')} className="text-xs h-8 text-indigo-600 dark:text-indigo-400 font-bold bg-white dark:bg-slate-950">
+                      <Button size="sm" variant="outline" onClick={() => setActiveView('learning')} className="text-xs text-indigo-600 dark:text-indigo-400 font-bold bg-white dark:bg-slate-950">
                         Find Courses →
                       </Button>
                     </div>
