@@ -1,9 +1,11 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
+from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import uvicorn
 import bcrypt
-from typing import List
+from typing import List, Optional
+import uuid
+import datetime
 
 from parsers import extract_text_from_pdf, extract_text_from_docx
 from nlp_engine import extract_skills_from_text
@@ -17,8 +19,8 @@ app = FastAPI(title="CareerPath AI - Backend Service")
 # Allow CORS for the React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"], 
-    allow_credentials=True,
+    allow_origins=["*"], # Allow all origins for dev
+    allow_credentials=False, # Must be false when allow_origins is ["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -28,6 +30,40 @@ def verify_password(plain_password, hashed_password):
 
 def get_password_hash(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+# --- DEPENDENCIES ---
+
+def get_current_user(token: Optional[str] = Header(None), email: Optional[str] = None, db: Session = Depends(database.get_db)):
+    if token:
+        session = db.query(models.UserSession).filter(
+            models.UserSession.token == token,
+            models.UserSession.is_active == True
+        ).first()
+        
+        if not session:
+            raise HTTPException(status_code=401, detail="Invalid or expired token")
+            
+        user = db.query(models.User).filter(models.User.id == session.user_id).first()
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+        return user
+        
+    elif email:
+        # Fallback for frontend backwards compatibility
+        user = db.query(models.User).filter(models.User.email == email).first()
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+        return user
+        
+    else:
+        raise HTTPException(status_code=401, detail="Authentication required (token or email)")
+
+def get_current_admin(current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "ADMIN":
+        raise HTTPException(status_code=403, detail="Insufficient privileges")
+    return current_user
+
+# --- ROUTES ---
 
 @app.get("/")
 def health_check():
@@ -42,11 +78,12 @@ def signup(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     
     hashed_password = get_password_hash(user.password)
+    # Ensure public signup routes cannot create ADMIN
     db_user = models.User(
         email=user.email,
         password_hash=hashed_password,
         full_name=user.full_name,
-        role="student"
+        role="STUDENT"
     )
     db.add(db_user)
     db.commit()
@@ -62,37 +99,56 @@ def signup(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
 @app.post("/api/auth/login", response_model=schemas.UserLoginResponse)
 def login(user: schemas.UserLogin, db: Session = Depends(database.get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    
     if not db_user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+    # Increment login attempts
+    db_user.login_attempts += 1
+    
     if not verify_password(user.password, db_user.password_hash):
+        db.commit() # Save incremented attempt
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
-    # Using the email as a simple token for demonstration purposes
-    # In production, use JWT.
-    return {"token": db_user.email, "user": db_user}
+    # Successful login
+    db_user.last_login_at = datetime.datetime.utcnow()
+    db.commit()
+    
+    # Create session
+    token = str(uuid.uuid4())
+    db_session = models.UserSession(
+        user_id=db_user.id,
+        token=token,
+        ip_address="127.0.0.1", # Normally from request
+        is_active=True
+    )
+    db.add(db_session)
+    db.commit()
+    
+    return {"token": token, "user": db_user}
+
+@app.post("/api/auth/logout")
+def logout(token: str = Header(...), db: Session = Depends(database.get_db)):
+    db_session = db.query(models.UserSession).filter(models.UserSession.token == token).first()
+    if not db_session or not db_session.is_active:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+        
+    db_session.is_active = False
+    db.commit()
+    return {"message": "Logged out successfully"}
 
 # --- PROFILE ROUTES ---
 
 @app.get("/api/profile", response_model=schemas.ProfileResponse)
-def get_profile(email: str, db: Session = Depends(database.get_db)):
-    # Simple auth check using email directly
-    db_user = db.query(models.User).filter(models.User.email == email).first()
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-        
-    db_profile = db.query(models.Profile).filter(models.Profile.user_id == db_user.id).first()
+def get_profile(current_user: models.User = Depends(get_current_user), db: Session = Depends(database.get_db)):
+    db_profile = db.query(models.Profile).filter(models.Profile.user_id == current_user.id).first()
     if not db_profile:
         raise HTTPException(status_code=404, detail="Profile not found")
-        
     return db_profile
 
 @app.post("/api/profile", response_model=schemas.ProfileResponse)
-def update_profile(email: str, profile_update: schemas.ProfileBase, db: Session = Depends(database.get_db)):
-    db_user = db.query(models.User).filter(models.User.email == email).first()
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-        
-    db_profile = db.query(models.Profile).filter(models.Profile.user_id == db_user.id).first()
+def update_profile(profile_update: schemas.ProfileBase, current_user: models.User = Depends(get_current_user), db: Session = Depends(database.get_db)):
+    db_profile = db.query(models.Profile).filter(models.Profile.user_id == current_user.id).first()
     if not db_profile:
         raise HTTPException(status_code=404, detail="Profile not found")
         
@@ -107,10 +163,41 @@ def update_profile(email: str, profile_update: schemas.ProfileBase, db: Session 
     db.refresh(db_profile)
     return db_profile
 
+# --- ADMIN ROUTES ---
+
+@app.get("/api/admin/users", response_model=List[schemas.UserResponse])
+def get_all_users(admin: models.User = Depends(get_current_admin), db: Session = Depends(database.get_db)):
+    return db.query(models.User).all()
+
+@app.put("/api/admin/users/{user_id}", response_model=schemas.UserResponse)
+def update_user_by_admin(user_id: int, user_update: schemas.AdminUserUpdate, admin: models.User = Depends(get_current_admin), db: Session = Depends(database.get_db)):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    if user_update.email:
+        # Check uniqueness
+        existing = db.query(models.User).filter(models.User.email == user_update.email).first()
+        if existing and existing.id != user_id:
+            raise HTTPException(status_code=400, detail="Email already taken")
+        db_user.email = user_update.email
+        
+    if user_update.full_name:
+        db_user.full_name = user_update.full_name
+        
+    if user_update.role:
+        if user_update.role not in ["STUDENT", "ADMIN"]:
+            raise HTTPException(status_code=400, detail="Invalid role")
+        db_user.role = user_update.role
+        
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 # --- NLP ROUTE ---
 
 @app.post("/api/extract-resume")
-async def extract_resume(email: str, file: UploadFile = File(...), db: Session = Depends(database.get_db)):
+async def extract_resume(file: UploadFile = File(...), current_user: models.User = Depends(get_current_user), db: Session = Depends(database.get_db)):
     if not file.filename:
         raise HTTPException(status_code=400, detail="No file provided")
         
@@ -131,18 +218,14 @@ async def extract_resume(email: str, file: UploadFile = File(...), db: Session =
         
     extracted_skills = extract_skills_from_text(raw_text)
     
-    # Save extracted skills to database if user is valid
-    if email:
-        db_user = db.query(models.User).filter(models.User.email == email).first()
-        if db_user:
-            db_profile = db.query(models.Profile).filter(models.Profile.user_id == db_user.id).first()
-            if db_profile:
-                # Merge old skills and new skills, deduplicate
-                old_skills = set([s.strip() for s in db_profile.extracted_skills.split(',') if s.strip()])
-                new_skills = set(extracted_skills)
-                merged = list(old_skills.union(new_skills))
-                db_profile.extracted_skills = ",".join(merged)
-                db.commit()
+    # Save extracted skills to database
+    db_profile = db.query(models.Profile).filter(models.Profile.user_id == current_user.id).first()
+    if db_profile:
+        old_skills = set([s.strip() for s in db_profile.extracted_skills.split(',') if s.strip()])
+        new_skills = set(extracted_skills)
+        merged = list(old_skills.union(new_skills))
+        db_profile.extracted_skills = ",".join(merged)
+        db.commit()
     
     return {
         "filename": file.filename,

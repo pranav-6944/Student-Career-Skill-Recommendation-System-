@@ -44,7 +44,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   useEffect(() => {
     if (!currentUser?.email) return;
     
-    fetch(`http://localhost:8000/api/profile?email=${encodeURIComponent(currentUser.email)}`)
+    fetch(`http://127.0.0.1:8000/api/profile?email=${encodeURIComponent(currentUser.email)}`)
       .then(res => res.json())
       .then(data => {
         if (data.detail) return; // Error or not found
@@ -65,11 +65,9 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   }, [currentUser?.email]);
 
   // Resume & Extracted Skills State
-  const [resumeName, setResumeName] = useState('Ashwini_Kate_Resume_2024.pdf');
-  const [resumeScore, setResumeScore] = useState(82);
-  const [extractedSkills, setExtractedSkills] = useState<string[]>([
-    'Python', 'SQL', 'Pandas', 'NumPy', 'Power BI', 'Excel', 'HTML', 'Git'
-  ]);
+  const [resumeName, setResumeName] = useState('No resume uploaded');
+  const [resumeScore, setResumeScore] = useState(0);
+  const [extractedSkills, setExtractedSkills] = useState<string[]>([]);
   const [isParsing, setIsParsing] = useState(false);
   const [uploadSuccessMsg, setUploadSuccessMsg] = useState('');
 
@@ -81,54 +79,56 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   const [matchFilter, setMatchFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Sample Career Data
-  const [careerList, setCareerList] = useState<CareerRoleItem[]>([
+  // Base Career Definitions
+  const [adminCareers, setAdminCareers] = useState([
     {
-      id: 1,
-      title: 'Data Analyst',
-      department: 'Data & Analytics',
-      salary: '₹4.5 – 12 LPA',
-      matchPct: 82.5,
-      matchedSkills: ['Python', 'SQL', 'Pandas', 'Excel', 'Power BI'],
-      missingSkills: ['Statistics', 'Advanced Excel', 'Tableau'],
+      id: 1, title: 'Data Analyst', department: 'Data & Analytics', salary: '₹4.5 – 12 LPA',
+      targetSkills: ['Python', 'SQL', 'Pandas', 'Excel', 'Power BI', 'Statistics', 'Advanced Excel', 'Tableau']
     },
     {
-      id: 2,
-      title: 'Business Analyst',
-      department: 'Business & Strategy',
-      salary: '₹6 – 15 LPA',
-      matchPct: 74.0,
-      matchedSkills: ['Excel', 'SQL', 'Power BI'],
-      missingSkills: ['Requirements Analysis', 'JIRA', 'Agile'],
+      id: 2, title: 'Business Analyst', department: 'Business & Strategy', salary: '₹6 – 15 LPA',
+      targetSkills: ['Excel', 'SQL', 'Power BI', 'Requirements Analysis', 'JIRA', 'Agile']
     },
     {
-      id: 3,
-      title: 'Web Developer',
-      department: 'Web & Mobile',
-      salary: '₹4 – 14 LPA',
-      matchPct: 71.5,
-      matchedSkills: ['HTML', 'JavaScript', 'Git', 'Python'],
-      missingSkills: ['React', 'REST APIs', 'Node.js'],
+      id: 3, title: 'Web Developer', department: 'Web & Mobile', salary: '₹4 – 14 LPA',
+      targetSkills: ['HTML', 'JavaScript', 'Git', 'Python', 'React', 'REST APIs', 'Node.js']
     },
     {
-      id: 4,
-      title: 'Data Scientist',
-      department: 'AI & Machine Learning',
-      salary: '₹8 – 20 LPA',
-      matchPct: 65.0,
-      matchedSkills: ['Python', 'Pandas', 'NumPy', 'SQL'],
-      missingSkills: ['Machine Learning', 'Statistics', 'Scikit-learn', 'TensorFlow'],
+      id: 4, title: 'Data Scientist', department: 'AI & Machine Learning', salary: '₹8 – 20 LPA',
+      targetSkills: ['Python', 'Pandas', 'NumPy', 'SQL', 'Machine Learning', 'Statistics', 'Scikit-learn', 'TensorFlow']
     },
     {
-      id: 5,
-      title: 'Software Developer',
-      department: 'Software Engineering',
-      salary: '₹5 – 18 LPA',
-      matchPct: 58.0,
-      matchedSkills: ['Python', 'Git', 'HTML'],
-      missingSkills: ['Data Structures', 'Algorithms', 'JavaScript', 'REST APIs'],
-    },
+      id: 5, title: 'Software Developer', department: 'Software Engineering', salary: '₹5 – 18 LPA',
+      targetSkills: ['Python', 'Git', 'HTML', 'Data Structures', 'Algorithms', 'JavaScript', 'REST APIs']
+    }
   ]);
+
+  // Dynamically compute match percentages and matched/missing skills based on the user's extracted skills
+  const careerList: CareerRoleItem[] = React.useMemo(() => {
+    return adminCareers.map(career => {
+      const lowerExtracted = extractedSkills.map(s => s.toLowerCase());
+      const matched = career.targetSkills.filter(s => lowerExtracted.includes(s.toLowerCase()));
+      const missing = career.targetSkills.filter(s => !lowerExtracted.includes(s.toLowerCase()));
+      const matchPct = career.targetSkills.length > 0 ? Math.round((matched.length / career.targetSkills.length) * 100) : 0;
+      
+      return {
+        id: career.id,
+        title: career.title,
+        department: career.department,
+        salary: career.salary,
+        matchPct,
+        matchedSkills: matched,
+        missingSkills: missing
+      };
+    }).sort((a, b) => b.matchPct - a.matchPct);
+  }, [adminCareers, extractedSkills]);
+
+  const readinessScore = React.useMemo(() => {
+    if (careerList.length === 0) return 0;
+    const top3 = careerList.slice(0, 3);
+    const sum = top3.reduce((acc, curr) => acc + curr.matchPct, 0);
+    return (sum / top3.length).toFixed(1);
+  }, [careerList]);
 
   // Admin Form State
   const [newTitle, setNewTitle] = useState('');
@@ -146,7 +146,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`http://localhost:8000/api/extract-resume?email=${encodeURIComponent(currentUser?.email || '')}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/extract-resume?email=${encodeURIComponent(currentUser?.email || '')}`, {
         method: 'POST',
         body: formData,
       });
@@ -213,16 +213,14 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     e.preventDefault();
     if (!newTitle.trim()) return;
     const skills = newSkillsStr.split(',').map(s => s.trim()).filter(Boolean);
-    const newRole: CareerRoleItem = {
+    const newRole = {
       id: Date.now(),
       title: newTitle,
       department: newDept || 'Technology',
       salary: newSalary || '₹5 – 12 LPA',
-      matchPct: 60.0,
-      matchedSkills: skills.slice(0, 2),
-      missingSkills: skills.slice(2),
+      targetSkills: skills,
     };
-    setCareerList([...careerList, newRole]);
+    setAdminCareers([...adminCareers, newRole]);
     setNewTitle('');
     setNewDept('');
     setNewSalary('');
@@ -230,7 +228,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   };
 
   const handleDeleteCareer = (id: number) => {
-    setCareerList(careerList.filter(c => c.id !== id));
+    setAdminCareers(adminCareers.filter(c => c.id !== id));
   };
 
   const selectedCareer = careerList.find(c => c.id === selectedCareerId) || careerList[0];
@@ -407,7 +405,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
 
               <Card className="p-6">
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">Career Readiness</span>
-                <p className="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 mt-3">74.5%</p>
+                <p className="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 mt-3">{readinessScore}%</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Top-3 average</p>
               </Card>
             </div>
@@ -467,7 +465,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                     ⚠️ Missing Core Skills
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {['Statistics', 'Advanced Excel', 'Machine Learning'].map((ms, idx) => (
+                    {careerList[0]?.missingSkills?.slice(0, 3).map((ms, idx) => (
                       <Badge key={idx} variant="warning" className="text-xs">
                         ! {ms}
                       </Badge>
@@ -912,7 +910,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                 className="w-full py-3 font-extrabold shadow-md"
                 onClick={async () => {
                   try {
-                    const response = await fetch(`http://localhost:8000/api/profile?email=${encodeURIComponent(currentUser?.email || '')}`, {
+                    const response = await fetch(`http://127.0.0.1:8000/api/profile?email=${encodeURIComponent(currentUser?.email || '')}`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({
