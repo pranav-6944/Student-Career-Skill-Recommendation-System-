@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-spacy
 python-multipart
 pdfplumber
 python-docx
@@ -8,7 +7,5 @@ sqlalchemy
 passlib[bcrypt]
 pytest
 httpx
-torch
-gliner
 google-generativeai
 python-dotenv

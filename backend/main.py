@@ -246,7 +246,7 @@ class SynthesizeRequest(BaseModel):
     skills: List[str]
 
 @app.post("/api/synthesize-career")
-async def synthesize_career(request: SynthesizeRequest, current_user: models.User = Depends(get_current_user)):
+async def synthesize_career(request: SynthesizeRequest):
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise HTTPException(status_code=500, detail="Gemini API Key not configured on the server.")
@@ -271,7 +271,7 @@ async def synthesize_career(request: SynthesizeRequest, current_user: models.Use
     """
     
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt)
         text = response.text.strip()
         if text.startswith('```json'):
@@ -292,7 +292,7 @@ class GenerateLearningPathRequest(BaseModel):
     missing_skills: List[str]
 
 @app.post("/api/generate-learning-path")
-async def generate_learning_path(request: GenerateLearningPathRequest, current_user: models.User = Depends(get_current_user)):
+async def generate_learning_path(request: GenerateLearningPathRequest):
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise HTTPException(status_code=500, detail="Gemini API Key not configured on the server.")
@@ -319,7 +319,7 @@ async def generate_learning_path(request: GenerateLearningPathRequest, current_u
     """
     
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt)
         text = response.text.strip()
         if text.startswith('```json'):
@@ -333,7 +333,7 @@ async def generate_learning_path(request: GenerateLearningPathRequest, current_u
         return path_data
     except Exception as e:
         print(f"Gemini API Error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to generate learning path using AI.")
+        raise HTTPException(status_code=500, detail=f"Failed to generate learning path using AI: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -120,37 +120,12 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     {
       id: 7, title: 'DevOps Engineer', department: 'Cloud & Infrastructure', salary: '₹8 – 25 LPA',
       targetSkills: ['Linux', 'Bash', 'Docker', 'Kubernetes', 'AWS', 'Terraform', 'CI/CD', 'GitHub Actions', 'Jenkins', 'Prometheus', 'Grafana', 'Ansible', 'Python']
+    }
+  ]);
+
   const [dynamicCareer, setDynamicCareer] = useState<CareerRoleItem | null>(null);
   const [learningPaths, setLearningPaths] = useState<Record<number, any[]>>({});
   const [isGeneratingPath, setIsGeneratingPath] = useState(false);
-
-  useEffect(() => {
-    if (activeView === 'learning' && selectedCareer) {
-      if (learningPaths[selectedCareer.id]) return;
-      if (selectedCareer.missingSkills.length === 0) return;
-      
-      setIsGeneratingPath(true);
-      fetch(`http://127.0.0.1:8000/api/generate-learning-path`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'token': currentUser?.token || ''
-        },
-        body: JSON.stringify({ 
-          role_title: selectedCareer.title, 
-          missing_skills: selectedCareer.missingSkills 
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setLearningPaths(prev => ({ ...prev, [selectedCareer.id]: data }));
-        }
-      })
-      .catch(err => console.error("Error generating learning path:", err))
-      .finally(() => setIsGeneratingPath(false));
-    }
-  }, [activeView, selectedCareer, learningPaths, currentUser?.token]);
 
   useEffect(() => {
     if (extractedSkills.length === 0) {
@@ -344,6 +319,34 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   };
 
   const selectedCareer = careerList.find(c => c.id === selectedCareerId) || careerList[0];
+
+  useEffect(() => {
+    if (activeView === 'learning' && selectedCareer) {
+      if (learningPaths[selectedCareer.id]) return;
+      if (selectedCareer.missingSkills.length === 0) return;
+      
+      setIsGeneratingPath(true);
+      fetch(`http://127.0.0.1:8000/api/generate-learning-path`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': currentUser?.token || ''
+        },
+        body: JSON.stringify({ 
+          role_title: selectedCareer.title, 
+          missing_skills: selectedCareer.missingSkills 
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setLearningPaths(prev => ({ ...prev, [selectedCareer.id]: data }));
+        }
+      })
+      .catch(err => console.error("Error generating learning path:", err))
+      .finally(() => setIsGeneratingPath(false));
+    }
+  }, [activeView, selectedCareer, learningPaths, currentUser?.token]);
 
   const filteredCareers = careerList.filter(c => {
     const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

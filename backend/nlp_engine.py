@@ -1,61 +1,52 @@
+import os
+import json
 import logging
+import google.generativeai as genai
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-logger.info("Loading ML dependencies...")
-try:
-    from gliner import GLiNER
-    # Load the GLiNER model (this downloads it on first run, ~700MB)
-    logger.info("Initializing GLiNER NLP Model (urchade/gliner_small-v2.1)...")
-    model = GLiNER.from_pretrained("urchade/gliner_small-v2.1")
-    logger.info("GLiNER model loaded successfully.")
-except ImportError:
-    logger.error("GLiNER or Torch is not installed. Please install them to use the ML NLP Engine.")
-    model = None
-except Exception as e:
-    logger.error(f"Failed to load GLiNER model: {e}")
-    model = None
-
 def extract_skills_from_text(text: str) -> list[str]:
     """
-    Process raw text through the GLiNER zero-shot NER model to extract unique skills.
-    Chunks text to prevent truncation limits (384 tokens).
+    Process raw resume text through Gemini AI to extract unique technical skills.
+    Replaces the heavy local GLiNER ML model.
     """
-    if model is None:
-        logger.error("NLP Model is not loaded. Returning empty skills.")
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        logger.error("GEMINI_API_KEY not found. Returning empty skills.")
         return []
         
-    # Labels for zero-shot extraction
-    labels = [
-        "Programming Language",
-        "Software Framework",
-        "Software Library",
-        "Database",
-        "Cloud Platform",
-        "DevOps Tool",
-        "Data Science Skill",
-        "Technical Concept"
-    ]
+    prompt = f"""
+    You are an expert technical recruiter and AI resume parser.
+    Extract all distinct technical skills, tools, programming languages, and frameworks from the following resume text.
+    Return ONLY a raw JSON list of strings (e.g. ["Python", "React", "Docker"]).
+    Do NOT include markdown formatting (like ```json), just return the raw JSON array.
+    
+    Resume Text:
+    {text}
+    """
     
     try:
-        # Split text into chunks of ~150 words to avoid 384 token limit
-        words = text.split()
-        chunk_size = 150
-        chunks = [' '.join(words[i:i + chunk_size]) for i in range(0, len(words), chunk_size)]
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
         
-        extracted = set()
-        for chunk in chunks:
-            # Predict entities using contextual understanding
-            entities = model.predict_entities(chunk, labels)
+        # Clean markdown formatting if Gemini mistakenly included it
+        if response_text.startswith('```json'):
+            response_text = response_text[7:]
+        if response_text.startswith('```'):
+            response_text = response_text[3:]
+        if response_text.endswith('```'):
+            response_text = response_text[:-3]
             
-            for entity in entities:
-                # We filter for high confidence predictions
-                if entity.get("score", 0) > 0.5:
-                    # Title-case for uniformity
-                    extracted.add(entity["text"].title())
-                
-        return sorted(list(extracted))
+        skills = json.loads(response_text.strip())
+        
+        if isinstance(skills, list):
+            # Title-case for uniformity
+            return sorted(list(set([str(s).title() for s in skills])))
+        else:
+            logger.error("Gemini did not return a JSON array.")
+            return []
     except Exception as e:
-        logger.error(f"Error extracting skills: {e}")
+        logger.error(f"Error extracting skills via Gemini: {e}")
         return []
