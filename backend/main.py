@@ -1,7 +1,10 @@
 import os
+os.environ["GRPC_DNS_RESOLVER"] = "native"
+# Force uvicorn hot-reload to load the new Gemini API Key
 import json
 from dotenv import load_dotenv
-import google.generativeai as genai
+load_dotenv(override=True)
+import httpx
 from pydantic import BaseModel
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Header
@@ -19,8 +22,6 @@ import database, models, schemas
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
-if api_key:
-    genai.configure(api_key=api_key)
 
 # Initialize database tables
 database.Base.metadata.create_all(bind=database.engine)
@@ -270,10 +271,24 @@ async def synthesize_career(request: SynthesizeRequest):
     Do NOT include markdown formatting (like ```json), just return the raw JSON object.
     """
     
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.2}
+    }
+    
     try:
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
-        text = response.text.strip()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json=payload, timeout=60.0)
+            response.raise_for_status()
+            data = response.json()
+            
+        candidates = data.get("candidates", [])
+        if not candidates:
+            raise ValueError("No candidates returned from Gemini")
+            
+        text = candidates[0].get("content", {}).get("parts", [])[0].get("text", "").strip()
+        
         if text.startswith('```json'):
             text = text[7:]
         if text.startswith('```'):
@@ -318,10 +333,24 @@ async def generate_learning_path(request: GenerateLearningPathRequest):
     Do NOT include markdown formatting (like ```json), just return the raw JSON array.
     """
     
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.2}
+    }
+    
     try:
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
-        text = response.text.strip()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json=payload, timeout=60.0)
+            response.raise_for_status()
+            data = response.json()
+            
+        candidates = data.get("candidates", [])
+        if not candidates:
+            raise ValueError("No candidates returned from Gemini")
+            
+        text = candidates[0].get("content", {}).get("parts", [])[0].get("text", "").strip()
+        
         if text.startswith('```json'):
             text = text[7:]
         if text.startswith('```'):

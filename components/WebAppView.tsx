@@ -148,8 +148,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
       fetch(`http://127.0.0.1:8000/api/synthesize-career`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'token': currentUser?.token || '' // Send token for auth if needed
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ skills: extractedSkills })
       })
@@ -171,7 +170,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     } else {
       setDynamicCareer(null);
     }
-  }, [extractedSkills, adminCareers, currentUser?.token]);
+  }, [extractedSkills, adminCareers]);
 
   // Dynamically compute match percentages and matched/missing skills based on the user's extracted skills
   const careerList: CareerRoleItem[] = React.useMemo(() => {
@@ -329,8 +328,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
       fetch(`http://127.0.0.1:8000/api/generate-learning-path`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'token': currentUser?.token || ''
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
           role_title: selectedCareer.title, 
@@ -346,7 +344,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
       .catch(err => console.error("Error generating learning path:", err))
       .finally(() => setIsGeneratingPath(false));
     }
-  }, [activeView, selectedCareer, learningPaths, currentUser?.token]);
+  }, [activeView, selectedCareer, learningPaths]);
 
   const filteredCareers = careerList.filter(c => {
     const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

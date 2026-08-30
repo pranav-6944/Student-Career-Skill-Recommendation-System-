@@ -1,15 +1,17 @@
 import os
 import json
 import logging
-import google.generativeai as genai
+import httpx
+from dotenv import load_dotenv
 
+load_dotenv(override=True)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def extract_skills_from_text(text: str) -> list[str]:
     """
-    Process raw resume text through Gemini AI to extract unique technical skills.
-    Replaces the heavy local GLiNER ML model.
+    Process raw resume text through Gemini AI via HTTP REST API to extract unique technical skills.
+    This avoids the gRPC IPv6 hang issues present in the google-generativeai SDK.
     """
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
@@ -26,10 +28,22 @@ def extract_skills_from_text(text: str) -> list[str]:
     {text}
     """
     
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.1}
+    }
+    
     try:
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
-        response_text = response.text.strip()
+        response = httpx.post(url, json=payload, timeout=60.0)
+        response.raise_for_status()
+        data = response.json()
+        
+        candidates = data.get("candidates", [])
+        if not candidates:
+            return []
+            
+        response_text = candidates[0].get("content", {}).get("parts", [])[0].get("text", "").strip()
         
         # Clean markdown formatting if Gemini mistakenly included it
         if response_text.startswith('```json'):
@@ -48,5 +62,5 @@ def extract_skills_from_text(text: str) -> list[str]:
             logger.error("Gemini did not return a JSON array.")
             return []
     except Exception as e:
-        logger.error(f"Error extracting skills via Gemini: {e}")
+        logger.error(f"Error extracting skills via Gemini REST API: {e}")
         return []
