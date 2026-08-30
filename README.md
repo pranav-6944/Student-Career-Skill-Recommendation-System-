@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/graduation-cap.svg" width="80" alt="Logo">
+  <img src="./public/Logo.png" width="250" alt="CareerPath AI Logo">
   <br>
   <h1>CareerPath AI 🚀</h1>
   <p><b>Intelligent Career Guidance & Skill Recommendation System for College Students</b></p>
