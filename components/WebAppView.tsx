@@ -120,10 +120,37 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     {
       id: 7, title: 'DevOps Engineer', department: 'Cloud & Infrastructure', salary: '₹8 – 25 LPA',
       targetSkills: ['Linux', 'Bash', 'Docker', 'Kubernetes', 'AWS', 'Terraform', 'CI/CD', 'GitHub Actions', 'Jenkins', 'Prometheus', 'Grafana', 'Ansible', 'Python']
-    }
-  ]);
-
   const [dynamicCareer, setDynamicCareer] = useState<CareerRoleItem | null>(null);
+  const [learningPaths, setLearningPaths] = useState<Record<number, any[]>>({});
+  const [isGeneratingPath, setIsGeneratingPath] = useState(false);
+
+  useEffect(() => {
+    if (activeView === 'learning' && selectedCareer) {
+      if (learningPaths[selectedCareer.id]) return;
+      if (selectedCareer.missingSkills.length === 0) return;
+      
+      setIsGeneratingPath(true);
+      fetch(`http://127.0.0.1:8000/api/generate-learning-path`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': currentUser?.token || ''
+        },
+        body: JSON.stringify({ 
+          role_title: selectedCareer.title, 
+          missing_skills: selectedCareer.missingSkills 
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setLearningPaths(prev => ({ ...prev, [selectedCareer.id]: data }));
+        }
+      })
+      .catch(err => console.error("Error generating learning path:", err))
+      .finally(() => setIsGeneratingPath(false));
+    }
+  }, [activeView, selectedCareer, learningPaths, currentUser?.token]);
 
   useEffect(() => {
     if (extractedSkills.length === 0) {
@@ -839,55 +866,39 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
               <div className="lg:col-span-8 space-y-5">
-                {[
-                  {
-                    title: "Statistics for Data Science & Machine Learning",
-                    platform: "Coursera",
-                    duration: "8 weeks",
-                    rating: 4.8,
-                    skill: "Statistics",
-                    url: "https://www.coursera.org/search?query=statistics+for+data+science",
-                    free: false,
-                  },
-                  {
-                    title: "Advanced Excel for Data Analysts – VLOOKUP to Power Query",
-                    platform: "Udemy",
-                    duration: "12 hours",
-                    rating: 4.6,
-                    skill: "Advanced Excel",
-                    url: "https://www.udemy.com/courses/search/?q=advanced+excel+for+data+analysts",
-                    free: true,
-                  },
-                  {
-                    title: "Complete Tableau Bootcamp",
-                    platform: "YouTube",
-                    duration: "6 hours",
-                    rating: 4.7,
-                    skill: "Tableau",
-                    url: "https://www.youtube.com/results?search_query=tableau+bootcamp+for+beginners",
-                    free: true,
-                  },
-                ].map((course, idx) => (
-                  <Card key={idx} className="p-6 space-y-3">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-2">
-                        <Badge variant="warning" className="text-[10px]">
-                          Fills gap: {course.skill}
-                        </Badge>
-                        <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">{course.title}</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {course.platform} · {course.duration} · ⭐ {course.rating}
-                          {course.free && <span className="ml-2 text-emerald-600 dark:text-emerald-400 font-extrabold">· FREE</span>}
-                        </p>
-                      </div>
-                      <a href={course.url} target="_blank" rel="noreferrer">
-                        <Button size="sm" className="gap-1.5 text-xs font-bold shadow-md">
-                          Start <ExternalLink className="w-3.5 h-3.5" />
-                        </Button>
-                      </a>
-                    </div>
+                {isGeneratingPath ? (
+                  <Card className="p-12 flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                    <Loader2 className="w-10 h-10 animate-spin text-indigo-500" />
+                    <p className="font-bold">Generating personalized learning path from Gemini AI...</p>
                   </Card>
-                ))}
+                ) : (learningPaths[selectedCareer.id] || []).length > 0 ? (
+                  learningPaths[selectedCareer.id].map((course, idx) => (
+                    <Card key={idx} className="p-6 space-y-3">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-2">
+                          <Badge variant="warning" className="text-[10px]">
+                            Fills gap: {course.skill}
+                          </Badge>
+                          <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">{course.title}</h3>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            {course.platform} · {course.duration} · ⭐ {course.rating}
+                            {course.free && <span className="ml-2 text-emerald-600 dark:text-emerald-400 font-extrabold">· FREE</span>}
+                          </p>
+                        </div>
+                        <a href={course.url} target="_blank" rel="noreferrer">
+                          <Button size="sm" className="gap-1.5 text-xs font-bold shadow-md">
+                            Start <ExternalLink className="w-3.5 h-3.5" />
+                          </Button>
+                        </a>
+                      </div>
+                    </Card>
+                  ))
+                ) : (
+                  <Card className="p-8 text-center text-slate-500 dark:text-slate-400">
+                    <p className="font-bold text-lg">No courses needed! 🎉</p>
+                    <p className="text-sm mt-2">You already have all the target skills for this role.</p>
+                  </Card>
+                )}
               </div>
 
               <Card className="lg:col-span-4 p-6 sm:p-8 space-y-5">

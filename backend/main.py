@@ -287,5 +287,53 @@ async def synthesize_career(request: SynthesizeRequest, current_user: models.Use
         print(f"Gemini API Error: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to synthesize career path using AI.")
 
+class GenerateLearningPathRequest(BaseModel):
+    role_title: str
+    missing_skills: List[str]
+
+@app.post("/api/generate-learning-path")
+async def generate_learning_path(request: GenerateLearningPathRequest, current_user: models.User = Depends(get_current_user)):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="Gemini API Key not configured on the server.")
+        
+    prompt = f"""
+    You are an expert technical curriculum designer. The user wants to become a '{request.role_title}'.
+    They are currently missing the following skills: {', '.join(request.missing_skills)}.
+    
+    Generate a personalized learning path consisting of 3 to 5 courses/tutorials that specifically teach these missing skills.
+    Respond strictly in JSON format as a list of objects with the following structure:
+    [
+      {{
+        "title": "Course/Tutorial Title",
+        "platform": "Platform Name (e.g., Coursera, Udemy, YouTube)",
+        "duration": "Estimated Duration (e.g., 4 weeks, 10 hours)",
+        "rating": 4.8,
+        "skill": "The specific missing skill it covers",
+        "url": "A realistic search URL or link",
+        "free": true
+      }}
+    ]
+    
+    Do NOT include markdown formatting (like ```json), just return the raw JSON array.
+    """
+    
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith('```json'):
+            text = text[7:]
+        if text.startswith('```'):
+            text = text[3:]
+        if text.endswith('```'):
+            text = text[:-3]
+        
+        path_data = json.loads(text.strip())
+        return path_data
+    except Exception as e:
+        print(f"Gemini API Error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to generate learning path using AI.")
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
