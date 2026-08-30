@@ -1,57 +1,61 @@
-import spacy
-from spacy.pipeline import EntityRuler
+import logging
 
-# Load standard English model (small)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logger.info("Loading ML dependencies...")
 try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    # Fallback if download failed
-    import spacy.cli
-    spacy.cli.download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
-
-# Define our robust Skill Taxonomy
-SKILLS_TAXONOMY = [
-    # Programming Languages
-    "Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "C", "Ruby", "Go", "Rust", "Swift", "Kotlin", "PHP", "R", "MATLAB", "SQL", "NoSQL", "Bash", "Shell", "PowerShell", "Dart",
-    # Frontend Frameworks & Libraries
-    "React", "React Native", "Angular", "Vue", "Vue.js", "Svelte", "Next.js", "Nuxt.js", "Tailwind CSS", "Bootstrap", "Material-UI", "HTML5", "CSS3", "Redux", "JQuery", "Sass", "Less", "Webpack", "Vite",
-    # Backend Frameworks
-    "Node.js", "Express", "Django", "Flask", "FastAPI", "Spring Boot", "Ruby on Rails", "Laravel", "ASP.NET", "GraphQL", "REST APIs", "GraphQL", "Apollo", "gRPC",
-    # Data & Machine Learning
-    "Pandas", "NumPy", "Scikit-Learn", "TensorFlow", "PyTorch", "Keras", "Machine Learning", "Deep Learning", "Data Analysis", "Data Science", "Statistics", "Computer Vision", "NLP", "Natural Language Processing", "Big Data", "Hadoop", "Spark", "Kafka", "Data Engineering", "Data Mining", "Tableau", "Power BI", "Excel",
-    # DevOps & Cloud
-    "Docker", "Kubernetes", "AWS", "Amazon Web Services", "Azure", "GCP", "Google Cloud", "CI/CD", "Jenkins", "GitLab CI", "GitHub Actions", "Terraform", "Ansible", "Linux", "Unix", "Ubuntu", "Nginx", "Apache", "Serverless", "Microservices",
-    # Databases
-    "MySQL", "PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Cassandra", "DynamoDB", "SQLite", "Firebase", "Supabase", "Oracle", "SQL Server",
-    # Tools & Methodologies
-    "Git", "GitHub", "GitLab", "Bitbucket", "Agile", "Scrum", "Jira", "Trello", "Confluence", "Figma", "Adobe XD", "UI/UX", "System Design", "Object-Oriented Programming", "OOP", "Data Structures", "Algorithms",
-    # Certifications & Degrees
-    "B.Sc", "B.Tech", "M.Sc", "M.Tech", "Ph.D", "Computer Science", "Information Technology", "AWS Certified", "GCP Certified", "Azure Certified"
-]
-
-# Create Entity Ruler
-# We add it before the "ner" component so our patterns get priority
-ruler = nlp.add_pipe("entity_ruler", before="ner")
-
-# Format patterns for spaCy
-patterns = [{"label": "SKILL", "pattern": [{"LOWER": skill.lower()}]} for skill in SKILLS_TAXONOMY]
-ruler.add_patterns(patterns)
+    from gliner import GLiNER
+    # Load the GLiNER model (this downloads it on first run, ~700MB)
+    logger.info("Initializing GLiNER NLP Model (urchade/gliner_small-v2.1)...")
+    model = GLiNER.from_pretrained("urchade/gliner_small-v2.1")
+    logger.info("GLiNER model loaded successfully.")
+except ImportError:
+    logger.error("GLiNER or Torch is not installed. Please install them to use the ML NLP Engine.")
+    model = None
+except Exception as e:
+    logger.error(f"Failed to load GLiNER model: {e}")
+    model = None
 
 def extract_skills_from_text(text: str) -> list[str]:
     """
-    Process raw text through the spaCy pipeline and extract unique skills.
+    Process raw text through the GLiNER zero-shot NER model to extract unique skills.
+    Chunks text to prevent truncation limits (384 tokens).
     """
-    doc = nlp(text)
+    if model is None:
+        logger.error("NLP Model is not loaded. Returning empty skills.")
+        return []
+        
+    # Labels for zero-shot extraction
+    labels = [
+        "Programming Language",
+        "Software Framework",
+        "Software Library",
+        "Database",
+        "Cloud Platform",
+        "DevOps Tool",
+        "Data Science Skill",
+        "Technical Concept"
+    ]
     
-    # Extract entities labeled as 'SKILL'
-    extracted = set()
-    for ent in doc.ents:
-        if ent.label_ == "SKILL":
-            # Map back to proper casing from the taxonomy if possible, 
-            # otherwise just use the matched text title-cased
-            matched_text = ent.text.lower()
-            original_case_skill = next((s for s in SKILLS_TAXONOMY if s.lower() == matched_text), ent.text.title())
-            extracted.add(original_case_skill)
+    try:
+        # Split text into chunks of ~150 words to avoid 384 token limit
+        words = text.split()
+        chunk_size = 150
+        chunks = [' '.join(words[i:i + chunk_size]) for i in range(0, len(words), chunk_size)]
+        
+        extracted = set()
+        for chunk in chunks:
+            # Predict entities using contextual understanding
+            entities = model.predict_entities(chunk, labels)
             
-    return sorted(list(extracted))
+            for entity in entities:
+                # We filter for high confidence predictions
+                if entity.get("score", 0) > 0.5:
+                    # Title-case for uniformity
+                    extracted.add(entity["text"].title())
+                
+        return sorted(list(extracted))
+    except Exception as e:
+        logger.error(f"Error extracting skills: {e}")
+        return []

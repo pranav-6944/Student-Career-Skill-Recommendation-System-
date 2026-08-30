@@ -43,7 +43,7 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
   // Fetch initial profile from backend
   useEffect(() => {
     if (!currentUser?.email) return;
-    
+
     fetch(`http://127.0.0.1:8000/api/profile?email=${encodeURIComponent(currentUser.email)}`)
       .then(res => res.json())
       .then(data => {
@@ -52,12 +52,24 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
         setUniversity(data.university || 'Your University');
         setCgpa(data.cgpa || '');
         setYear(data.year || '1');
-        
+
         if (data.extracted_skills) {
           const skillsArray = data.extracted_skills.split(',').map((s: string) => s.trim()).filter(Boolean);
           if (skillsArray.length > 0) {
             setExtractedSkills(skillsArray);
-            setResumeScore(Math.min(100, 50 + (skillsArray.length * 4)));
+            
+            // Restore resume filename and score from local storage if available
+            const savedMetadata = localStorage.getItem('careerpath_last_resume');
+            if (savedMetadata) {
+              try {
+                const parsed = JSON.parse(savedMetadata);
+                setResumeName(parsed.name || 'Previously Uploaded Resume');
+                setResumeScore(parsed.score || Math.min(100, 50 + (skillsArray.length * 4)));
+              } catch(e) {}
+            } else {
+              setResumeName('Previously Uploaded Resume');
+              setResumeScore(Math.min(100, 50 + (skillsArray.length * 4)));
+            }
           }
         }
       })
@@ -100,17 +112,73 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
     {
       id: 5, title: 'Software Developer', department: 'Software Engineering', salary: '₹5 – 18 LPA',
       targetSkills: ['Python', 'Git', 'HTML', 'Data Structures', 'Algorithms', 'JavaScript', 'REST APIs']
+    },
+    {
+      id: 6, title: 'Backend Engineer', department: 'Software Engineering', salary: '₹6 – 20 LPA',
+      targetSkills: ['Java', 'Python', 'C++', 'Node.js', 'SQL', 'PostgreSQL', 'MongoDB', 'REST APIs', 'Spring Boot', 'System Design', 'OOP', 'Data Structures', 'Docker', 'Kubernetes', 'AWS', 'Redis']
+    },
+    {
+      id: 7, title: 'DevOps Engineer', department: 'Cloud & Infrastructure', salary: '₹8 – 25 LPA',
+      targetSkills: ['Linux', 'Bash', 'Docker', 'Kubernetes', 'AWS', 'Terraform', 'CI/CD', 'GitHub Actions', 'Jenkins', 'Prometheus', 'Grafana', 'Ansible', 'Python']
     }
   ]);
 
+  const [dynamicCareer, setDynamicCareer] = useState<CareerRoleItem | null>(null);
+
+  useEffect(() => {
+    if (extractedSkills.length === 0) {
+      setDynamicCareer(null);
+      return;
+    }
+    
+    // Check if we need a dynamic career from Gemini
+    const lowerExtracted = extractedSkills.map(s => s.toLowerCase());
+    let bestMatch = 0;
+    
+    adminCareers.forEach(career => {
+      const matched = career.targetSkills.filter(s => lowerExtracted.includes(s.toLowerCase()));
+      const matchPct = career.targetSkills.length > 0 ? Math.round((matched.length / career.targetSkills.length) * 100) : 0;
+      if (matchPct > bestMatch) bestMatch = matchPct;
+    });
+    
+    if (bestMatch < 35) {
+      // Fetch dynamic synthesis from Gemini via Backend
+      fetch(`http://127.0.0.1:8000/api/synthesize-career`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': currentUser?.token || '' // Send token for auth if needed
+        },
+        body: JSON.stringify({ skills: extractedSkills })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.title) {
+          setDynamicCareer({
+            id: 999,
+            title: data.title + " (AI Generated)",
+            department: data.department || 'Dynamic Profile Synthesis',
+            salary: data.salary || 'Market Standard',
+            matchPct: 85, // High because it's custom made for them
+            matchedSkills: data.matchedSkills || [],
+            missingSkills: data.missingSkills || []
+          });
+        }
+      })
+      .catch(err => console.error("Gemini API Error:", err));
+    } else {
+      setDynamicCareer(null);
+    }
+  }, [extractedSkills, adminCareers, currentUser?.token]);
+
   // Dynamically compute match percentages and matched/missing skills based on the user's extracted skills
   const careerList: CareerRoleItem[] = React.useMemo(() => {
-    return adminCareers.map(career => {
+    let processed = adminCareers.map(career => {
       const lowerExtracted = extractedSkills.map(s => s.toLowerCase());
       const matched = career.targetSkills.filter(s => lowerExtracted.includes(s.toLowerCase()));
       const missing = career.targetSkills.filter(s => !lowerExtracted.includes(s.toLowerCase()));
       const matchPct = career.targetSkills.length > 0 ? Math.round((matched.length / career.targetSkills.length) * 100) : 0;
-      
+
       return {
         id: career.id,
         title: career.title,
@@ -120,14 +188,27 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
         matchedSkills: matched,
         missingSkills: missing
       };
-    }).sort((a, b) => b.matchPct - a.matchPct);
-  }, [adminCareers, extractedSkills]);
+    });
+
+    if (dynamicCareer) {
+      processed.unshift(dynamicCareer);
+    }
+
+    return processed.sort((a, b) => b.matchPct - a.matchPct);
+  }, [adminCareers, extractedSkills, dynamicCareer]);
 
   const readinessScore = React.useMemo(() => {
     if (careerList.length === 0) return 0;
     const top3 = careerList.slice(0, 3);
     const sum = top3.reduce((acc, curr) => acc + curr.matchPct, 0);
     return (sum / top3.length).toFixed(1);
+  }, [careerList]);
+
+  // Auto-select the top matched career whenever the list updates
+  useEffect(() => {
+    if (careerList.length > 0) {
+      setSelectedCareerId(careerList[0].id);
+    }
   }, [careerList]);
 
   // Admin Form State
@@ -161,8 +242,12 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
       if (data.skills && data.skills.length > 0) {
         setExtractedSkills(data.skills);
         // Calculate a dynamic score based on the number of skills found for UI
-        setResumeScore(Math.min(100, 50 + (data.skills.length * 4)));
+        const score = Math.min(100, 50 + (data.skills.length * 4));
+        setResumeScore(score);
         setUploadSuccessMsg(`Successfully parsed ${file.name} using Real NLP! Found ${data.skills.length} skills.`);
+        
+        // Persist the resume filename and score
+        localStorage.setItem('careerpath_last_resume', JSON.stringify({ name: file.name, score: score }));
       } else {
         setExtractedSkills([]);
         setResumeScore(30);
@@ -921,9 +1006,9 @@ export const WebAppView: React.FC<WebAppViewProps> = ({ initialMode = 'webapp', 
                         extracted_skills: extractedSkills.join(",")
                       })
                     });
-                    
+
                     if (!response.ok) throw new Error("Failed to save profile");
-                    
+
                     setProfileSaveMsg('Profile saved to database successfully!');
                   } catch (e) {
                     setProfileSaveMsg('Error saving profile');

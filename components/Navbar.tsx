@@ -10,10 +10,11 @@ interface NavbarProps {
   setMode: (mode: AppMode) => void;
 }
 
-const isAuthenticated = (mode: AppMode) => mode === 'webapp' || mode === 'admin';
 
 export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
   const { theme, toggleTheme, role, currentUser } = useTheme();
+  const isAuthenticated = !!currentUser;
+  
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -35,10 +36,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
 
   const handleStudentAppClick = () => {
     // If not authenticated, go to login first
-    if (!isAuthenticated(currentMode)) {
+    if (!isAuthenticated) {
       setMode('auth');
     } else {
-      setMode('webapp');
+      setMode(role === 'admin' ? 'admin' : 'webapp');
     }
   };
 
@@ -130,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentMode, setMode }) => {
           </button>
 
           {/* Profile Dropdown — ONLY shown when authenticated (webapp or admin mode) */}
-          {isAuthenticated(currentMode) && (
+          {isAuthenticated && (
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}

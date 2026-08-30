@@ -8,3 +8,7 @@ sqlalchemy
 passlib[bcrypt]
 pytest
 httpx
+torch
+gliner
+google-generativeai
+python-dotenv

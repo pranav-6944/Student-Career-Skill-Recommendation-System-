@@ -1,3 +1,9 @@
+import os
+import json
+from dotenv import load_dotenv
+import google.generativeai as genai
+from pydantic import BaseModel
+
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -10,6 +16,11 @@ import datetime
 from parsers import extract_text_from_pdf, extract_text_from_docx
 from nlp_engine import extract_skills_from_text
 import database, models, schemas
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
 
 # Initialize database tables
 database.Base.metadata.create_all(bind=database.engine)
@@ -231,6 +242,50 @@ async def extract_resume(file: UploadFile = File(...), current_user: models.User
         "filename": file.filename,
         "skills": extracted_skills
     }
+class SynthesizeRequest(BaseModel):
+    skills: List[str]
+
+@app.post("/api/synthesize-career")
+async def synthesize_career(request: SynthesizeRequest, current_user: models.User = Depends(get_current_user)):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="Gemini API Key not configured on the server.")
+        
+    prompt = f"""
+    You are an expert career counselor AI. The user has uploaded a resume with the following extracted skills:
+    {', '.join(request.skills)}
+
+    Based on these skills, synthesize a highly accurate, custom career role for them. 
+    Respond strictly in JSON format with the following structure:
+    {{
+      "title": "Job Title (e.g., Specialized Professional, Junior Architect)",
+      "department": "Industry/Department",
+      "salary": "Market Standard Salary Estimate (e.g., ₹6 – 12 LPA)",
+      "matchedSkills": ["skill1", "skill2"],
+      "missingSkills": ["important skill they should learn", "another missing skill"]
+    }}
+    
+    Ensure `matchedSkills` only includes skills from their list that are highly relevant to the role.
+    Ensure `missingSkills` recommends 3-5 crucial industry skills they do not currently have.
+    Do NOT include markdown formatting (like ```json), just return the raw JSON object.
+    """
+    
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith('```json'):
+            text = text[7:]
+        if text.startswith('```'):
+            text = text[3:]
+        if text.endswith('```'):
+            text = text[:-3]
+        
+        career_data = json.loads(text.strip())
+        return career_data
+    except Exception as e:
+        print(f"Gemini API Error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to synthesize career path using AI.")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
